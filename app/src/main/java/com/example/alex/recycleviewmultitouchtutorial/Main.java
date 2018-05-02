@@ -1,5 +1,7 @@
 package com.example.alex.recycleviewmultitouchtutorial;
 
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,6 +59,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     public void onBackPressed() {
         if(adapter.isMultiSelection()) {
             adapter.setMultiSelection(false);
+            setSingleSelectionUI();
             return;
         }
         super.onBackPressed();
@@ -67,11 +70,17 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         Log.d("myLogs", "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.menu, menu);
         remove = menu.findItem(R.id.action_remove);
-        if(adapter.isMultiSelection())
-            remove.setVisible(true);
-        else
-            remove.setVisible(false);
+        setUI();
         return true;
+    }
+
+    private void setUI() {
+        if(adapter.isMultiSelection()) {
+            setMultiSelectionUI();
+        }
+        else {
+            setSingleSelectionUI();
+        }
     }
 
     @Override
@@ -79,7 +88,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         switch (item.getItemId()) {
             case android.R.id.home:
                 adapter.setMultiSelection(false);
-                remove.setVisible(false);
+                setSingleSelectionUI();
                 return true;
             case R.id.action_remove:
                 Log.d("myLogs", "remove");
@@ -89,6 +98,25 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         }
     }
 
+    private void setSingleSelectionUI() {
+        setStatusBarColor(R.color.colorPrimaryDark);
+        setToolbarColor(R.color.colorPrimary);
+        setToolbarTitle("Title");
+        remove.setVisible(false);
+        setNavigationButton(false);
+    }
+
+    private void setMultiSelectionUI() {
+        setStatusBarColor(R.color.colorPrimaryDarkMultiselect);
+        setToolbarColor(R.color.colorAccent);
+        setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
+        remove.setVisible(true);
+        setNavigationButton(true);
+    }
+
+    void setToolbarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 
 
     private void restoreMultiSelectionMode(Bundle savedInstanceState) {
@@ -117,11 +145,27 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             data.get(position).isSelected = true;
             Log.d("myLogs", "selectedItem " + position);
         }
-        adapter.setToolbarTitle(String.valueOf(selectedPositions.size()));
+        setToolbarTitle(String.valueOf(selectedPositions.size()));
         adapter.notifyDataSetChanged();
     }
 
-    List<Information> getData() {
+    private void setStatusBarColor(int color) {
+        getWindow().setStatusBarColor(getColor2(color));
+    }
+
+    private void setToolbarColor(int id) {
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor2(id)));
+    }
+
+    private int getColor2(int id) {
+        return ContextCompat.getColor(this, id);
+    }
+
+    private void setNavigationButton(boolean b) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(b);
+    }
+
+    private List<Information> getData() {
         Information[] data = {
                 new Information(R.drawable.ic_launcher_background, "0"),
                 new Information(R.drawable.ic_launcher_background, "1"),
@@ -139,14 +183,11 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     public void onItemLongClick(View itemView, int position) {
-        if(adapter.isMultiSelection()) remove.setVisible(true);
-        else remove.setVisible(false);
+        setUI();
     }
-
 
     @Override
     public void onItemClick(View itemView, int position) {
-        if(adapter.isMultiSelection()) remove.setVisible(true);
-        else remove.setVisible(false);
+        setUI();
     }
 }

@@ -55,7 +55,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         return new myViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
         final Information currentItem = data.get(position);
@@ -67,11 +66,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                 if(isMultiSelection) {
                     currentItem.isSelected = !currentItem.isSelected;
                     setItemBackgroundColor(currentItem, holder.itemView);
-                    int selectedItems = getSelectedItemsCount();
-                    if(selectedItems == 0) {
+                    if(getSelectedItemsCount() == 0) {
                         setMultiSelection(false);
-                    } else {
-                        setToolbarTitle(String.valueOf(selectedItems));
                     }
                     itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
                 }
@@ -85,12 +81,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             @Override
             public boolean onLongClick(View v) {
                 setMultiSelection(!isMultiSelection);
-                itemLongClickListener.onItemLongClick(holder.itemView, holder.getAdapterPosition());
                 if(isMultiSelection) {
                     data.get(holder.getAdapterPosition()).isSelected = true;
                     notifyItemChanged(holder.getAdapterPosition());
-                    setToolbarTitle(String.valueOf(1));
                 }
+                itemLongClickListener.onItemLongClick(holder.itemView, holder.getAdapterPosition());
                 Log.d("myLogs", "onLongClick " + holder.getAdapterPosition() + " isMultiSelection " + isMultiSelection);
                 return true;
             }
@@ -98,11 +93,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         Log.d("myLogs", "onBind ViewHolder " + position);
     }
 
-    void setToolbarTitle(String title) {
-        context.getSupportActionBar().setTitle(title);
+    @Override
+    public int getItemCount() {
+        return data.size();
     }
 
-    private int getSelectedItemsCount() {
+    int getSelectedItemsCount() {
         int result = 0;
         for(int i = 0; i < getItemCount(); i++) {
             Information dataItem = data.get(i);
@@ -112,40 +108,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         }
         Log.d("myLogs", "selected items = " + result);
         return result;
-    }
-
-    @Override
-    public int getItemCount() {
-        return data.size();
-    }
-
-    private void setSingleSelectionUI() {
-        setStatusBarColor(R.color.colorPrimaryDark);
-        setToolbarColor(R.color.colorPrimary);
-        setToolbarTitle("Title");
-        setNavigationButton(false);
-    }
-
-    private void setMultiSelectionUI() {
-        setStatusBarColor(R.color.colorPrimaryDarkMultiselect);
-        setToolbarColor(R.color.colorAccent);
-        setNavigationButton(true);
-    }
-
-    private void setNavigationButton(boolean b) {
-        context.getSupportActionBar().setDisplayHomeAsUpEnabled(b);
-    }
-
-    private void setStatusBarColor(int color) {
-        context.getWindow().setStatusBarColor(getColor2(color));
-    }
-
-    private void setToolbarColor(int id) {
-        context.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getColor2(id)));
-    }
-
-    private int getColor2(int id) {
-        return ContextCompat.getColor(context, id);
     }
 
     boolean isMultiSelection() { return isMultiSelection; }
@@ -159,11 +121,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     void setMultiSelection(boolean b) {
         isMultiSelection = b;
-        if(b) {
-            setMultiSelectionUI();
-        }
-        else {
-            setSingleSelectionUI();
+        if(!b) {
             clearSelection();
         }
     }
@@ -186,8 +144,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             image = itemView.findViewById(R.id.imageView);
             text = itemView.findViewById(R.id.textView);
         }
-
-
     }
 }
 
