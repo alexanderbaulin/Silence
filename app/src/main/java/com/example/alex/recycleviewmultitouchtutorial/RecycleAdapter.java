@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -33,6 +35,22 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     void setOnClickItemListener(OnItemClickListener listener) {
         itemClickListener = listener;
+    }
+
+    void removeSelectedItems() {
+        LinkedList<Integer> selectedItems = new LinkedList<>();
+        for(int i = 0; i < data.size(); i++) {
+            Information dataItem = data.get(i);
+            if(dataItem.isSelected) {
+                selectedItems.add(i);
+            }
+        }
+        Collections.reverse(selectedItems);
+        for(int i = 0; i < selectedItems.size(); i++) {
+            int index = selectedItems.get(i);
+            data.remove(index);
+            notifyItemRemoved(index);
+        }
     }
 
     interface OnItemClickListener {
@@ -65,12 +83,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             public void onClick(View v) {
                 if(isMultiSelection) {
                     currentItem.isSelected = !currentItem.isSelected;
+                    notifyItemChanged(holder.getAdapterPosition());
                     setItemBackgroundColor(currentItem, holder.itemView);
                     if(getSelectedItemsCount() == 0) {
                         setMultiSelection(false);
                     }
-                    itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
                 }
+                itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
                 Log.d("myLogs", holder.getAdapterPosition() + " " + currentItem.isSelected);
             }
         });
@@ -116,7 +135,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         if(currentItem.isSelected)
             itemView.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         else
-            itemView.setBackgroundColor(Color.WHITE);
+            itemView.setBackgroundResource(R.drawable.custom_background);
+
     }
 
     void setMultiSelection(boolean b) {

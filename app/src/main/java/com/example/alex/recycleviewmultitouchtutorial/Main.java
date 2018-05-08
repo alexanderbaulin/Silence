@@ -1,6 +1,8 @@
 package com.example.alex.recycleviewmultitouchtutorial;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +18,14 @@ import android.view.View.OnClickListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener {
-    private List<Information> data = Collections.emptyList();
+    private LinkedList<Information> data;
     private RecycleAdapter adapter;
     private MenuItem remove;
+    private FloatingActionButton btnFloatingAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         setContentView(R.layout.main);
         RecyclerView recyclerView = findViewById(R.id.drawerList);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        btnFloatingAction = findViewById(R.id.floatingActionButton);
         setSupportActionBar(toolbar);
         data = getData();
         adapter = new RecycleAdapter(this, data);
@@ -92,6 +97,9 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 return true;
             case R.id.action_remove:
                 Log.d("myLogs", "remove");
+                adapter.removeSelectedItems();
+                adapter.setMultiSelection(false);
+                setUI();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -104,6 +112,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         setToolbarTitle("Title");
         remove.setVisible(false);
         setNavigationButton(false);
+        setAddFloatingActionButton(true);
     }
 
     private void setMultiSelectionUI() {
@@ -112,6 +121,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
         remove.setVisible(true);
         setNavigationButton(true);
+        setAddFloatingActionButton(false);
     }
 
     void setToolbarTitle(String title) {
@@ -165,7 +175,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(b);
     }
 
-    private List<Information> getData() {
+    private void setAddFloatingActionButton(boolean b) {
+        if(b)
+            btnFloatingAction.setVisibility(View.VISIBLE);
+        else
+            btnFloatingAction.setVisibility(View.INVISIBLE);
+    }
+
+    private LinkedList<Information> getData() {
         Information[] data = {
                 new Information(R.drawable.ic_launcher_background, "0"),
                 new Information(R.drawable.ic_launcher_background, "1"),
@@ -178,7 +195,9 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 new Information(R.drawable.ic_launcher_background, "8"),
                 new Information(R.drawable.ic_launcher_background, "9")
         };
-        return Arrays.asList(data);
+        LinkedList<Information> result = new LinkedList<>();
+        Collections.addAll(result, data);
+        return result;
     }
 
     @Override
@@ -188,6 +207,31 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     public void onItemClick(View itemView, int position) {
+        if(!adapter.isMultiSelection()) {
+            Intent intent = new Intent(this, AddItemActivity.class);
+            Information info = data.get(position);
+            intent.putExtra(Information.class.getCanonicalName(), info);
+            intent.putExtra("position", position);
+            startActivityForResult(intent, 1);
+        }
         setUI();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+        if(resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                Information information = result.getParcelableExtra(Information.class.getCanonicalName());
+                int position = result.getIntExtra("position", -1);
+                data.get(position).text = information.text;
+                adapter.notifyItemChanged(position);
+
+                Log.d("myLogs", "from request " + information.text);
+            }
+        }
+    }
+
+    public void onClickFloatingActionButton(View view) {
+        Log.d("myLogs", "onClickFloatingActionButton");
     }
 }
