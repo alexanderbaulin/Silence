@@ -81,6 +81,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
                 if(isMultiSelection) {
                     currentItem.isSelected = !currentItem.isSelected;
                     notifyItemChanged(holder.getAdapterPosition());
@@ -89,7 +90,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                         setMultiSelection(false);
                     }
                 }
-                itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
                 Log.d("myLogs", holder.getAdapterPosition() + " " + currentItem.isSelected);
             }
         });
