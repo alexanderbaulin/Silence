@@ -209,10 +209,10 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if(!adapter.isMultiSelection()) {
-            Intent intent = new Intent(this, AddItemActivity.class);
+            Intent intent = new Intent(this, UpdateItemActivity.class);
             Information info = data.get(position);
             intent.putExtra(Information.class.getCanonicalName(), info);
-            intent.putExtra("position", position);
+            intent.putExtra("updatedPosition", position);
             startActivityForResult(intent, 1);
         } else {
             setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
@@ -229,7 +229,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         if(resultCode == RESULT_OK) {
             if (requestCode == 1) {
                 Information information = result.getParcelableExtra(Information.class.getCanonicalName());
-                int position = result.getIntExtra("position", -1);
+                int position = result.getIntExtra("updatedPosition", -1);
                 data.get(position).text = information.text;
                 adapter.notifyItemChanged(position);
                 Log.d("myLogs", "from request " + information.text);

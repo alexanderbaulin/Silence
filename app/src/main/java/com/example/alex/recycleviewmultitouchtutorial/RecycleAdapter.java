@@ -174,13 +174,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         }
     }
 
-    private void selectItem(int position, boolean isSelected) {
-        data.get(position).isSelected = isSelected;
-        notifyItemChanged(position);
+    private void selectItem(int updatedPosition, boolean isSelected) {
+        data.get(updatedPosition).isSelected = isSelected;
+        notifyItemChanged(updatedPosition);
     }
 
-        private boolean isItemSelected(int position) {
-        return data.get(position).isSelected;
+        private boolean isItemSelected(int updatedPosition) {
+        return data.get(updatedPosition).isSelected;
     }
     */
 

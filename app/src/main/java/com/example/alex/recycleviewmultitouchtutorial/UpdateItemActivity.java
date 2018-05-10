@@ -9,22 +9,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-/**
- * Created by Alex on 08.05.2018.
- */
 
-public class AddItemActivity extends AppCompatActivity implements View.OnClickListener {
+public class UpdateItemActivity extends AppCompatActivity implements View.OnClickListener {
     EditText editText;
+    int updatedPosition;
     Information data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_item_activity);
+        Button submit = findViewById(R.id.btnSubmit);
         editText = findViewById(R.id.editText);
         data = getIntent().getParcelableExtra(Information.class.getCanonicalName());
-        Button submit = findViewById(R.id.btnSubmit);
+        updatedPosition = getIntent().getIntExtra("updatedPosition", -1);
+        editText.setText(data.text);
         submit.setOnClickListener(this);
+        Log.d("myLogs", "updatedPosition update item = " + updatedPosition);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         String className = Information.class.getCanonicalName();
         Information newItem = new Information(R.drawable.ic_launcher_background, editText.getText().toString());
         intent.putExtra(className, newItem);
+        intent.putExtra("updatedPosition", updatedPosition);
         setResult(RESULT_OK, intent);
         finish();
     }
