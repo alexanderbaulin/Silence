@@ -26,13 +26,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private RecycleAdapter adapter;
     private MenuItem remove;
     private FloatingActionButton btnFloatingAction;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("myLogs", "Main onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        RecyclerView recyclerView = findViewById(R.id.drawerList);
+        recyclerView = findViewById(R.id.drawerList);
         Toolbar toolbar = findViewById(R.id.toolbar);
         btnFloatingAction = findViewById(R.id.floatingActionButton);
         setSupportActionBar(toolbar);
@@ -213,8 +214,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             intent.putExtra(Information.class.getCanonicalName(), info);
             intent.putExtra("position", position);
             startActivityForResult(intent, 1);
+        } else {
+            setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
         }
-        setUI();
+        if(adapter.getSelectedItemsCount() == 0) {
+            adapter.setMultiSelection(false);
+            setSingleSelectionUI();
+           // setUI();
+        }
     }
 
     @Override
@@ -225,13 +232,21 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 int position = result.getIntExtra("position", -1);
                 data.get(position).text = information.text;
                 adapter.notifyItemChanged(position);
-
                 Log.d("myLogs", "from request " + information.text);
+            } else if(requestCode == 2) {
+                Information information = result.getParcelableExtra(Information.class.getCanonicalName());
+                data.add(information);
+                int size = adapter.getItemCount();
+                recyclerView.scrollToPosition(size-1);
+                adapter.notifyItemChanged(size);
+                Log.d("myLogs", "size = " + size);
             }
         }
     }
 
     public void onClickFloatingActionButton(View view) {
+        Intent intent = new Intent(this, AddItemActivity.class);
+        startActivityForResult(intent, 2);
         Log.d("myLogs", "onClickFloatingActionButton");
     }
 }
