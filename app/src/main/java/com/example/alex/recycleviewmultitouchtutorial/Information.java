@@ -6,9 +6,8 @@ import android.os.Parcelable;
 
 public class Information implements Parcelable {
     boolean isSelected;
-    String desc, time, days;
-    Information(String description, String periodOfTime, String daysOfWeeks) {
-        desc = description;
+    String time, days;
+    Information(String periodOfTime, String daysOfWeeks) {
         time = periodOfTime;
         days = daysOfWeeks;
 
@@ -16,7 +15,6 @@ public class Information implements Parcelable {
 
     private Information(Parcel in) {
        // isSelected = in.readByte() != 0;
-        desc = in.readString();
         time = in.readString();
         days = in.readString();
     }
@@ -28,7 +26,6 @@ public class Information implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(desc);
         dest.writeString(time);
         dest.writeString(days);
     }

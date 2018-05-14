@@ -193,10 +193,10 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private LinkedList<Information> getData() {
         Information[] data = {
-                new Information("1", "15 30 - 17 30", "пн вт ср чт пт"),
-                new Information("2", "15 30 - 17 30", "пн вт ср чт пт"),
-                new Information("3", "15 30 - 17 30", "пн вт ср чт пт"),
-                new Information("4", "15 30 - 17 30", "пн вт ср чт пт")
+                new Information("15 30 - 17 30", "пн вт ср чт пт"),
+                new Information("15 30 - 17 30", "пн вт ср чт пт"),
+                new Information("15 30 - 17 30", "пн вт ср чт пт"),
+                new Information("15 30 - 17 30", "пн вт ср чт пт")
         };
         LinkedList<Information> result = new LinkedList<>();
         Collections.addAll(result, data);

@@ -25,13 +25,6 @@
         android:orientation="vertical"
         android:layout_weight="0.45">
         <TextView
-            android:id="@+id/txtDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Описание"
-            />
-        <TextView
             android:id="@+id/txtTimePeriod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

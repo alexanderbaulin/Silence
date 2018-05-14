@@ -70,7 +70,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
         final Information currentItem = data.get(position);
-        holder.description.setText(currentItem.desc);
         holder.time.setText(currentItem.time);
         holder.days.setText(currentItem.days);
         View switcher = holder.itemView.findViewById(R.id.btnSwitch);
@@ -152,12 +151,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        TextView description;
         TextView time;
         TextView days;
         myViewHolder(final View itemView) {
             super(itemView);
-            description = itemView.findViewById(R.id.txtDescription);
             time = itemView.findViewById(R.id.txtTimePeriod);
             days = itemView.findViewById(R.id.txtDaysOfWeek);
         }
