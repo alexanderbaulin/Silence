@@ -13,13 +13,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
+
 
 public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener {
     private LinkedList<Information> data;
@@ -185,16 +183,10 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private LinkedList<Information> getData() {
         Information[] data = {
-                new Information(R.drawable.ic_launcher_background, "0"),
-                new Information(R.drawable.ic_launcher_background, "1"),
-                new Information(R.drawable.ic_launcher_background, "2"),
-                new Information(R.drawable.ic_launcher_background, "3"),
-                new Information(R.drawable.ic_launcher_background, "4"),
-                new Information(R.drawable.ic_launcher_background, "5"),
-                new Information(R.drawable.ic_launcher_background, "6"),
-                new Information(R.drawable.ic_launcher_background, "7"),
-                new Information(R.drawable.ic_launcher_background, "8"),
-                new Information(R.drawable.ic_launcher_background, "9")
+                new Information("1", "15 30 - 17 30", "пн вт ср чт пт"),
+                new Information("2", "15 30 - 17 30", "пн вт ср чт пт"),
+                new Information("3", "15 30 - 17 30", "пн вт ср чт пт"),
+                new Information("4", "15 30 - 17 30", "пн вт ср чт пт")
         };
         LinkedList<Information> result = new LinkedList<>();
         Collections.addAll(result, data);
@@ -226,6 +218,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+        /*
         if(resultCode == RESULT_OK) {
             if (requestCode == 1) {
                 Information information = result.getParcelableExtra(Information.class.getCanonicalName());
@@ -242,6 +235,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 Log.d("myLogs", "size = " + size);
             }
         }
+        */
     }
 
     public void onClickFloatingActionButton(View view) {

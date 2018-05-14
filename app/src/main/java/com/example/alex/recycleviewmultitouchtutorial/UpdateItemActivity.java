@@ -19,6 +19,7 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_item_activity);
+        /*
         Button submit = findViewById(R.id.btnSubmit);
         editText = findViewById(R.id.editText);
         data = getIntent().getParcelableExtra(Information.class.getCanonicalName());
@@ -26,10 +27,12 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
         editText.setText(data.text);
         submit.setOnClickListener(this);
         Log.d("myLogs", "updatedPosition update item = " + updatedPosition);
+        */
     }
 
     @Override
     public void onClick(View v) {
+        /*
         Intent intent = new Intent();
         String className = Information.class.getCanonicalName();
         Information newItem = new Information(R.drawable.ic_launcher_background, editText.getText().toString());
@@ -37,5 +40,6 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
         intent.putExtra("updatedPosition", updatedPosition);
         setResult(RESULT_OK, intent);
         finish();
+        */
     }
 }

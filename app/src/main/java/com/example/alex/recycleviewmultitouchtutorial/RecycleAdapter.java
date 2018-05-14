@@ -1,18 +1,11 @@
 package com.example.alex.recycleviewmultitouchtutorial;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,15 +62,16 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     @Override
     public myViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.custom_row, parent, false);
+        View view = inflater.inflate(R.layout.custom_row2, parent, false);
         return new myViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
         final Information currentItem = data.get(position);
-        holder.image.setImageResource(currentItem.image);
-        holder.text.setText(currentItem.text);
+        holder.description.setText(currentItem.desc);
+        holder.time.setText(currentItem.time);
+        holder.days.setText(currentItem.days);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +124,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private void setItemBackgroundColor(Information currentItem, View itemView) {
         if(currentItem.isSelected)
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+            itemView.setBackgroundColor(context.getResources().getColor(R.color.colorItemBackground));
         else
             itemView.setBackgroundResource(R.drawable.custom_background);
 
@@ -154,12 +148,14 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView text;
+        TextView description;
+        TextView time;
+        TextView days;
         myViewHolder(final View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.imageView);
-            text = itemView.findViewById(R.id.textView);
+            description = itemView.findViewById(R.id.txtDescription);
+            time = itemView.findViewById(R.id.txtTimePeriod);
+            days = itemView.findViewById(R.id.txtDaysOfWeek);
         }
     }
 }

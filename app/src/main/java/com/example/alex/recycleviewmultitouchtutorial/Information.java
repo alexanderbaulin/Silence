@@ -3,23 +3,22 @@ package com.example.alex.recycleviewmultitouchtutorial;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Alex on 23.04.2018.
- */
 
 public class Information implements Parcelable {
     boolean isSelected;
-    int image;
-    String text;
-    Information(int image, String text) {
-        this.image = image;
-        this.text = text;
+    String desc, time, days;
+    Information(String description, String periodOfTime, String daysOfWeeks) {
+        desc = description;
+        time = periodOfTime;
+        days = daysOfWeeks;
+
     }
 
     private Information(Parcel in) {
        // isSelected = in.readByte() != 0;
-        image = in.readInt();
-        text = in.readString();
+        desc = in.readString();
+        time = in.readString();
+        days = in.readString();
     }
 
     @Override
@@ -29,8 +28,9 @@ public class Information implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(image);
-        dest.writeString(text);
+        dest.writeString(desc);
+        dest.writeString(time);
+        dest.writeString(days);
     }
 
     public static final Creator<Information> CREATOR = new Creator<Information>() {

@@ -29,11 +29,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        /*
         Intent intent = new Intent();
         String className = Information.class.getCanonicalName();
         Information newItem = new Information(R.drawable.ic_launcher_background, editText.getText().toString());
         intent.putExtra(className, newItem);
         setResult(RESULT_OK, intent);
         finish();
+        */
     }
 }
