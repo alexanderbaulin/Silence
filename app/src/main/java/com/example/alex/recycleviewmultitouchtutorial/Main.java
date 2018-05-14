@@ -35,6 +35,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         Toolbar toolbar = findViewById(R.id.toolbar);
         btnFloatingAction = findViewById(R.id.floatingActionButton);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSingleSelectionUI();
+                adapter.setMultiSelection(false);
+                adapter.notifyDataSetChanged();
+            }
+        });
         data = getData();
         adapter = new RecycleAdapter(this, data);
         adapter.setOnClickItemListener(this);
@@ -64,6 +72,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         if(adapter.isMultiSelection()) {
             adapter.setMultiSelection(false);
             setSingleSelectionUI();
+            adapter.notifyDataSetChanged();
             return;
         }
         super.onBackPressed();
@@ -85,6 +94,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         else {
             setSingleSelectionUI();
         }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -212,6 +222,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         if(adapter.getSelectedItemsCount() == 0) {
             adapter.setMultiSelection(false);
             setSingleSelectionUI();
+            adapter.notifyDataSetChanged();
            // setUI();
         }
     }

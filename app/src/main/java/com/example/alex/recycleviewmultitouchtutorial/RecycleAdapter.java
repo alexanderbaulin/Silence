@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -72,6 +73,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         holder.description.setText(currentItem.desc);
         holder.time.setText(currentItem.time);
         holder.days.setText(currentItem.days);
+        View switcher = holder.itemView.findViewById(R.id.btnSwitch);
+        if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
+        else switcher.setVisibility(View.VISIBLE);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +136,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     void setMultiSelection(boolean b) {
         isMultiSelection = b;
-        if(!b) {
+        if(!isMultiSelection) {
             clearSelection();
         }
     }
