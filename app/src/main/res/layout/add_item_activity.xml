@@ -13,12 +13,36 @@
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="тест" />
+            android:hint="тест"
+            android:lines="1"/>
 
     </android.support.design.widget.TextInputLayout>
-   <Button
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnTimeFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From" />
+        <Button
+            android:id="@+id/btnTimeTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To" />
+
+    </LinearLayout>
+
+
+    <Button
        android:id="@+id/btnSubmit"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:text="submit"/>
+       android:text="submit"
+       android:layout_gravity="center"
+       android:layout_marginTop="50dp"
+        />
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.alex.recycleviewmultitouchtutorial;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
@@ -94,7 +95,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         else {
             setSingleSelectionUI();
         }
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -109,6 +110,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.removeSelectedItems();
                 adapter.setMultiSelection(false);
                 setUI();
+                int size = adapter.getItemCount();
+                adapter.notifyItemRangeChanged(0, size);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -206,6 +209,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemLongClick(View itemView, int position) {
         setUI();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

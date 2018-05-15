@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -32,18 +30,18 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     void removeSelectedItems() {
-        LinkedList<Integer> selectedItems = new LinkedList<>();
-        for(int i = 0; i < data.size(); i++) {
-            Information dataItem = data.get(i);
+        LinkedList<Integer> selectedPositions = new LinkedList<>();
+        for(int position = 0; position < data.size(); position++) {
+            Information dataItem = data.get(position);
             if(dataItem.isSelected) {
-                selectedItems.add(i);
+                selectedPositions.add(position);
             }
         }
-        Collections.reverse(selectedItems);
-        for(int i = 0; i < selectedItems.size(); i++) {
-            int index = selectedItems.get(i);
-            data.remove(index);
-            notifyItemRemoved(index);
+        Collections.reverse(selectedPositions);
+        for(int position = 0; position < selectedPositions.size(); position++) {
+            int selectedPosition = selectedPositions.get(position);
+            data.remove(selectedPosition);
+            notifyItemRemoved(selectedPosition);
         }
     }
 
@@ -72,23 +70,21 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final Information currentItem = data.get(position);
         holder.time.setText(currentItem.time);
         holder.days.setText(currentItem.days);
-        View switcher = holder.itemView.findViewById(R.id.btnSwitch);
-        if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
-        else switcher.setVisibility(View.VISIBLE);
+        setSwitcherVisibility(holder.itemView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isMultiSelection) {
                     currentItem.isSelected = !currentItem.isSelected;
                     notifyItemChanged(holder.getAdapterPosition());
-                    setItemBackgroundColor(currentItem, holder.itemView);
+                    setItemBackground(currentItem, holder.itemView);
                 }
                 itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
                 Log.d("myLogs", holder.getAdapterPosition() + " " + currentItem.isSelected);
             }
         });
 
-        setItemBackgroundColor(currentItem, holder.itemView);
+        setItemBackground(currentItem, holder.itemView);
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -106,6 +102,18 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         Log.d("myLogs", "onBind ViewHolder " + position);
     }
 
+    private void setItemPosition(int adapterPosition) {
+
+    }
+
+
+
+    private void setSwitcherVisibility(View itemView) {
+        View switcher = itemView.findViewById(R.id.btnSwitch);
+        if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
+        else switcher.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public int getItemCount() {
         return data.size();
@@ -113,8 +121,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     int getSelectedItemsCount() {
         int result = 0;
-        for(int i = 0; i < getItemCount(); i++) {
-            Information dataItem = data.get(i);
+        for(int position = 0; position < getItemCount(); position++) {
+            Information dataItem = data.get(position);
             if(dataItem.isSelected) {
                 result++;
             }
@@ -125,7 +133,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     boolean isMultiSelection() { return isMultiSelection; }
 
-    private void setItemBackgroundColor(Information currentItem, View itemView) {
+    private void setItemBackground(Information currentItem, View itemView) {
         if(currentItem.isSelected)
             itemView.setBackgroundColor(context.getResources().getColor(R.color.colorItemBackground));
         else

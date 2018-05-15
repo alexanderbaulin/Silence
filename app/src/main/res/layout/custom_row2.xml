@@ -16,14 +16,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_background"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
         />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="0.45">
+        android:layout_weight="0.50">
         <TextView
             android:id="@+id/txtTimePeriod"
             android:layout_width="wrap_content"
@@ -43,6 +43,6 @@
     <Switch
         android:id="@+id/btnSwitch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.25" />
+        android:layout_height="match_parent"
+        android:layout_weight="0.20" />
 </LinearLayout>
