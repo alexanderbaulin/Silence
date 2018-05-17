@@ -1,6 +1,5 @@
 package com.example.alex.recycleviewmultitouchtutorial;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +20,7 @@ import java.util.LinkedList;
 
 
 public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener {
-    private LinkedList<Information> data;
+    private LinkedList<Data> data;
     private RecycleAdapter adapter;
     private MenuItem remove;
     private FloatingActionButton btnFloatingAction;
@@ -140,7 +139,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         getSupportActionBar().setTitle(title);
     }
 
-
     private void restoreMultiSelectionMode(Bundle savedInstanceState) {
         boolean isMultiSelection = savedInstanceState.getBoolean("isMultiSelection");
         adapter.setMultiSelection(isMultiSelection);
@@ -150,7 +148,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void saveSelectedItemPositions(Bundle outState) {
         ArrayList<Integer> selectedItems = new ArrayList<>();
         for(int i = 0; i < data.size(); i++) {
-            Information dataItem = data.get(i);
+            Data dataItem = data.get(i);
             if(dataItem.isSelected) selectedItems.add(i);
         }
         outState.putIntegerArrayList("selectedItems", selectedItems);
@@ -194,14 +192,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             btnFloatingAction.setVisibility(View.INVISIBLE);
     }
 
-    private LinkedList<Information> getData() {
-        Information[] data = {
-                new Information("15 30 - 17 30", "пн вт ср чт пт"),
-                new Information("15 30 - 17 30", "пн вт ср чт пт"),
-                new Information("15 30 - 17 30", "пн вт ср чт пт"),
-                new Information("15 30 - 17 30", "пн вт ср чт пт")
+    private LinkedList<Data> getData() {
+        Data[] data = {
+                new Data("15 30 - 17 30", "пн вт ср чт пт"),
+                new Data("15 30 - 17 30", "пн вт ср чт пт"),
+                new Data("15 30 - 17 30", "пн вт ср чт пт"),
+                new Data("15 30 - 17 30", "пн вт ср чт пт")
         };
-        LinkedList<Information> result = new LinkedList<>();
+        LinkedList<Data> result = new LinkedList<>();
         Collections.addAll(result, data);
         return result;
     }
@@ -216,8 +214,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     public void onItemClick(View itemView, int position) {
         if(!adapter.isMultiSelection()) {
             Intent intent = new Intent(this, UpdateItemActivity.class);
-            Information info = data.get(position);
-            intent.putExtra(Information.class.getCanonicalName(), info);
+            Data info = data.get(position);
+            intent.putExtra(Data.class.getCanonicalName(), info);
             intent.putExtra("updatedPosition", position);
             startActivityForResult(intent, 1);
         } else {
@@ -236,13 +234,13 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         /*
         if(resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                Information information = result.getParcelableExtra(Information.class.getCanonicalName());
+                Data information = result.getParcelableExtra(Data.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
                 data.get(position).text = information.text;
                 adapter.notifyItemChanged(position);
                 Log.d("myLogs", "from request " + information.text);
             } else if(requestCode == 2) {
-                Information information = result.getParcelableExtra(Information.class.getCanonicalName());
+                Data information = result.getParcelableExtra(Data.class.getCanonicalName());
                 data.add(information);
                 int size = adapter.getItemCount();
                 recyclerView.scrollToPosition(size-1);

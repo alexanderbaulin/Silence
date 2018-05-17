@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHolder> {
     private LayoutInflater inflater;
-    private List<Information> data;
+    private List<Data> data;
     private AppCompatActivity context;
     private boolean isMultiSelection;
     private OnLongClickListener itemLongClickListener;
@@ -32,7 +32,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     void removeSelectedItems() {
         LinkedList<Integer> selectedPositions = new LinkedList<>();
         for(int position = 0; position < data.size(); position++) {
-            Information dataItem = data.get(position);
+            Data dataItem = data.get(position);
             if(dataItem.isSelected) {
                 selectedPositions.add(position);
             }
@@ -53,9 +53,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         void onItemLongClick(View itemView, int position);
     }
 
-    RecycleAdapter(AppCompatActivity ctx, List<Information> informationList) {
+    RecycleAdapter(AppCompatActivity ctx, List<Data> dataList) {
         inflater = LayoutInflater.from(ctx);
-        data = informationList;
+        data = dataList;
         context = ctx;
     }
 
@@ -67,10 +67,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
-        final Information currentItem = data.get(position);
+        final Data currentItem = data.get(position);
         holder.time.setText(currentItem.time);
         holder.days.setText(currentItem.days);
         setSwitcherVisibility(holder.itemView);
+        setItemBackground(currentItem, holder.itemView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,9 +84,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                 Log.d("myLogs", holder.getAdapterPosition() + " " + currentItem.isSelected);
             }
         });
-
-        setItemBackground(currentItem, holder.itemView);
-
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -102,12 +100,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         Log.d("myLogs", "onBind ViewHolder " + position);
     }
 
-    private void setItemPosition(int adapterPosition) {
-
-    }
-
-
-
     private void setSwitcherVisibility(View itemView) {
         View switcher = itemView.findViewById(R.id.btnSwitch);
         if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
@@ -122,7 +114,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     int getSelectedItemsCount() {
         int result = 0;
         for(int position = 0; position < getItemCount(); position++) {
-            Information dataItem = data.get(position);
+            Data dataItem = data.get(position);
             if(dataItem.isSelected) {
                 result++;
             }
@@ -133,12 +125,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     boolean isMultiSelection() { return isMultiSelection; }
 
-    private void setItemBackground(Information currentItem, View itemView) {
+    private void setItemBackground(Data currentItem, View itemView) {
         if(currentItem.isSelected)
             itemView.setBackgroundColor(context.getResources().getColor(R.color.colorItemBackground));
         else
             itemView.setBackgroundResource(R.drawable.custom_background);
-
     }
 
     void setMultiSelection(boolean b) {
@@ -150,7 +141,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private void clearSelection() {
         for(int i = 0; i < getItemCount(); i++) {
-            Information dataItem = data.get(i);
+            Data dataItem = data.get(i);
             if(dataItem.isSelected) {
                 dataItem.isSelected = false;
                 notifyItemChanged(i);
@@ -168,26 +159,5 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         }
     }
 }
-
-
-    /*
-    private void clearSelection() {
-        for(int i = 0; i < getItemCount(); i++) {
-            if(isItemSelected(i)) {
-                selectItem(i, false);
-            }
-        }
-    }
-
-    private void selectItem(int updatedPosition, boolean isSelected) {
-        data.get(updatedPosition).isSelected = isSelected;
-        notifyItemChanged(updatedPosition);
-    }
-
-        private boolean isItemSelected(int updatedPosition) {
-        return data.get(updatedPosition).isSelected;
-    }
-    */
-
 
 

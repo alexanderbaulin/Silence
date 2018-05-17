@@ -4,16 +4,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class Information implements Parcelable {
+public class Data implements Parcelable {
     boolean isSelected;
     String time, days;
-    Information(String periodOfTime, String daysOfWeeks) {
+    Data(String periodOfTime, String daysOfWeek) {
         time = periodOfTime;
-        days = daysOfWeeks;
+        days = daysOfWeek;
 
     }
 
-    private Information(Parcel in) {
+    private Data(Parcel in) {
        // isSelected = in.readByte() != 0;
         time = in.readString();
         days = in.readString();
@@ -30,15 +30,15 @@ public class Information implements Parcelable {
         dest.writeString(days);
     }
 
-    public static final Creator<Information> CREATOR = new Creator<Information>() {
+    public static final Creator<Data> CREATOR = new Creator<Data>() {
         @Override
-        public Information createFromParcel(Parcel in) {
-            return new Information(in);
+        public Data createFromParcel(Parcel in) {
+            return new Data(in);
         }
 
         @Override
-        public Information[] newArray(int size) {
-            return new Information[size];
+        public Data[] newArray(int size) {
+            return new Data[size];
         }
     };
 }
