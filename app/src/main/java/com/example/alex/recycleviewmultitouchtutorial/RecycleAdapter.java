@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -68,42 +70,63 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
         final Data currentItem = data.get(position);
+        final Switch switcher = holder.switcher;
+        final View itemView = holder.itemView;
         holder.time.setText(currentItem.time);
         holder.days.setText(currentItem.days);
-        setSwitcherVisibility(holder.itemView);
-        setItemBackground(currentItem, holder.itemView);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        switcher.setChecked(currentItem.isChecked);
+        setSwitcherVisibility(switcher);
+        setSwitcherListener(switcher, holder.getAdapterPosition());
+        setItemBackground(currentItem, itemView);
+        setOnItemClickListener(itemView, holder.getAdapterPosition(), currentItem);
+        setOnLongClickListener(itemView, holder.getAdapterPosition());
+        Log.d("myLogs", "onBind ViewHolder " + position);
+    }
+
+    private void setSwitcherVisibility(Switch switcher) {
+        if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
+        else switcher.setVisibility(View.VISIBLE);
+    }
+
+    private void setSwitcherListener(Switch switcher, final int position) {
+        switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("myLogs", "onChecked " + isChecked + " position " + position);
+                if(!isMultiSelection) data.get(position).isChecked = isChecked;
+            }
+        });
+    }
+
+    private void setOnItemClickListener(final View itemView, final int position, final Data currentItem) {
+        itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isMultiSelection) {
                     currentItem.isSelected = !currentItem.isSelected;
-                    notifyItemChanged(holder.getAdapterPosition());
-                    setItemBackground(currentItem, holder.itemView);
+                    notifyItemChanged(position);
+                    setItemBackground(currentItem, itemView);
                 }
-                itemClickListener.onItemClick(holder.itemView, holder.getAdapterPosition());
-                Log.d("myLogs", holder.getAdapterPosition() + " " + currentItem.isSelected);
+                itemClickListener.onItemClick(itemView, position);
+                Log.d("myLogs", position + " " + currentItem.isSelected);
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+    }
+
+    private void setOnLongClickListener(final View itemView, final int position) {
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 setMultiSelection(!isMultiSelection);
                 if(isMultiSelection) {
-                    data.get(holder.getAdapterPosition()).isSelected = true;
-                    notifyItemChanged(holder.getAdapterPosition());
+                    data.get(position).isSelected = true;
+                    notifyItemChanged(position);
                 }
-                itemLongClickListener.onItemLongClick(holder.itemView, holder.getAdapterPosition());
-                Log.d("myLogs", "onLongClick " + holder.getAdapterPosition() + " isMultiSelection " + isMultiSelection);
+                itemLongClickListener.onItemLongClick(itemView, position);
+                Log.d("myLogs", "onLongClick " + position + " isMultiSelection " + isMultiSelection);
                 return true;
             }
         });
-        Log.d("myLogs", "onBind ViewHolder " + position);
-    }
-
-    private void setSwitcherVisibility(View itemView) {
-        View switcher = itemView.findViewById(R.id.btnSwitch);
-        if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
-        else switcher.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -152,10 +175,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     class myViewHolder extends RecyclerView.ViewHolder {
         TextView time;
         TextView days;
+        Switch switcher;
         myViewHolder(final View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.txtTimePeriod);
             days = itemView.findViewById(R.id.txtDaysOfWeek);
+            switcher = itemView.findViewById(R.id.btnSwitch);
         }
     }
 }

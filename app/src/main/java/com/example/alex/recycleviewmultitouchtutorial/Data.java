@@ -2,11 +2,14 @@ package com.example.alex.recycleviewmultitouchtutorial;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.SparseBooleanArray;
 
 
 public class Data implements Parcelable {
     boolean isSelected;
+    boolean isChecked;
     String time, days;
+
     Data(String periodOfTime, String daysOfWeek) {
         time = periodOfTime;
         days = daysOfWeek;
