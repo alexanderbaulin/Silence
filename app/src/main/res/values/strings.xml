@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">RecycleViewMultitouchTutorial</string>
 
-    <string name="day_monday">monday</string>
-    <string name="day_tuesday">tuesday</string>
-    <string name="day_wednesday">wednesday</string>
-    <string name="day_thursday">thursday</string>
-    <string name="day_friday">friday</string>
-    <string name="day_saturday">saturday</string>
-    <string name="day_sunday">sunday</string>
+    <string name="day_monday">Mon</string>
+    <string name="day_tuesday">Tue</string>
+    <string name="day_wednesday">Wed</string>
+    <string name="day_thursday">Thu</string>
+    <string name="day_friday">Fri</string>
+    <string name="day_saturday">Sat</string>
+    <string name="day_sunday">Sun</string>
 
 
     <string name="time_from">time from</string>

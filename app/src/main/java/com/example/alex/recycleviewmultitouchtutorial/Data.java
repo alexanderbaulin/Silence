@@ -9,15 +9,18 @@ public class Data implements Parcelable {
     boolean isSelected;
     boolean isChecked;
     String time, days;
+    boolean[] checkedDays;
 
-    Data(String periodOfTime, String daysOfWeek) {
+    Data(String periodOfTime, boolean[] daysOfWeek, boolean b) {
         time = periodOfTime;
-        days = daysOfWeek;
+        //days = daysOfWeek;
+        isChecked = b;
+        checkedDays = daysOfWeek;
 
     }
 
     private Data(Parcel in) {
-       // isSelected = in.readByte() != 0;
+        //isSelected = in.readByte() != 0;
         time = in.readString();
         days = in.readString();
     }
@@ -31,6 +34,7 @@ public class Data implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(time);
         dest.writeString(days);
+
     }
 
     public static final Creator<Data> CREATOR = new Creator<Data>() {

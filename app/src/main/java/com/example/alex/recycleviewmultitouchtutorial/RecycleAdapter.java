@@ -3,6 +3,7 @@ package com.example.alex.recycleviewmultitouchtutorial;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,14 +74,66 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final Switch switcher = holder.switcher;
         final View itemView = holder.itemView;
         holder.time.setText(currentItem.time);
-        holder.days.setText(currentItem.days);
+        String days = parseDaysText(currentItem.checkedDays);
+        //holder.days.setText(currentItem.days);
+        holder.days.setText(days);
         switcher.setChecked(currentItem.isChecked);
         setSwitcherVisibility(switcher);
-        setSwitcherListener(switcher, holder.getAdapterPosition());
+        setSwitcherListener(switcher, holder.getAdapterPosition(), currentItem);
         setItemBackground(currentItem, itemView);
         setOnItemClickListener(itemView, holder.getAdapterPosition(), currentItem);
         setOnLongClickListener(itemView, holder.getAdapterPosition());
         Log.d("myLogs", "onBind ViewHolder " + position);
+    }
+
+    private String parseDaysText(boolean[] daysOfWeek) {
+        StringBuilder builder = new StringBuilder();
+        if(isAllDaysChecked(daysOfWeek)) return builder.append("every day").toString();
+
+        if(daysOfWeek[0]) {
+            builder.append(context.getString(R.string.day_monday));
+            builder.append(" ");
+        }
+
+        if(daysOfWeek[1]) {
+            builder.append(context.getString(R.string.day_tuesday));
+            builder.append(" ");
+        }
+
+        if(daysOfWeek[2]) {
+            builder.append(context.getString(R.string.day_wednesday));
+            builder.append(" ");
+        }
+
+        if(daysOfWeek[3]) {
+            builder.append(context.getString(R.string.day_thursday));
+            builder.append(" ");
+        }
+
+        if(daysOfWeek[4]) {
+            builder.append(context.getString(R.string.day_friday));
+            builder.append(" ");
+        }
+
+        if(daysOfWeek[5]) {
+            builder.append(context.getString(R.string.day_saturday));
+            builder.append(" ");
+        }
+
+        if(daysOfWeek[6]) {
+            builder.append(context.getString(R.string.day_sunday));
+            builder.append(" ");
+        }
+        return builder.toString();
+    }
+
+    private boolean isAllDaysChecked(boolean[] checkedDay) {
+        boolean result = true;
+        for(boolean isDayChecked: checkedDay) {
+            if(!isDayChecked) result = false;
+        }
+        Log.d("myLogs", "result " + result);
+        return result;
     }
 
     private void setSwitcherVisibility(Switch switcher) {
@@ -88,12 +141,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         else switcher.setVisibility(View.VISIBLE);
     }
 
-    private void setSwitcherListener(Switch switcher, final int position) {
+    private void setSwitcherListener(Switch switcher, final int position, final Data currentItem) {
         switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d("myLogs", "onChecked " + isChecked + " position " + position);
-                if(!isMultiSelection) data.get(position).isChecked = isChecked;
+                if(!isMultiSelection) currentItem.isChecked = isChecked;
             }
         });
     }

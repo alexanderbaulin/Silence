@@ -193,11 +193,12 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private LinkedList<Data> getData() {
+        boolean[] test = {false, false, false, false, true, true, true};
         Data[] data = {
-                new Data("15 30 - 17 30", "пн вт ср чт пт"),
-                new Data("15 30 - 17 30", "пн вт ср чт пт"),
-                new Data("15 30 - 17 30", "пн вт ср чт пт"),
-                new Data("15 30 - 17 30", "пн вт ср чт пт")
+                new Data("15 30 - 17 30", test, false),
+                new Data("15 30 - 17 30", test, true),
+                new Data("15 30 - 17 30", test, false),
+                new Data("15 30 - 17 30", test, true)
         };
         LinkedList<Data> result = new LinkedList<>();
         Collections.addAll(result, data);
@@ -238,14 +239,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 int position = result.getIntExtra("updatedPosition", -1);
                 data.get(position).text = information.text;
                 adapter.notifyItemChanged(position);
-                Log.d("myLogs", "from request " + information.text);
+                Log.checkedDays("myLogs", "from request " + information.text);
             } else if(requestCode == 2) {
                 Data information = result.getParcelableExtra(Data.class.getCanonicalName());
                 data.add(information);
                 int size = adapter.getItemCount();
                 recyclerView.scrollToPosition(size-1);
                 adapter.notifyItemChanged(size);
-                Log.d("myLogs", "size = " + size);
+                Log.checkedDays("myLogs", "size = " + size);
             }
         }
         */

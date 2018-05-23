@@ -23,7 +23,7 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
         updatedPosition = getIntent().getIntExtra("updatedPosition", -1);
         editText.setText(data.text);
         submit.setOnClickListener(this);
-        Log.d("myLogs", "updatedPosition update item = " + updatedPosition);
+        Log.checkedDays("myLogs", "updatedPosition update item = " + updatedPosition);
         */
     }
 
