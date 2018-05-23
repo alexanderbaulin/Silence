@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">RecycleViewMultitouchTutorial</string>
+
+    <string name="day_monday">monday</string>
+    <string name="day_tuesday">tuesday</string>
+    <string name="day_wednesday">wednesday</string>
+    <string name="day_thursday">thursday</string>
+    <string name="day_friday">friday</string>
+    <string name="day_saturday">saturday</string>
+    <string name="day_sunday">sunday</string>
+
+
+    <string name="time_from">time from</string>
+    <string name="time_until">time until</string>
+
+    <string name="description">description</string>
+    <string name="save">save</string>
+    <string name="no_sound">no sound</string>
+    <string name="vibration_allowed">vibration allowed"</string>
+
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
+
+    <string-array name="days_of_week">
+        <item>@string/day_monday</item>
+        <item>@string/day_tuesday</item>
+        <item>@string/day_wednesday</item>
+        <item>@string/day_thursday</item>
+        <item>@string/day_friday</item>
+        <item>@string/day_saturday</item>
+        <item>@string/day_sunday</item>
+    </string-array>
 </resources>

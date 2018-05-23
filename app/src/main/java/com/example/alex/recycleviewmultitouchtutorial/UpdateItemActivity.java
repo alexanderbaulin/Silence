@@ -15,7 +15,7 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_item_activity);
+        setContentView(R.layout.item_activity);
         /*
         Button submit = findViewById(R.id.btnSubmit);
         editText = findViewById(R.id.editText);
@@ -38,5 +38,8 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
         setResult(RESULT_OK, intent);
         finish();
         */
+    }
+
+    public void checkButton(View view) {
     }
 }

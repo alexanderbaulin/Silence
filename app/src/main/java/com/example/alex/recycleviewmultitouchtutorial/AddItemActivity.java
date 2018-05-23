@@ -21,7 +21,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_item_activity);
+        setContentView(R.layout.item_activity);
         data = getIntent().getParcelableExtra(Data.class.getCanonicalName());
         editText = findViewById(R.id.editText);
         timeFrom = findViewById(R.id.btnTimeFrom);
@@ -64,12 +64,16 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         StringBuilder builder = new StringBuilder();
         builder
                 .append(hourOfDay)
-                .append(":")
-                .append(minute);
+                .append(":");
+                if(minute < 10) builder.append("0");
+                builder.append(minute);
         return builder.toString();
     }
 
     private boolean findFragmentByTag(String tag) {
        return getSupportFragmentManager().findFragmentByTag(tag) != null;
+    }
+
+    public void checkButton(View view) {
     }
 }
