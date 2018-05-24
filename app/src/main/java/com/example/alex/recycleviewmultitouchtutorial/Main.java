@@ -194,11 +194,13 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private LinkedList<Data> getData() {
         boolean[] test = {false, false, false, false, true, true, true};
+        int[] timeFrom = { 1, 0 };
+        int[] timeUntil = {23, 50};
         Data[] data = {
-                new Data("15 30 - 17 30", test, false),
-                new Data("15 30 - 17 30", test, true),
-                new Data("15 30 - 17 30", test, false),
-                new Data("15 30 - 17 30", test, true)
+                new Data(timeFrom, timeUntil, test, false),
+                new Data(timeFrom, timeUntil, test, true),
+                new Data(timeFrom, timeUntil, test, false),
+                new Data(timeFrom, timeUntil, test, true)
         };
         LinkedList<Data> result = new LinkedList<>();
         Collections.addAll(result, data);

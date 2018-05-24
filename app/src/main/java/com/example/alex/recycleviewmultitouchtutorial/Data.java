@@ -8,21 +8,23 @@ import android.util.SparseBooleanArray;
 public class Data implements Parcelable {
     boolean isSelected;
     boolean isChecked;
-    String time, days;
+    String time;
     boolean[] checkedDays;
+    int[] timeFrom;
+    int[] timeUntil;
 
-    Data(String periodOfTime, boolean[] daysOfWeek, boolean b) {
-        time = periodOfTime;
-        //days = daysOfWeek;
+    Data(int[] from, int[] until, boolean[] daysOfWeek, boolean b) {
+       // time = periodOfTime;
         isChecked = b;
         checkedDays = daysOfWeek;
+        timeFrom = from;
+        timeUntil = until;
 
     }
 
     private Data(Parcel in) {
         //isSelected = in.readByte() != 0;
         time = in.readString();
-        days = in.readString();
     }
 
     @Override
@@ -33,7 +35,6 @@ public class Data implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(time);
-        dest.writeString(days);
 
     }
 

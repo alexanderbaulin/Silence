@@ -3,7 +3,6 @@ package com.example.alex.recycleviewmultitouchtutorial;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,53 +72,65 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final Data currentItem = data.get(position);
         final Switch switcher = holder.switcher;
         final View itemView = holder.itemView;
-        holder.time.setText(currentItem.time);
+        String time = parseTimeText(currentItem.timeFrom, currentItem.timeUntil);
+        holder.time.setText(time);
         String days = parseDaysText(currentItem.checkedDays);
-        //holder.days.setText(currentItem.days);
         holder.days.setText(days);
         switcher.setChecked(currentItem.isChecked);
         setSwitcherVisibility(switcher);
-        setSwitcherListener(switcher, holder.getAdapterPosition(), currentItem);
+        setSwitcherListener(switcher, currentItem);
         setItemBackground(currentItem, itemView);
         setOnItemClickListener(itemView, holder.getAdapterPosition(), currentItem);
         setOnLongClickListener(itemView, holder.getAdapterPosition());
         Log.d("myLogs", "onBind ViewHolder " + position);
     }
 
+    private String parseTimeText(int[] timeFrom, int[] timeUntil) {
+        StringBuilder builder = new StringBuilder();
+        int hour, minute;
+        hour = timeFrom[0];
+        minute = timeFrom[1];
+        builder.append(hour)
+                .append(":");
+        if(minute < 10) builder.append("0");
+                builder.append(minute);
+        builder.append(" - ");
+        hour = timeUntil[0];
+        minute = timeUntil[1];
+        builder.append(hour)
+                .append(":");
+        if(minute < 10) builder.append("0");
+                builder.append(minute);
+        return builder.toString();
+    }
+
     private String parseDaysText(boolean[] daysOfWeek) {
         StringBuilder builder = new StringBuilder();
         if(isAllDaysChecked(daysOfWeek)) return builder.append("every day").toString();
-
         if(daysOfWeek[0]) {
             builder.append(context.getString(R.string.day_monday));
             builder.append(" ");
         }
-
         if(daysOfWeek[1]) {
             builder.append(context.getString(R.string.day_tuesday));
             builder.append(" ");
         }
-
         if(daysOfWeek[2]) {
             builder.append(context.getString(R.string.day_wednesday));
             builder.append(" ");
         }
-
         if(daysOfWeek[3]) {
             builder.append(context.getString(R.string.day_thursday));
             builder.append(" ");
         }
-
         if(daysOfWeek[4]) {
             builder.append(context.getString(R.string.day_friday));
             builder.append(" ");
         }
-
         if(daysOfWeek[5]) {
             builder.append(context.getString(R.string.day_saturday));
             builder.append(" ");
         }
-
         if(daysOfWeek[6]) {
             builder.append(context.getString(R.string.day_sunday));
             builder.append(" ");
@@ -141,12 +152,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         else switcher.setVisibility(View.VISIBLE);
     }
 
-    private void setSwitcherListener(Switch switcher, final int position, final Data currentItem) {
-        switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setSwitcherListener(Switch switcher, final Data currentItem) {
+        switcher.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("myLogs", "onChecked " + isChecked + " position " + position);
-                if(!isMultiSelection) currentItem.isChecked = isChecked;
+            public void onClick(View v) {
+                if(!isMultiSelection) currentItem.isChecked = !currentItem.isChecked;
+                Log.d("myLogs1", "onChecked " + " position " + currentItem.isChecked);
             }
         });
     }
