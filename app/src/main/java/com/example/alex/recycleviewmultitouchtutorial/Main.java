@@ -221,7 +221,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if(!adapter.isMultiSelection()) {
-            Intent intent = new Intent(this, AddItemActivity.class);
+            Intent intent = new Intent(this, ItemActivity.class);
             Data item = data.get(position);
             intent.putExtra(Data.class.getCanonicalName(), item);
             intent.putExtra("updatedPosition", position);
@@ -245,7 +245,12 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
                 Data dataItem = result.getParcelableExtra(Data.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
-                data.get(position).description = dataItem.description;
+                Data updatedItem = data.get(position);
+                updatedItem.description = dataItem.description;
+                updatedItem.timeFrom = dataItem.timeFrom;
+                updatedItem.timeUntil = dataItem.timeUntil;
+                updatedItem.checkedDays = dataItem.checkedDays;
+                updatedItem.isVibrationAllowed = dataItem.isVibrationAllowed;
                 adapter.notifyItemChanged(position);
 
             } else if(requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
@@ -264,7 +269,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     public void onClickFloatingActionButton(View view) {
-        Intent intent = new Intent(this, AddItemActivity.class);
+        Intent intent = new Intent(this, ItemActivity.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
         Log.d("myLogs", "onClickFloatingActionButton");

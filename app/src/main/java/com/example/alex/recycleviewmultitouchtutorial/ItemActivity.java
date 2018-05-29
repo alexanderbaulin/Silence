@@ -19,7 +19,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 
 
-public class AddItemActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+public class ItemActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
     EditText editText;
     Data dataItem;
     Button timeFrom, timeUntil, submit;
@@ -49,8 +49,34 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private void updateItemAction() {
         dataItem = getIntent().getParcelableExtra(Data.class.getCanonicalName());
         updatedPosition = getIntent().getIntExtra("updatedPosition", -1);
-        editText.setText(dataItem.description);
+        updateUI();
+    }
 
+    private void updateUI() {
+        editText.setText(dataItem.description);
+        updateCheckedDays();
+        updateTimeButtons();
+        updateRadioGroupButtons();
+    }
+
+    private void updateRadioGroupButtons() {
+        if(dataItem.isVibrationAllowed)
+            radioGroup.check(R.id.radVibration);
+        else
+            radioGroup.check(R.id.radMute);
+    }
+
+    private void updateCheckedDays() {
+        monday.setChecked(dataItem.checkedDays[0]);
+        tuesday.setChecked(dataItem.checkedDays[1]);
+        wednesday.setChecked(dataItem.checkedDays[2]);
+        thursday.setChecked(dataItem.checkedDays[3]);
+        friday.setChecked(dataItem.checkedDays[4]);
+        saturday.setChecked(dataItem.checkedDays[5]);
+        sunday.setChecked(dataItem.checkedDays[6]);
+    }
+
+    private void updateTimeButtons() {
         int hour = dataItem.timeFrom[0];
         int minute = dataItem.timeFrom[1];
         String time = buildString(hour, minute);
@@ -60,19 +86,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         minute = dataItem.timeUntil[1];
         time = buildString(hour, minute);
         timeUntil.setText(time);
-
-        monday.setChecked(dataItem.checkedDays[0]);
-        tuesday.setChecked(dataItem.checkedDays[1]);
-        wednesday.setChecked(dataItem.checkedDays[2]);
-        thursday.setChecked(dataItem.checkedDays[3]);
-        friday.setChecked(dataItem.checkedDays[4]);
-        saturday.setChecked(dataItem.checkedDays[5]);
-        sunday.setChecked(dataItem.checkedDays[6]);
-
-        if(dataItem.isVibrationAllowed)
-            radioGroup.check(R.id.radVibration);
-        else
-            radioGroup.check(R.id.radMute);
     }
 
     @Override
