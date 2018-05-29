@@ -50,18 +50,22 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <CheckBox
+                android:id="@+id/chkMon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text= "@string/day_monday" />
             <CheckBox
+                android:id="@+id/chkTue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_tuesday"/>
             <CheckBox
+                android:id="@+id/chkWed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_wednesday"/>
             <CheckBox
+                android:id="@+id/chkThu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_thursday"/>
@@ -72,14 +76,17 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <CheckBox
+                android:id="@+id/chkFri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_friday"/>
             <CheckBox
+                android:id="@+id/chkSat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_saturday"/>
             <CheckBox
+                android:id="@+id/chkSun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_sunday"/>
@@ -93,18 +100,16 @@
         android:id="@+id/radioGroup"
         android:layout_gravity="center_horizontal">
         <RadioButton
-            android:id="@+id/radio_one"
+            android:id="@+id/radMute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_sound"
-            android:onClick="checkButton"
             android:checked="true"/>
         <RadioButton
-            android:id="@+id/radio_two"
+            android:id="@+id/radVibration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/vibration_allowed"
-            android:onClick="checkButton"/>
+            android:text="@string/vibration_allowed" />
     </RadioGroup>
 
     <Button
@@ -113,5 +118,7 @@
        android:layout_height="wrap_content"
        android:text="@string/save"
        android:layout_gravity="center"
-       android:layout_marginTop="20dp" />
+       android:layout_marginTop="20dp"
+        android:onClick="submit"
+        />
 </LinearLayout>

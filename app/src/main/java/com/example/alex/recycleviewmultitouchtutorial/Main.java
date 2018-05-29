@@ -216,11 +216,13 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if(!adapter.isMultiSelection()) {
+            /*
             Intent intent = new Intent(this, UpdateItemActivity.class);
             Data info = data.get(position);
             intent.putExtra(Data.class.getCanonicalName(), info);
             intent.putExtra("updatedPosition", position);
             startActivityForResult(intent, 1);
+            */
         } else {
             setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
         }
@@ -234,24 +236,24 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
-        /*
+
         if(resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                Data information = result.getParcelableExtra(Data.class.getCanonicalName());
+                /*
+                Data dataItem = result.getParcelableExtra(Data.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
-                data.get(position).text = information.text;
+                dataItem.get(position).text = dataItem.text;
                 adapter.notifyItemChanged(position);
-                Log.checkedDays("myLogs", "from request " + information.text);
+                Log.checkedDays("myLogs", "from request " + dataItem.text);
+                */
             } else if(requestCode == 2) {
-                Data information = result.getParcelableExtra(Data.class.getCanonicalName());
-                data.add(information);
-                int size = adapter.getItemCount();
-                recyclerView.scrollToPosition(size-1);
-                adapter.notifyItemChanged(size);
-                Log.checkedDays("myLogs", "size = " + size);
+                Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
+                data.add(newDataItem);
+                int newItemPosition = adapter.getItemCount();
+                adapter.notifyItemChanged(newItemPosition);
+                recyclerView.scrollToPosition(newItemPosition-1);
             }
         }
-        */
     }
 
     public void onClickFloatingActionButton(View view) {

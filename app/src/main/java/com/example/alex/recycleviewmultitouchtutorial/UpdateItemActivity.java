@@ -3,6 +3,7 @@ package com.example.alex.recycleviewmultitouchtutorial;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -19,9 +20,9 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
         /*
         Button submit = findViewById(R.id.btnSubmit);
         editText = findViewById(R.id.editText);
-        data = getIntent().getParcelableExtra(Data.class.getCanonicalName());
+        dataItem = getIntent().getParcelableExtra(Data.class.getCanonicalName());
         updatedPosition = getIntent().getIntExtra("updatedPosition", -1);
-        editText.setText(data.text);
+        editText.setText(dataItem.text);
         submit.setOnClickListener(this);
         Log.checkedDays("myLogs", "updatedPosition update item = " + updatedPosition);
         */
@@ -41,5 +42,9 @@ public class UpdateItemActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkButton(View view) {
+    }
+
+    public void submit(View view) {
+        Log.d("checkButton", "dsfsdf");
     }
 }

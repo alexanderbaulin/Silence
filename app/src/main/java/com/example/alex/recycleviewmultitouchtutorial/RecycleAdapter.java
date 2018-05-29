@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -63,7 +63,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     @Override
     public myViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.custom_row2, parent, false);
+        View view = inflater.inflate(R.layout.item_data, parent, false);
         return new myViewHolder(view);
     }
 
@@ -72,6 +72,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final Data currentItem = data.get(position);
         final Switch switcher = holder.switcher;
         final View itemView = holder.itemView;
+        final ImageView image = holder.image;
+        //setImageView(image, currentItem);
+        holder.description.setText(currentItem.description);
         String time = parseTimeText(currentItem.timeFrom, currentItem.timeUntil);
         holder.time.setText(time);
         String days = parseDaysText(currentItem.checkedDays);
@@ -85,23 +88,26 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         Log.d("myLogs", "onBind ViewHolder " + position);
     }
 
+    private void setImageView(ImageView image, Data currentItem) {
+       if(!currentItem.isVibrationAllowed) image.setImageResource(R.drawable.ic_launcher_foreground);
+       else image.setImageResource(R.drawable.ic_launcher_background);
+    }
+
     private String parseTimeText(int[] timeFrom, int[] timeUntil) {
         StringBuilder builder = new StringBuilder();
-        int hour, minute;
-        hour = timeFrom[0];
-        minute = timeFrom[1];
-        builder.append(hour)
-                .append(":");
-        if(minute < 10) builder.append("0");
-                builder.append(minute);
+        parseTime(builder, timeFrom);
         builder.append(" - ");
-        hour = timeUntil[0];
-        minute = timeUntil[1];
+        parseTime(builder, timeUntil);
+        return builder.toString();
+    }
+
+    private void parseTime(StringBuilder builder, int[] time) {
+        int hour = time[0];
+        int minute = time[1];
         builder.append(hour)
                 .append(":");
         if(minute < 10) builder.append("0");
-                builder.append(minute);
-        return builder.toString();
+        builder.append(minute);
     }
 
     private String parseDaysText(boolean[] daysOfWeek) {
@@ -237,11 +243,15 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
+        TextView description;
+        ImageView image;
         TextView time;
         TextView days;
         Switch switcher;
         myViewHolder(final View itemView) {
             super(itemView);
+            description = itemView.findViewById(R.id.txtDescription);
+            image = itemView.findViewById(R.id.imgView);
             time = itemView.findViewById(R.id.txtTimePeriod);
             days = itemView.findViewById(R.id.txtDaysOfWeek);
             switcher = itemView.findViewById(R.id.btnSwitch);
