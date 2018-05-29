@@ -25,6 +25,11 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private MenuItem remove;
     private FloatingActionButton btnFloatingAction;
     private RecyclerView recyclerView;
+    final int REQUEST_CODE_UPDATE_DATA_ITEM = 1;
+    final int REQUEST_CODE_ADD_DATA_ITEM = 2;
+    final static String ACTION_ADD_ITEM = "add item";
+    final static String ACTION_UPDATE_ITEM = "update item";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,13 +221,11 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if(!adapter.isMultiSelection()) {
-            /*
-            Intent intent = new Intent(this, UpdateItemActivity.class);
-            Data info = data.get(position);
-            intent.putExtra(Data.class.getCanonicalName(), info);
+            Intent intent = new Intent(this, AddItemActivity.class);
+            Data item = data.get(position);
+            intent.putExtra(Data.class.getCanonicalName(), item);
             intent.putExtra("updatedPosition", position);
-            startActivityForResult(intent, 1);
-            */
+            startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA_ITEM);
         } else {
             setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
         }
@@ -236,29 +239,34 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
-
         if(resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                /*
+            if (requestCode == REQUEST_CODE_UPDATE_DATA_ITEM) {
+                Log.d("updateItem", "updateItemResult");
+
                 Data dataItem = result.getParcelableExtra(Data.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
-                dataItem.get(position).text = dataItem.text;
+                data.get(position).description = dataItem.description;
                 adapter.notifyItemChanged(position);
-                Log.checkedDays("myLogs", "from request " + dataItem.text);
-                */
-            } else if(requestCode == 2) {
-                Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
-                data.add(newDataItem);
-                int newItemPosition = adapter.getItemCount();
-                adapter.notifyItemChanged(newItemPosition);
-                recyclerView.scrollToPosition(newItemPosition-1);
+
+            } else if(requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
+                Log.d("addItem", "addItemResult");
+                addNewItem(result);
             }
         }
     }
 
+    private void addNewItem(Intent result) {
+        Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
+        data.add(newDataItem);
+        int newItemPosition = adapter.getItemCount();
+        adapter.notifyItemChanged(newItemPosition);
+        recyclerView.scrollToPosition(newItemPosition-1);
+    }
+
     public void onClickFloatingActionButton(View view) {
         Intent intent = new Intent(this, AddItemActivity.class);
-        startActivityForResult(intent, 2);
+        intent.setAction(ACTION_ADD_ITEM);
+        startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
         Log.d("myLogs", "onClickFloatingActionButton");
     }
 }

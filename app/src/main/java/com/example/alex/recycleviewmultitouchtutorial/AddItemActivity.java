@@ -28,18 +28,51 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     RadioButton noSound, vibrationAllowed;
     final String TAG_TIME_PICKER_FROM = "time from";
     final String TAG_TIME_PICKER_TO = "time to";
+    int updatedPosition;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_activity);
-        dataItem = getDataFromIntent();
-        if(dataItem == null) addNewItem();
         initViews();
+        dataItem = getDataFromIntent();
+        if(dataItem == null)
+            createNewItemAction();
+        else
+            updateItemAction();
         timeFrom.setOnClickListener(this);
         timeUntil.setOnClickListener(this);
         submit.setOnClickListener(this);
         monday.setOnClickListener(this);
+    }
+
+    private void updateItemAction() {
+        dataItem = getIntent().getParcelableExtra(Data.class.getCanonicalName());
+        updatedPosition = getIntent().getIntExtra("updatedPosition", -1);
+        editText.setText(dataItem.description);
+
+        int hour = dataItem.timeFrom[0];
+        int minute = dataItem.timeFrom[1];
+        String time = buildString(hour, minute);
+        timeFrom.setText(time);
+
+        hour = dataItem.timeUntil[0];
+        minute = dataItem.timeUntil[1];
+        time = buildString(hour, minute);
+        timeUntil.setText(time);
+
+        monday.setChecked(dataItem.checkedDays[0]);
+        tuesday.setChecked(dataItem.checkedDays[1]);
+        wednesday.setChecked(dataItem.checkedDays[2]);
+        thursday.setChecked(dataItem.checkedDays[3]);
+        friday.setChecked(dataItem.checkedDays[4]);
+        saturday.setChecked(dataItem.checkedDays[5]);
+        sunday.setChecked(dataItem.checkedDays[6]);
+
+        if(dataItem.isVibrationAllowed)
+            radioGroup.check(R.id.radVibration);
+        else
+            radioGroup.check(R.id.radMute);
     }
 
     @Override
@@ -72,9 +105,11 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = new Intent();
         String className = Data.class.getCanonicalName();
         intent.putExtra(className, dataItem);
+        if(updatedPosition != -1) intent.putExtra("updatedPosition", updatedPosition);
         setResult(RESULT_OK, intent);
         finish();
     }
+
 
     private void setVibration() {
         dataItem.isVibrationAllowed = (radioGroup.getCheckedRadioButtonId() == R.id.radVibration);
@@ -122,7 +157,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         return getIntent().getParcelableExtra(Data.class.getCanonicalName());
     }
 
-    private void addNewItem() {
+    private void createNewItemAction() {
         dataItem = new Data();
     }
 

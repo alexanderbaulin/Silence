@@ -16,6 +16,5 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddItemActivity" android:parentActivityName=".Main" android:screenOrientation="portrait" />
-        <activity android:name=".UpdateItemActivity" android:parentActivityName=".Main" android:screenOrientation="portrait" />
     </application>
 </manifest>
