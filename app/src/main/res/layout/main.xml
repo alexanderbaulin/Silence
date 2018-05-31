@@ -25,7 +25,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="onClickFloatingActionButton"
-            app:fabSize="mini"
+            app:fabSize="normal"
             app:srcCompat="@drawable/ic_add_white_24px" />
     </FrameLayout>
 

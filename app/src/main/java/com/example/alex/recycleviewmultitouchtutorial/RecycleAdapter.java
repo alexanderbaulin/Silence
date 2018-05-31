@@ -73,7 +73,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final Switch switcher = holder.switcher;
         final View itemView = holder.itemView;
         final ImageView image = holder.image;
-        //setImageView(image, currentItem);
+        setImageView(image, currentItem);
         holder.description.setText(currentItem.description);
         String time = parseTimeText(currentItem.timeFrom, currentItem.timeUntil);
         holder.time.setText(time);
@@ -89,8 +89,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     private void setImageView(ImageView image, Data currentItem) {
-       if(!currentItem.isVibrationAllowed) image.setImageResource(R.drawable.ic_launcher_foreground);
-       else image.setImageResource(R.drawable.ic_launcher_background);
+       if(currentItem.isVibrationAllowed) image.setImageResource(R.drawable.ic_baseline_vibration_48px);
+       else image.setImageResource(R.drawable.do_not_disturb);
     }
 
     private String parseTimeText(int[] timeFrom, int[] timeUntil) {

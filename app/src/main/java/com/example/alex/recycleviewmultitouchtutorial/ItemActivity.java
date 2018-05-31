@@ -1,6 +1,7 @@
 package com.example.alex.recycleviewmultitouchtutorial;
 
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,10 +54,14 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateUI() {
-        editText.setText(dataItem.description);
+        updateTextEditField();
         updateCheckedDays();
         updateTimeButtons();
         updateRadioGroupButtons();
+    }
+
+    private void updateTextEditField() {
+        editText.setText(dataItem.description);
     }
 
     private void updateRadioGroupButtons() {
@@ -77,9 +82,12 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateTimeButtons() {
-        int hour = dataItem.timeFrom[0];
-        int minute = dataItem.timeFrom[1];
-        String time = buildString(hour, minute);
+        int hour, minute;
+        String time;
+
+        hour = dataItem.timeFrom[0];
+        minute = dataItem.timeFrom[1];
+        time = buildString(hour, minute);
         timeFrom.setText(time);
 
         hour = dataItem.timeUntil[0];
@@ -100,27 +108,43 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case R.id.btnSubmit:
                     Toast.makeText(this, "submit", Toast.LENGTH_SHORT).show();
-                    if(isImportantFieldsNotEmpty()) {
-                        Log.d("submitButton", "fields ok");
+                    try {
                         returnResultDataItem();
-                    } else {
-                        Log.d("submitButton", "fields not ok");
+                    } catch (IllegalStateException e) {
+                        Log.d("submit", e.getMessage());
+                        showAlertDialog(e.getMessage());
                     }
                     break;
             }
     }
 
-    private void returnResultDataItem() {
+    private void showAlertDialog(String s) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(s);
+        alert.setPositiveButton("OK", null);
+        alert.show();
+    }
+
+    private void returnResultDataItem() throws IllegalStateException {
+        if(!isTimeFromSet()) throw new IllegalStateException("Set time from");
+        if(!isTimeUntilSet()) throw new IllegalStateException("Set time until");
+        if(!isDaySet()) throw new IllegalStateException("No day selected");
+
         setCheckDays();
         setDescription();
         setVibration();
 
+        Intent result = createIntent();
+        setResult(RESULT_OK, result);
+        finish();
+    }
+
+    private Intent createIntent() {
         Intent intent = new Intent();
         String className = Data.class.getCanonicalName();
         intent.putExtra(className, dataItem);
         if(updatedPosition != -1) intent.putExtra("updatedPosition", updatedPosition);
-        setResult(RESULT_OK, intent);
-        finish();
+        return intent;
     }
 
 
@@ -174,14 +198,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         dataItem = new Data();
     }
 
-    private boolean isImportantFieldsNotEmpty() {
-       return
-               isTimeFromSelected() &&
-               isTimeUntilSelected() &&
-               isDaySelected();
-    }
-
-    private boolean isDaySelected() {
+    private boolean isDaySet() {
        return
                monday.isChecked() ||
                tuesday.isChecked() ||
@@ -192,13 +209,13 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                sunday.isChecked();
     }
 
-    private boolean isTimeUntilSelected() {
+    private boolean isTimeUntilSet() {
         String text = timeUntil.getText().toString();
         String defaultText = getStringResource(R.string.time_until);
         return !text.equals(defaultText);
     }
 
-    private boolean isTimeFromSelected() {
+    private boolean isTimeFromSet() {
         String text = timeFrom.getText().toString();
         String defaultText = getStringResource(R.string.time_from);
         return !text.equals(defaultText);
@@ -210,7 +227,7 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String text= buildString(hourOfDay, minute);
+        String text = buildString(hourOfDay, minute);
         if(findFragmentByTag(TAG_TIME_PICKER_FROM)) {
             timeFrom.setText(text);
             dataItem.timeFrom[0] = hourOfDay;
