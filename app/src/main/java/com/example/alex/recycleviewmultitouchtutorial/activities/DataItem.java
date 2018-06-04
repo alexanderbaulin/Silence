@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.recycleviewmultitouchtutorial.activities;
 
 
 import android.app.AlertDialog;
@@ -14,21 +14,24 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.alex.recycleviewmultitouchtutorial.Data;
+import com.example.alex.recycleviewmultitouchtutorial.R;
+import com.example.alex.recycleviewmultitouchtutorial.fragments.TimePicker;
 
 import java.util.Arrays;
 
 
-public class ItemActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+public class DataItem extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
     EditText editText;
     Data dataItem;
     Button timeFrom, timeUntil, submit;
     CheckBox monday, tuesday, wednesday, thursday, friday, saturday, sunday;
     RadioGroup radioGroup;
     RadioButton noSound, vibrationAllowed;
-    final String TAG_TIME_PICKER_FROM = "time from";
-    final String TAG_TIME_PICKER_TO = "time to";
+    final String TAG_TIME_PICKER_START = "time from";
+    final String TAG_TIME_PICKER_END = "time to";
     int updatedPosition;
 
     @Override
@@ -98,13 +101,13 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        TimePickerFragment timePicker = new TimePickerFragment();
+        TimePicker timePicker = new TimePicker();
             switch (v.getId()) {
                 case R.id.btnTimeFrom:
-                    timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_FROM);
+                    timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_START);
                     break;
                 case R.id.btnTimeTo:
-                    timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_TO);
+                    timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_END);
                     break;
                 case R.id.btnSubmit:
                     Toast.makeText(this, "submit", Toast.LENGTH_SHORT).show();
@@ -226,14 +229,14 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
         String text = buildString(hourOfDay, minute);
-        if(findFragmentByTag(TAG_TIME_PICKER_FROM)) {
+        if(findFragmentByTag(TAG_TIME_PICKER_START)) {
             timeFrom.setText(text);
             dataItem.timeBegin[0] = hourOfDay;
             dataItem.timeBegin[1] = minute;
         }
-        if(findFragmentByTag(TAG_TIME_PICKER_TO)) {
+        if(findFragmentByTag(TAG_TIME_PICKER_END)) {
             timeUntil.setText(text);
             dataItem.timeEnd[0] = hourOfDay;
             dataItem.timeEnd[1] = minute;

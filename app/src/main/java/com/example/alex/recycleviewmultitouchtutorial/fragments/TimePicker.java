@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.recycleviewmultitouchtutorial.fragments;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -9,7 +9,7 @@ import android.text.format.DateFormat;
 
 import java.util.Calendar;
 
-public class TimePickerFragment extends DialogFragment {
+public class TimePicker extends DialogFragment {
     Calendar c = Calendar.getInstance();
     int hour = c.get(Calendar.HOUR_OF_DAY);
     int minute = c.get(Calendar.MINUTE);

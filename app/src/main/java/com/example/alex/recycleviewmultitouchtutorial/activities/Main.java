@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.recycleviewmultitouchtutorial.activities;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -14,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.alex.recycleviewmultitouchtutorial.Data;
+import com.example.alex.recycleviewmultitouchtutorial.R;
+import com.example.alex.recycleviewmultitouchtutorial.adapters.RecycleAdapter;
 import com.example.alex.recycleviewmultitouchtutorial.database.Base;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 
 
@@ -201,19 +203,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private LinkedList<Data> getData() {
         Base db = new Base(getApplicationContext());
-        /*
-        boolean[] test = {false, false, false, false, true, true, true};
-        int[] timeFrom = { 1, 0 };
-        int[] timeUntil = {23, 50};
-        Data[] data = {
-                new Data(timeFrom, timeUntil, test, false),
-                new Data(timeFrom, timeUntil, test, true),
-                new Data(timeFrom, timeUntil, test, false),
-                new Data(timeFrom, timeUntil, test, true)
-        };
-        LinkedList<Data> result = new LinkedList<>();
-        Collections.addAll(result, data);
-        */
         return db.select();
     }
 
@@ -226,7 +215,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if(!adapter.isMultiSelection()) {
-            Intent intent = new Intent(this, ItemActivity.class);
+            Intent intent = new Intent(this, DataItem.class);
             Data item = data.get(position);
             intent.putExtra(Data.class.getCanonicalName(), item);
             intent.putExtra("updatedPosition", position);
@@ -278,7 +267,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     public void onClickFloatingActionButton(View view) {
-        Intent intent = new Intent(this, ItemActivity.class);
+        Intent intent = new Intent(this, DataItem.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
         Log.d("myLogs", "onClickFloatingActionButton");

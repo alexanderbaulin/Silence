@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.recycleviewmultitouchtutorial.adapters;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.alex.recycleviewmultitouchtutorial.Data;
+import com.example.alex.recycleviewmultitouchtutorial.R;
 import com.example.alex.recycleviewmultitouchtutorial.database.Base;
 
 import java.util.Collections;
@@ -25,15 +27,15 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
 
-    void setOnLongItemListener(OnLongClickListener listener) {
+    public void setOnLongItemListener(OnLongClickListener listener) {
         itemLongClickListener = listener;
     }
 
-    void setOnClickItemListener(OnItemClickListener listener) {
+    public void setOnClickItemListener(OnItemClickListener listener) {
         itemClickListener = listener;
     }
 
-    void removeSelectedItems() {
+    public void removeSelectedItems() {
         LinkedList<Integer> selectedPositions = new LinkedList<>();
         for(int position = 0; position < data.size(); position++) {
             Data dataItem = data.get(position);
@@ -51,15 +53,15 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         }
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
 
-    interface OnLongClickListener {
+    public interface OnLongClickListener {
         void onItemLongClick(View itemView, int position);
     }
 
-    RecycleAdapter(AppCompatActivity ctx, List<Data> dataList) {
+    public RecycleAdapter(AppCompatActivity ctx, List<Data> dataList) {
         inflater = LayoutInflater.from(ctx);
         data = dataList;
         context = ctx;
@@ -210,7 +212,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         return data.size();
     }
 
-    int getSelectedItemsCount() {
+    public int getSelectedItemsCount() {
         int result = 0;
         for(int position = 0; position < getItemCount(); position++) {
             Data dataItem = data.get(position);
@@ -222,7 +224,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         return result;
     }
 
-    boolean isMultiSelection() { return isMultiSelection; }
+    public boolean isMultiSelection() { return isMultiSelection; }
 
     private void setItemBackground(Data currentItem, View itemView) {
         if(currentItem.isSelected)
@@ -231,7 +233,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             itemView.setBackgroundResource(R.drawable.custom_background);
     }
 
-    void setMultiSelection(boolean b) {
+    public void setMultiSelection(boolean b) {
         isMultiSelection = b;
         if(!isMultiSelection) {
             clearSelection();

@@ -14,7 +14,7 @@ public class Data implements Parcelable {
     public boolean[] checkedDays;
     public boolean isVibrationAllowed;
     public boolean isAlarmOn;
-    boolean isSelected;
+    public boolean isSelected;
 
     public Data() {
         checkedDays = new boolean[7];
