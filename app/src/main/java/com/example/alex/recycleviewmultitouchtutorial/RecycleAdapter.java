@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.alex.recycleviewmultitouchtutorial.database.Base;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +44,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         Collections.reverse(selectedPositions);
         for(int position = 0; position < selectedPositions.size(); position++) {
             int selectedPosition = selectedPositions.get(position);
-            data.remove(selectedPosition);
+            Base db = new Base(context);
+            Data deletedItem = data.remove(selectedPosition);
+            db.delete(deletedItem.id);
             notifyItemRemoved(selectedPosition);
         }
     }
@@ -75,11 +79,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final ImageView image = holder.image;
         setImageView(image, currentItem);
         holder.description.setText(currentItem.description);
-        String time = parseTimeText(currentItem.timeFrom, currentItem.timeUntil);
+        String time = parseTimeText(currentItem.timeBegin, currentItem.timeEnd);
         holder.time.setText(time);
         String days = parseDaysText(currentItem.checkedDays);
         holder.days.setText(days);
-        switcher.setChecked(currentItem.isChecked);
+        switcher.setChecked(currentItem.isAlarmOn);
         setSwitcherVisibility(switcher);
         setSwitcherListener(switcher, currentItem);
         setItemBackground(currentItem, itemView);
@@ -162,8 +166,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isMultiSelection) currentItem.isChecked = !currentItem.isChecked;
-                Log.d("myLogs1", "onChecked " + " position " + currentItem.isChecked);
+                if(!isMultiSelection) currentItem.isAlarmOn = !currentItem.isAlarmOn;
+                Base db = new Base(context);
+                db.update(currentItem.id, currentItem);
+                Log.d("myLogs1", "onChecked " + " position " + currentItem.isAlarmOn);
             }
         });
     }

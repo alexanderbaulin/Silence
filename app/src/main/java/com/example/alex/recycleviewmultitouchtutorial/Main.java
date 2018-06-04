@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.alex.recycleviewmultitouchtutorial.database.Base;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -198,6 +200,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private LinkedList<Data> getData() {
+        Base db = new Base(getApplicationContext());
+        /*
         boolean[] test = {false, false, false, false, true, true, true};
         int[] timeFrom = { 1, 0 };
         int[] timeUntil = {23, 50};
@@ -209,7 +213,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         };
         LinkedList<Data> result = new LinkedList<>();
         Collections.addAll(result, data);
-        return result;
+        */
+        return db.select();
     }
 
     @Override
@@ -247,10 +252,12 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 int position = result.getIntExtra("updatedPosition", -1);
                 Data updatedItem = data.get(position);
                 updatedItem.description = dataItem.description;
-                updatedItem.timeFrom = dataItem.timeFrom;
-                updatedItem.timeUntil = dataItem.timeUntil;
+                updatedItem.timeBegin = dataItem.timeBegin;
+                updatedItem.timeEnd= dataItem.timeEnd;
                 updatedItem.checkedDays = dataItem.checkedDays;
                 updatedItem.isVibrationAllowed = dataItem.isVibrationAllowed;
+                Base db = new Base(getApplicationContext());
+                db.update(updatedItem.id, updatedItem);
                 adapter.notifyItemChanged(position);
 
             } else if(requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
@@ -262,6 +269,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private void addNewItem(Intent result) {
         Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
+        Base db = new Base(getApplicationContext());
+        db.insert(newDataItem);
         data.add(newDataItem);
         int newItemPosition = adapter.getItemCount();
         adapter.notifyItemChanged(newItemPosition);

@@ -85,13 +85,13 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         int hour, minute;
         String time;
 
-        hour = dataItem.timeFrom[0];
-        minute = dataItem.timeFrom[1];
+        hour = dataItem.timeBegin[0];
+        minute = dataItem.timeBegin[1];
         time = buildString(hour, minute);
         timeFrom.setText(time);
 
-        hour = dataItem.timeUntil[0];
-        minute = dataItem.timeUntil[1];
+        hour = dataItem.timeEnd[0];
+        minute = dataItem.timeEnd[1];
         time = buildString(hour, minute);
         timeUntil.setText(time);
     }
@@ -126,8 +126,8 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void returnResultDataItem() throws IllegalStateException {
-        if(!isTimeFromSet()) throw new IllegalStateException("Set time from");
-        if(!isTimeUntilSet()) throw new IllegalStateException("Set time until");
+        if(!isTimeStartSet()) throw new IllegalStateException("Set time from");
+        if(!isTimeEndSet()) throw new IllegalStateException("Set time until");
         if(!isDaySet()) throw new IllegalStateException("No day selected");
 
         setCheckDays();
@@ -209,13 +209,13 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
                sunday.isChecked();
     }
 
-    private boolean isTimeUntilSet() {
+    private boolean isTimeEndSet() {
         String text = timeUntil.getText().toString();
         String defaultText = getStringResource(R.string.time_until);
         return !text.equals(defaultText);
     }
 
-    private boolean isTimeFromSet() {
+    private boolean isTimeStartSet() {
         String text = timeFrom.getText().toString();
         String defaultText = getStringResource(R.string.time_from);
         return !text.equals(defaultText);
@@ -230,13 +230,13 @@ public class ItemActivity extends AppCompatActivity implements View.OnClickListe
         String text = buildString(hourOfDay, minute);
         if(findFragmentByTag(TAG_TIME_PICKER_FROM)) {
             timeFrom.setText(text);
-            dataItem.timeFrom[0] = hourOfDay;
-            dataItem.timeFrom[1] = minute;
+            dataItem.timeBegin[0] = hourOfDay;
+            dataItem.timeBegin[1] = minute;
         }
         if(findFragmentByTag(TAG_TIME_PICKER_TO)) {
             timeUntil.setText(text);
-            dataItem.timeUntil[0] = hourOfDay;
-            dataItem.timeUntil[1] = minute;
+            dataItem.timeEnd[0] = hourOfDay;
+            dataItem.timeEnd[1] = minute;
         }
     }
 
