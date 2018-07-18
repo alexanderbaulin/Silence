@@ -6,10 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
 
 
 import com.example.alex.recycleviewmultitouchtutorial.Data;
+import com.example.alex.recycleviewmultitouchtutorial.Logger;
 
 import java.util.LinkedList;
 
@@ -100,7 +101,8 @@ public class Base extends SQLiteOpenHelper {
         do {
             Data dataItem = getDataItem(cursor);
             data.add(dataItem);
-            Log.d("myLogs", dataItem.toString());
+
+            Logger.log(Logger.LOG_DATABASE, dataItem.toString());
         } while (cursor.moveToNext());
         cursor.close();
         return data;
@@ -145,7 +147,7 @@ public class Base extends SQLiteOpenHelper {
     }
 
     public int update(long id, Data item) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = getValues(item);
         int updatedRowsCount = db.update(Table.TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
         db.close();

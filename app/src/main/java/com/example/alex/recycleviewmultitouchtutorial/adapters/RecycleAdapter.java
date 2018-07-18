@@ -26,6 +26,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     private boolean isMultiSelection;
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
+    private Base db;
 
     public void setOnLongItemListener(OnLongClickListener listener) {
         itemLongClickListener = listener;
@@ -65,6 +66,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         inflater = LayoutInflater.from(ctx);
         data = dataList;
         context = ctx;
+        db = new Base(context);
     }
 
     @Override
@@ -95,8 +97,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     private void setImageView(ImageView image, Data currentItem) {
-       if(currentItem.isVibrationAllowed) image.setImageResource(R.drawable.ic_baseline_vibration_48px);
-       else image.setImageResource(R.drawable.do_not_disturb);
+       if(currentItem.isVibrationAllowed)
+           image.setImageResource(R.drawable.ic_baseline_vibration_48px);
+       else
+           image.setImageResource(R.drawable.do_not_disturb);
     }
 
     private String parseTimeText(int[] timeFrom, int[] timeUntil) {
@@ -169,7 +173,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             @Override
             public void onClick(View v) {
                 if(!isMultiSelection) currentItem.isAlarmOn = !currentItem.isAlarmOn;
-                Base db = new Base(context);
                 db.update(currentItem.id, currentItem);
                 Log.d("myLogs1", "onChecked " + " position " + currentItem.isAlarmOn);
             }

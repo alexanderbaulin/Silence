@@ -33,6 +33,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     final int REQUEST_CODE_ADD_DATA_ITEM = 2;
     final static String ACTION_ADD_ITEM = "add item";
     final static String ACTION_UPDATE_ITEM = "update item";
+    private Base db;
 
 
     @Override
@@ -52,6 +53,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.notifyDataSetChanged();
             }
         });
+        db = new Base(getApplicationContext());
         data = getData();
         adapter = new RecycleAdapter(this, data);
         adapter.setOnClickItemListener(this);
@@ -202,7 +204,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private LinkedList<Data> getData() {
-        Base db = new Base(getApplicationContext());
         return db.select();
     }
 
@@ -245,7 +246,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 updatedItem.timeEnd= dataItem.timeEnd;
                 updatedItem.checkedDays = dataItem.checkedDays;
                 updatedItem.isVibrationAllowed = dataItem.isVibrationAllowed;
-                Base db = new Base(getApplicationContext());
                 db.update(updatedItem.id, updatedItem);
                 adapter.notifyItemChanged(position);
 
@@ -258,7 +258,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private void addNewItem(Intent result) {
         Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
-        Base db = new Base(getApplicationContext());
         db.insert(newDataItem);
         data.add(newDataItem);
         int newItemPosition = adapter.getItemCount();

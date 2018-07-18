@@ -36,10 +36,10 @@ public class ExampleInstrumentedTest {
         testSelect();
         testInsert();
         testSelect();
-       // testDelete();
-       // testSelect();
-       // testUpdate();
-       // testSelect();
+        testDelete();
+        testSelect();
+        testUpdate();
+        testSelect();
     }
 
     private void testUpdate() {
