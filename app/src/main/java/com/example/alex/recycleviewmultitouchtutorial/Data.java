@@ -30,16 +30,6 @@ public class Data implements Parcelable {
         timeEnd = until;
     }
 
-    private Data(Parcel in) {
-        description = in.readString();
-        isSelected = in.readByte() != 0;
-        isAlarmOn = in.readByte() != 0;
-        checkedDays = in.createBooleanArray();
-        isVibrationAllowed = in.readByte() != 0;
-        timeBegin = in.createIntArray();
-        timeEnd = in.createIntArray();
-    }
-
     public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {
         @Override
         public Data createFromParcel(Parcel in) {
@@ -77,5 +67,27 @@ public class Data implements Parcelable {
         dest.writeByte((byte) (isVibrationAllowed ? 1 : 0));
         dest.writeIntArray(timeBegin);
         dest.writeIntArray(timeEnd);
+    }
+
+    static boolean[] getCheckedDaysFromToday(boolean[] checkedDays, int todayIndex) {
+        boolean[] result = new boolean[7];
+        int index = 0;
+        for(int i = todayIndex; i < checkedDays.length; ++i) {
+            result[index++] = checkedDays[i];
+        }
+        for(int i = 0; i < todayIndex; ++i) {
+            result[index++] = checkedDays[i];
+        }
+        return result;
+    }
+
+    private Data(Parcel in) {
+        description = in.readString();
+        isSelected = in.readByte() != 0;
+        isAlarmOn = in.readByte() != 0;
+        checkedDays = in.createBooleanArray();
+        isVibrationAllowed = in.readByte() != 0;
+        timeBegin = in.createIntArray();
+        timeEnd = in.createIntArray();
     }
 }

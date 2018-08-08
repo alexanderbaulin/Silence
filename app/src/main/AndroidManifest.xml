@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.alex.recycleviewmultitouchtutorial">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <application
+        android:name="com.example.alex.recycleviewmultitouchtutorial.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,5 +20,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.DataItem" android:parentActivityName=".activities.Main" android:screenOrientation="portrait" />
+        <receiver android:name=".receivers.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="vibration" />
+                <action android:name="noSound" />
+                <action android:name="normalMode" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

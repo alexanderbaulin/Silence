@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.alex.recycleviewmultitouchtutorial.Alarm;
 import com.example.alex.recycleviewmultitouchtutorial.Data;
 import com.example.alex.recycleviewmultitouchtutorial.R;
 import com.example.alex.recycleviewmultitouchtutorial.database.Base;
@@ -27,6 +28,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
     private Base db;
+
+    public RecycleAdapter(AppCompatActivity ctx, List<Data> dataList) {
+        inflater = LayoutInflater.from(ctx);
+        data = dataList;
+        context = ctx;
+        db = new Base(context);
+    }
 
     public void setOnLongItemListener(OnLongClickListener listener) {
         itemLongClickListener = listener;
@@ -49,6 +57,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             int selectedPosition = selectedPositions.get(position);
             Base db = new Base(context);
             Data deletedItem = data.remove(selectedPosition);
+            Log.d("myLogs1", "removed id = " + deletedItem.id);
             db.delete(deletedItem.id);
             notifyItemRemoved(selectedPosition);
         }
@@ -60,13 +69,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     public interface OnLongClickListener {
         void onItemLongClick(View itemView, int position);
-    }
-
-    public RecycleAdapter(AppCompatActivity ctx, List<Data> dataList) {
-        inflater = LayoutInflater.from(ctx);
-        data = dataList;
-        context = ctx;
-        db = new Base(context);
     }
 
     @Override
@@ -172,8 +174,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isMultiSelection) currentItem.isAlarmOn = !currentItem.isAlarmOn;
-                db.update(currentItem.id, currentItem);
+                if(!isMultiSelection) {
+                    currentItem.isAlarmOn = !currentItem.isAlarmOn;
+                    Alarm alarm = new Alarm();
+                    if(currentItem.isAlarmOn) alarm.setAlarm(currentItem, data.lastIndexOf(currentItem));
+                    else alarm.cancel(currentItem, data.lastIndexOf(currentItem));
+                    db.update(currentItem.id, currentItem);
+                }
                 Log.d("myLogs1", "onChecked " + " position " + currentItem.isAlarmOn);
             }
         });
