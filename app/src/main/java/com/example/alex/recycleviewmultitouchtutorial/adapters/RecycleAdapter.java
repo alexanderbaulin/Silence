@@ -1,5 +1,7 @@
 package com.example.alex.recycleviewmultitouchtutorial.adapters;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -84,7 +86,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final View itemView = holder.itemView;
         final ImageView image = holder.image;
         setImageView(image, currentItem);
-        holder.description.setText(currentItem.description);
+       // holder.description.setText(currentItem.description);
         String time = parseTimeText(currentItem.timeBegin, currentItem.timeEnd);
         holder.time.setText(time);
         String days = parseDaysText(currentItem.checkedDays);
@@ -172,6 +174,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private void setSwitcherListener(Switch switcher, final Data currentItem) {
         switcher.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 if(!isMultiSelection) {
@@ -261,14 +264,14 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        TextView description;
+       // TextView description;
         ImageView image;
         TextView time;
         TextView days;
         Switch switcher;
         myViewHolder(final View itemView) {
             super(itemView);
-            description = itemView.findViewById(R.id.txtDescription);
+           // description = itemView.findViewById(R.id.txtDescription);
             image = itemView.findViewById(R.id.imgView);
             time = itemView.findViewById(R.id.txtTimePeriod);
             days = itemView.findViewById(R.id.txtDaysOfWeek);

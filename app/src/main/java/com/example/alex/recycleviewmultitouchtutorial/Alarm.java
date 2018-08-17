@@ -29,7 +29,7 @@ public class Alarm {
         am = (AudioManager) MyApp.getAppContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     public void setAlarm(Data dataItem, int index) {
         Toast.makeText(MyApp.getAppContext(), "startAlarm", Toast.LENGTH_SHORT).show();
         int daysInWeek = 7;
