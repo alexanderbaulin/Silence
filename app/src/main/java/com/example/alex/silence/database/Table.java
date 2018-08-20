@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial.database;
+package com.example.alex.silence.database;
 
 
 class Table {

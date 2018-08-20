@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial.activities;
+package com.example.alex.silence.activities;
 
 
 import android.app.AlertDialog;
@@ -16,9 +16,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.alex.recycleviewmultitouchtutorial.Data;
-import com.example.alex.recycleviewmultitouchtutorial.R;
-import com.example.alex.recycleviewmultitouchtutorial.fragments.TimePicker;
+import com.example.alex.silence.Data;
+import com.example.alex.silence.R;
+import com.example.alex.silence.fragments.TimePicker;
 
 import java.util.Arrays;
 

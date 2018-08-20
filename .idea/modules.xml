@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RecycleViewMultitouchTutorial.iml" filepath="$PROJECT_DIR$/RecycleViewMultitouchTutorial.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Silence.iml" filepath="$PROJECT_DIR$/Silence.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

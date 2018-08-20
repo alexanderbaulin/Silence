@@ -1,10 +1,10 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.silence;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.alex.recycleviewmultitouchtutorial.database.Base;
+import com.example.alex.silence.database.Base;
 
 import org.junit.Before;
 import org.junit.Test;

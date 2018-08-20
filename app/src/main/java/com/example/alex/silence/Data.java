@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.silence;
 
 
 import android.os.Parcel;

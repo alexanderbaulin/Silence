@@ -1,12 +1,10 @@
-package com.example.alex.recycleviewmultitouchtutorial.activities;
+package com.example.alex.silence.activities;
 
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.media.AudioManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.alex.recycleviewmultitouchtutorial.Alarm;
-import com.example.alex.recycleviewmultitouchtutorial.Data;
-import com.example.alex.recycleviewmultitouchtutorial.R;
-import com.example.alex.recycleviewmultitouchtutorial.adapters.RecycleAdapter;
-import com.example.alex.recycleviewmultitouchtutorial.database.Base;
+import com.example.alex.silence.Alarm;
+import com.example.alex.silence.Data;
+import com.example.alex.silence.R;
+import com.example.alex.silence.adapters.RecycleAdapter;
+import com.example.alex.silence.database.Base;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial.adapters;
+package com.example.alex.silence.adapters;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.alex.recycleviewmultitouchtutorial.Alarm;
-import com.example.alex.recycleviewmultitouchtutorial.Data;
-import com.example.alex.recycleviewmultitouchtutorial.R;
-import com.example.alex.recycleviewmultitouchtutorial.database.Base;
+import com.example.alex.silence.Alarm;
+import com.example.alex.silence.Data;
+import com.example.alex.silence.R;
+import com.example.alex.silence.database.Base;
 
 import java.util.Collections;
 import java.util.LinkedList;

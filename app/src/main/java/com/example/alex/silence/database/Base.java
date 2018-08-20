@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial.database;
+package com.example.alex.silence.database;
 
 
 import android.content.ContentValues;
@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 
-import com.example.alex.recycleviewmultitouchtutorial.Data;
-import com.example.alex.recycleviewmultitouchtutorial.Logger;
+import com.example.alex.silence.Data;
+import com.example.alex.silence.Logger;
 
 import java.util.LinkedList;
 

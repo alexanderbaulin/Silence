@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial.fragments;
+package com.example.alex.silence.fragments;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

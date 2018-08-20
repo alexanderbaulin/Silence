@@ -1,18 +1,16 @@
-package com.example.alex.recycleviewmultitouchtutorial.receivers;
+package com.example.alex.silence.receivers;
 
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.example.alex.recycleviewmultitouchtutorial.Alarm;
-import com.example.alex.recycleviewmultitouchtutorial.Data;
-import com.example.alex.recycleviewmultitouchtutorial.MyApp;
-import com.example.alex.recycleviewmultitouchtutorial.database.Base;
+import com.example.alex.silence.Alarm;
+import com.example.alex.silence.Data;
+import com.example.alex.silence.MyApp;
+import com.example.alex.silence.database.Base;
 
 import java.util.List;
 

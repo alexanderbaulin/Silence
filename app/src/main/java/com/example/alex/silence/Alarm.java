@@ -1,4 +1,4 @@
-package com.example.alex.recycleviewmultitouchtutorial;
+package com.example.alex.silence;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -10,7 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.alex.recycleviewmultitouchtutorial.receivers.AlarmReceiver;
+import com.example.alex.silence.receivers.AlarmReceiver;
 
 import java.util.Arrays;
 import java.util.Calendar;
