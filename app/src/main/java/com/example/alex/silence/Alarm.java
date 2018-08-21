@@ -47,6 +47,59 @@ public class Alarm {
         boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
 
+        int beginHour = dataItem.timeBegin[0];
+        int endHour = dataItem.timeEnd[0];
+        if(
+                (beginHour > endHour) &&
+                (timeNow < getTime(dataItem.timeEnd[0], dataItem.timeEnd[1])) &&
+                (checkedDays[6]))
+        {
+            long testTimeEnd = getTime(dataItem.timeEnd[0], dataItem.timeEnd[1]);
+            long testTimeStart = getStartTime(dataItem) - AlarmManager.INTERVAL_DAY;
+            if(dataItem.isVibrationAllowed) {
+                Log.d("myLogs1", "vibrateMode");
+                setVibrationMode();
+            }
+            else {
+                Log.d("myLogs1", "noSound");
+                setSilentMode();
+            }
+
+            ++requestCode;
+            setAlarm(testTimeStart + WEEK_INTERVAL,
+                    getStartModeIntent(dataItem, requestCode),
+                    requestCode);
+            setAlarm(testTimeEnd,
+                    getEndModeIntent(dataItem, requestCode),
+                    requestCode);
+
+            Log.d("myLogs2", "test true");
+
+            testTimeStart += AlarmManager.INTERVAL_DAY;
+            testTimeEnd += AlarmManager.INTERVAL_DAY;
+
+            for(int i = 0; i < 6; i++) {
+                boolean isDayOfWeekChecked = checkedDays[i];
+                Logger.log("checkedDay " + isDayOfWeekChecked);
+                if(isDayOfWeekChecked) {
+                    ++requestCode;
+                    setAlarm(testTimeStart,
+                            getStartModeIntent(dataItem, requestCode),
+                            requestCode);
+                    ++requestCode;
+                    setAlarm(testTimeEnd,
+                            getEndModeIntent(dataItem, requestCode),
+                            requestCode);
+                }
+                testTimeStart += AlarmManager.INTERVAL_DAY;
+                testTimeEnd += AlarmManager.INTERVAL_DAY;
+            }
+            Log.d("myLogs", "days = " + Arrays.toString(checkedDays));
+            return;
+        }
+
+        Log.d("myLogs2", "test false");
+
         if(isTodayChecked)  {
             if(timeEnd < timeNow) {
                 Logger.log("timeEnd < timeNow");
@@ -144,6 +197,11 @@ public class Alarm {
         long timeStart = getStartTime(dataItem);
         long timeEnd = getEndTime(dataItem);
         long timeNow = getTime();
+
+        int beginHour = dataItem.timeBegin[0];
+        int endHour = dataItem.timeEnd[0];
+
+        if((beginHour > endHour) && (timeNow < getTime(dataItem.timeEnd[0], dataItem.timeEnd[1]))) setNormalMode();
         if((timeStart < timeNow) && (timeNow < timeEnd)) setNormalMode();
 
         for(int i = 0; i < daysInWeek; i++) {
@@ -170,7 +228,7 @@ public class Alarm {
         int endHour = dataItem.timeEnd[0];
         if(startHour > endHour) {
             Log.d("myLogs1", "startHour > endHour");
-            return endTime + endHour + AlarmManager.INTERVAL_DAY;
+            return endTime + endHour + AlarmManager.INTERVAL_DAY; /////////////////////////////////////
         }
         return endTime;
     }

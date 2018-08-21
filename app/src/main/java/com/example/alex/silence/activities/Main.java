@@ -271,7 +271,9 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 updatedItem.timeEnd= dataItem.timeEnd;
                 updatedItem.checkedDays = dataItem.checkedDays;
                 updatedItem.isVibrationAllowed = dataItem.isVibrationAllowed;
-                alarm.setAlarm(updatedItem, data.indexOf(updatedItem));
+                if(dataItem.isAlarmOn) {
+                    alarm.setAlarm(updatedItem, data.indexOf(updatedItem));
+                }
                 db.update(updatedItem.id, updatedItem);
                 adapter.notifyItemChanged(position);
 
