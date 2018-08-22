@@ -142,7 +142,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.removeSelectedItems();
                 adapter.setMultiSelection(false);
                 for(Data dataItem: data) {
-                    alarm.setAlarm(dataItem, data.indexOf(dataItem));
+                    if(dataItem.isAlarmOn) alarm.setAlarm(dataItem, data.indexOf(dataItem));
                 }
                 setUI();
                 int size = adapter.getItemCount();
@@ -273,6 +273,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 updatedItem.isVibrationAllowed = dataItem.isVibrationAllowed;
                 if(dataItem.isAlarmOn) {
                     alarm.setAlarm(updatedItem, data.indexOf(updatedItem));
+                } else {
+                    alarm.cancel(updatedItem, data.indexOf(updatedItem));
                 }
                 db.update(updatedItem.id, updatedItem);
                 adapter.notifyItemChanged(position);
@@ -287,12 +289,16 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void addNewItem(Intent result) {
         Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
         db.insert(newDataItem);
-        data.clear();
-        data.addAll(getData());
+        refreshData();
         alarm.setAlarm(newDataItem, data.indexOf(data.getLast()));
         adapter.notifyDataSetChanged();
         int newItemPosition = adapter.getItemCount();
         recyclerView.scrollToPosition(newItemPosition-1);
+    }
+
+    private void refreshData() {
+        data.clear();
+        data.addAll(getData());
     }
 
     public void onClickFloatingActionButton(View view) {

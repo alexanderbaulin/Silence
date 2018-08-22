@@ -183,6 +183,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                     if(currentItem.isAlarmOn) alarm.setAlarm(currentItem, data.lastIndexOf(currentItem));
                     else alarm.cancel(currentItem, data.lastIndexOf(currentItem));
                     db.update(currentItem.id, currentItem);
+
                 }
                 Log.d("myLogs1", "onChecked " + " position " + currentItem.isAlarmOn);
             }

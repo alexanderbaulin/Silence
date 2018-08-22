@@ -32,7 +32,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 Base base = new Base(MyApp.getAppContext());
                 List<Data> data = base.select();
                 for(Data dataItem: data) {
-                    alarm.setAlarm(dataItem, data.indexOf(dataItem));
+                    if(dataItem.isAlarmOn) {
+                        alarm.setAlarm(dataItem, data.indexOf(dataItem));
+                    }
                 }
         }
 
