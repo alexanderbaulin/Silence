@@ -19,7 +19,6 @@ import com.example.alex.silence.R;
 import com.example.alex.silence.fragments.TimePicker;
 
 
-
 public class DataItem extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
     EditText editText;
     Data dataItem;
@@ -37,7 +36,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
         setContentView(R.layout.item_activity);
         initViews();
         dataItem = getDataFromIntent();
-        if(dataItem == null)
+        if (dataItem == null)
             createNewItemAction();
         else
             updateItemAction();
@@ -65,7 +64,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void updateRadioGroupButtons() {
-        if(dataItem.isVibrationAllowed)
+        if (dataItem.isVibrationAllowed)
             radioGroup.check(R.id.radVibration);
         else
             radioGroup.check(R.id.radMute);
@@ -99,21 +98,21 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         TimePicker timePicker = new TimePicker();
-            switch (v.getId()) {
-                case R.id.btnTimeFrom:
-                    timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_START);
-                    break;
-                case R.id.btnTimeTo:
-                    timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_END);
-                    break;
-                case R.id.btnSubmit:
-                    try {
-                        returnResultDataItem();
-                    } catch (IllegalStateException e) {
-                        showAlertDialog(e.getMessage());
-                    }
-                    break;
-            }
+        switch (v.getId()) {
+            case R.id.btnTimeFrom:
+                timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_START);
+                break;
+            case R.id.btnTimeTo:
+                timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_END);
+                break;
+            case R.id.btnSubmit:
+                try {
+                    returnResultDataItem();
+                } catch (IllegalStateException e) {
+                    showAlertDialog(e.getMessage());
+                }
+                break;
+        }
     }
 
     private void showAlertDialog(String s) {
@@ -124,9 +123,9 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void returnResultDataItem() throws IllegalStateException {
-        if(!isTimeStartSet()) throw new IllegalStateException("Set time from");
-        if(!isTimeEndSet()) throw new IllegalStateException("Set time until");
-        if(!isDaySet()) throw new IllegalStateException("No day selected");
+        if (!isTimeStartSet()) throw new IllegalStateException("Set time from");
+        if (!isTimeEndSet()) throw new IllegalStateException("Set time until");
+        if (!isDaySet()) throw new IllegalStateException("No day selected");
 
         setCheckDays();
         setDescription();
@@ -141,7 +140,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
         Intent intent = new Intent();
         String className = Data.class.getCanonicalName();
         intent.putExtra(className, dataItem);
-        if(updatedPosition != -1) intent.putExtra("updatedPosition", updatedPosition);
+        if (updatedPosition != -1) intent.putExtra("updatedPosition", updatedPosition);
         return intent;
     }
 
@@ -193,14 +192,14 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private boolean isDaySet() {
-       return
-               monday.isChecked() ||
-               tuesday.isChecked() ||
-               wednesday.isChecked() ||
-               thursday.isChecked() ||
-               friday.isChecked() ||
-               saturday.isChecked() ||
-               sunday.isChecked();
+        return
+                monday.isChecked() ||
+                        tuesday.isChecked() ||
+                        wednesday.isChecked() ||
+                        thursday.isChecked() ||
+                        friday.isChecked() ||
+                        saturday.isChecked() ||
+                        sunday.isChecked();
     }
 
     private boolean isTimeEndSet() {
@@ -222,12 +221,12 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
         String text = buildString(hourOfDay, minute);
-        if(findFragmentByTag(TAG_TIME_PICKER_START)) {
+        if (findFragmentByTag(TAG_TIME_PICKER_START)) {
             timeFrom.setText(text);
             dataItem.timeBegin[0] = hourOfDay;
             dataItem.timeBegin[1] = minute;
         }
-        if(findFragmentByTag(TAG_TIME_PICKER_END)) {
+        if (findFragmentByTag(TAG_TIME_PICKER_END)) {
             timeUntil.setText(text);
             dataItem.timeEnd[0] = hourOfDay;
             dataItem.timeEnd[1] = minute;
@@ -239,12 +238,12 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
         builder
                 .append(hourOfDay)
                 .append(":");
-                if(minute < 10) builder.append("0");
-                builder.append(minute);
+        if (minute < 10) builder.append("0");
+        builder.append(minute);
         return builder.toString();
     }
 
     private boolean findFragmentByTag(String tag) {
-       return getSupportFragmentManager().findFragmentByTag(tag) != null;
+        return getSupportFragmentManager().findFragmentByTag(tag) != null;
     }
 }

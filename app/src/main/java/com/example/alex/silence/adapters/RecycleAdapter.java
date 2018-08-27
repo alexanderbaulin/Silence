@@ -1,7 +1,5 @@
 package com.example.alex.silence.adapters;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,14 +45,14 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     public void removeSelectedItems() {
         LinkedList<Integer> selectedPositions = new LinkedList<>();
-        for(int position = 0; position < data.size(); position++) {
+        for (int position = 0; position < data.size(); position++) {
             Data dataItem = data.get(position);
-            if(dataItem.isSelected) {
+            if (dataItem.isSelected) {
                 selectedPositions.add(position);
             }
         }
         Collections.reverse(selectedPositions);
-        for(int position = 0; position < selectedPositions.size(); position++) {
+        for (int position = 0; position < selectedPositions.size(); position++) {
             int selectedPosition = selectedPositions.get(position);
             Base db = new Base(context);
             Data deletedItem = data.remove(selectedPosition);
@@ -97,10 +95,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     private void setImageView(ImageView image, Data currentItem) {
-       if(currentItem.isVibrationAllowed)
-           image.setImageResource(R.drawable.ic_baseline_vibration_48px);
-       else
-           image.setImageResource(R.drawable.do_not_disturb);
+        if (currentItem.isVibrationAllowed)
+            image.setImageResource(R.drawable.ic_baseline_vibration_48px);
+        else
+            image.setImageResource(R.drawable.do_not_disturb);
     }
 
     private String parseTimeText(int[] timeFrom, int[] timeUntil) {
@@ -116,38 +114,38 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         int minute = time[1];
         builder.append(hour)
                 .append(":");
-        if(minute < 10) builder.append("0");
+        if (minute < 10) builder.append("0");
         builder.append(minute);
     }
 
     private String parseDaysText(boolean[] daysOfWeek) {
         StringBuilder builder = new StringBuilder();
-        if(isAllDaysChecked(daysOfWeek)) return builder.append("every day").toString();
-        if(daysOfWeek[0]) {
+        if (isAllDaysChecked(daysOfWeek)) return builder.append("every day").toString();
+        if (daysOfWeek[0]) {
             builder.append(context.getString(R.string.day_monday));
             builder.append(" ");
         }
-        if(daysOfWeek[1]) {
+        if (daysOfWeek[1]) {
             builder.append(context.getString(R.string.day_tuesday));
             builder.append(" ");
         }
-        if(daysOfWeek[2]) {
+        if (daysOfWeek[2]) {
             builder.append(context.getString(R.string.day_wednesday));
             builder.append(" ");
         }
-        if(daysOfWeek[3]) {
+        if (daysOfWeek[3]) {
             builder.append(context.getString(R.string.day_thursday));
             builder.append(" ");
         }
-        if(daysOfWeek[4]) {
+        if (daysOfWeek[4]) {
             builder.append(context.getString(R.string.day_friday));
             builder.append(" ");
         }
-        if(daysOfWeek[5]) {
+        if (daysOfWeek[5]) {
             builder.append(context.getString(R.string.day_saturday));
             builder.append(" ");
         }
-        if(daysOfWeek[6]) {
+        if (daysOfWeek[6]) {
             builder.append(context.getString(R.string.day_sunday));
             builder.append(" ");
         }
@@ -156,26 +154,26 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private boolean isAllDaysChecked(boolean[] checkedDay) {
         boolean result = true;
-        for(boolean isDayChecked: checkedDay) {
-            if(!isDayChecked) result = false;
+        for (boolean isDayChecked : checkedDay) {
+            if (!isDayChecked) result = false;
         }
         return result;
     }
 
     private void setSwitcherVisibility(Switch switcher) {
-        if(isMultiSelection) switcher.setVisibility(View.INVISIBLE);
+        if (isMultiSelection) switcher.setVisibility(View.INVISIBLE);
         else switcher.setVisibility(View.VISIBLE);
     }
 
     private void setSwitcherListener(Switch switcher, final Data currentItem) {
         switcher.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                if(!isMultiSelection) {
+                if (!isMultiSelection) {
                     currentItem.isAlarmOn = !currentItem.isAlarmOn;
                     Alarm alarm = new Alarm();
-                    if(currentItem.isAlarmOn) alarm.setAlarm(currentItem, data.lastIndexOf(currentItem));
+                    if (currentItem.isAlarmOn)
+                        alarm.setAlarm(currentItem, data.lastIndexOf(currentItem));
                     else alarm.cancel(currentItem, data.lastIndexOf(currentItem));
                     db.update(currentItem.id, currentItem);
 
@@ -188,7 +186,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isMultiSelection) {
+                if (isMultiSelection) {
                     currentItem.isSelected = !currentItem.isSelected;
                     notifyItemChanged(position);
                     setItemBackground(currentItem, itemView);
@@ -203,7 +201,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             @Override
             public boolean onLongClick(View v) {
                 setMultiSelection(!isMultiSelection);
-                if(isMultiSelection) {
+                if (isMultiSelection) {
                     data.get(position).isSelected = true;
                     notifyItemChanged(position);
                 }
@@ -220,19 +218,21 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     public int getSelectedItemsCount() {
         int result = 0;
-        for(int position = 0; position < getItemCount(); position++) {
+        for (int position = 0; position < getItemCount(); position++) {
             Data dataItem = data.get(position);
-            if(dataItem.isSelected) {
+            if (dataItem.isSelected) {
                 result++;
             }
         }
         return result;
     }
 
-    public boolean isMultiSelection() { return isMultiSelection; }
+    public boolean isMultiSelection() {
+        return isMultiSelection;
+    }
 
     private void setItemBackground(Data currentItem, View itemView) {
-        if(currentItem.isSelected)
+        if (currentItem.isSelected)
             itemView.setBackgroundColor(context.getResources().getColor(R.color.colorItemBackground));
         else
             itemView.setBackgroundResource(R.drawable.custom_background);
@@ -240,15 +240,15 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     public void setMultiSelection(boolean b) {
         isMultiSelection = b;
-        if(!isMultiSelection) {
+        if (!isMultiSelection) {
             clearSelection();
         }
     }
 
     private void clearSelection() {
-        for(int i = 0; i < getItemCount(); i++) {
+        for (int i = 0; i < getItemCount(); i++) {
             Data dataItem = data.get(i);
-            if(dataItem.isSelected) {
+            if (dataItem.isSelected) {
                 dataItem.isSelected = false;
                 notifyItemChanged(i);
             }
@@ -260,6 +260,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         TextView time;
         TextView days;
         Switch switcher;
+
         myViewHolder(final View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.imgView);
