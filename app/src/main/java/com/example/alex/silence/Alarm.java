@@ -30,7 +30,6 @@ public class Alarm {
         am = (AudioManager) MyApp.getAppContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void setAlarm(Data dataItem, int index) {
         Toast.makeText(MyApp.getAppContext(), "startAlarm", Toast.LENGTH_SHORT).show();
         int daysInWeek = 7;
@@ -129,7 +128,6 @@ public class Alarm {
         am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void repeatAlarm(Intent i) {
         int requestCode = i.getIntExtra("code", 0);
         int hour = i.getIntExtra("hour", 0);
@@ -167,7 +165,6 @@ public class Alarm {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setAlarm(long time, Intent intent) {
         manager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
