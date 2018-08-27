@@ -14,68 +14,40 @@ import com.example.alex.silence.database.Base;
 
 import java.util.List;
 
-/**
- * Created by Alex on 07.08.2018.
- */
 
 public class AlarmReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction() == null) return;
-
-        //  Log.d("myLogs", "on Receive");
-        switch (intent.getAction()) {
+        String action = intent.getAction();
+        if (action == null) return;
+        Alarm alarm = new Alarm();
+        switch (action) {
             case Intent.ACTION_BOOT_COMPLETED:
-                Log.d( "myLogs1", "boot completed");
-                Alarm alarm = new Alarm();
+                Log.d("myLogs1", "boot completed");
                 Base base = new Base(MyApp.getAppContext());
                 List<Data> data = base.select();
-                for(Data dataItem: data) {
-                    if(dataItem.isAlarmOn) {
+                for (Data dataItem : data) {
+                    if (dataItem.isAlarmOn) {
                         alarm.setAlarm(dataItem, data.indexOf(dataItem));
                     }
                 }
-        }
-
-        String action = intent.getAction();
-        if(action != null) {
-            if(action.equals("vibration")) {
+                break;
+            case "vibration":
                 Log.d("myLogs1", "vibration");
-                Alarm alarm = new Alarm();
                 alarm.setVibrationMode();
                 alarm.repeatAlarm(intent);
-                }
-            else if(action.equals("noSound")) {
+                break;
+            case "noSound":
                 Log.d("myLogs1", "noSound");
-                Alarm alarm = new Alarm();
                 alarm.setSilentMode();
                 alarm.repeatAlarm(intent);
-            } else if(action.equals("normalMode")) {
+                break;
+            case "normalMode":
                 Log.d("myLogs1", "normalMode");
-                Alarm alarm = new Alarm();
                 alarm.setNormalMode();
                 alarm.repeatAlarm(intent);
-            } else if(action.equals("android.intent.action.TIME_SET")) {
-                Log.d("myLogs1", "time changed");
-            } else if(action.equals("android.intent.action.TIMEZONE_CHANGED")) {
-                Log.d("myLogs1", "timezone changed");
-            } else if(action.equals("android.intent.action.DATE_CHANGED")) {
-                Log.d("myLogs1", "date changed");
-            }
+                break;
         }
-
-    }
-
-    private Data getData() {
-        Data data = new Data();
-        data.id = 1;
-        data.description = "description";
-        data.checkedDays = new boolean[]{true, true, true, true, true, true, true};
-        data.timeBegin = new int[] { 11, 53 };
-        data.timeEnd = new int[] { 12, 0 };
-        data.isAlarmOn = true;
-        data.isVibrationAllowed = false;
-        return data;
     }
 }
