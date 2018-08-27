@@ -19,7 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.alex.silence.activities.DataItem" android:parentActivityName="com.example.alex.silence.activities.Main" android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.alex.silence.activities.DataItem"
+            android:label=""
+            android:parentActivityName="com.example.alex.silence.activities.Main"
+            android:screenOrientation="portrait" />
         <receiver android:name="com.example.alex.silence.receivers.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

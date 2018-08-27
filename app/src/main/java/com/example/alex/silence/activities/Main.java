@@ -19,6 +19,7 @@ import android.view.View;
 
 import com.example.alex.silence.Alarm;
 import com.example.alex.silence.Data;
+import com.example.alex.silence.MyApp;
 import com.example.alex.silence.R;
 import com.example.alex.silence.adapters.RecycleAdapter;
 import com.example.alex.silence.database.Base;
@@ -124,7 +125,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         else {
             setSingleSelectionUI();
         }
-        //adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -156,7 +156,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void setSingleSelectionUI() {
         setStatusBarColor(R.color.colorPrimaryDark);
         setToolbarColor(R.color.colorPrimary);
-        setToolbarTitle("Title");
+        setToolbarTitle(MyApp.getAppContext().getString(R.string.app_name));
         remove.setVisible(false);
         setNavigationButton(false);
         setAddFloatingActionButton(true);

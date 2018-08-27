@@ -110,7 +110,6 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
                     timePicker.show(getSupportFragmentManager(), TAG_TIME_PICKER_END);
                     break;
                 case R.id.btnSubmit:
-                    Toast.makeText(this, "submit", Toast.LENGTH_SHORT).show();
                     try {
                         returnResultDataItem();
                     } catch (IllegalStateException e) {
