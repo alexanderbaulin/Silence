@@ -4,7 +4,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
             int selectedPosition = selectedPositions.get(position);
             Base db = new Base(context);
             Data deletedItem = data.remove(selectedPosition);
-            Log.d("myLogs1", "removed id = " + deletedItem.id);
             db.delete(deletedItem.id);
             notifyItemRemoved(selectedPosition);
         }
@@ -86,7 +84,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         final View itemView = holder.itemView;
         final ImageView image = holder.image;
         setImageView(image, currentItem);
-       // holder.description.setText(currentItem.description);
         String time = parseTimeText(currentItem.timeBegin, currentItem.timeEnd);
         holder.time.setText(time);
         String days = parseDaysText(currentItem.checkedDays);
@@ -97,7 +94,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         setItemBackground(currentItem, itemView);
         setOnItemClickListener(itemView, holder.getAdapterPosition(), currentItem);
         setOnLongClickListener(itemView, holder.getAdapterPosition());
-        Log.d("myLogs", "onBind ViewHolder " + position);
     }
 
     private void setImageView(ImageView image, Data currentItem) {
@@ -163,7 +159,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         for(boolean isDayChecked: checkedDay) {
             if(!isDayChecked) result = false;
         }
-        Log.d("myLogs", "result " + result);
         return result;
     }
 
@@ -185,7 +180,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                     db.update(currentItem.id, currentItem);
 
                 }
-                Log.d("myLogs1", "onChecked " + " position " + currentItem.isAlarmOn);
             }
         });
     }
@@ -200,7 +194,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                     setItemBackground(currentItem, itemView);
                 }
                 itemClickListener.onItemClick(itemView, position);
-                Log.d("myLogs", position + " " + currentItem.isSelected);
             }
         });
     }
@@ -215,7 +208,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                     notifyItemChanged(position);
                 }
                 itemLongClickListener.onItemLongClick(itemView, position);
-                Log.d("myLogs", "onLongClick " + position + " isMultiSelection " + isMultiSelection);
                 return true;
             }
         });
@@ -234,7 +226,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                 result++;
             }
         }
-        Log.d("myLogs", "selected items = " + result);
         return result;
     }
 
@@ -265,14 +256,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-       // TextView description;
         ImageView image;
         TextView time;
         TextView days;
         Switch switcher;
         myViewHolder(final View itemView) {
             super(itemView);
-           // description = itemView.findViewById(R.id.txtDescription);
             image = itemView.findViewById(R.id.imgView);
             time = itemView.findViewById(R.id.txtTimePeriod);
             days = itemView.findViewById(R.id.txtDaysOfWeek);

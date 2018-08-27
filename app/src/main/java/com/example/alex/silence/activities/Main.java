@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +43,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("myLogs", "Main onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         recyclerView = findViewById(R.id.drawerList);
@@ -84,7 +82,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Log.d("myLogs", "onSaveInstanceState");
         saveSelectedItemPositions(outState);
         saveMultiSelectionMode(outState, adapter.isMultiSelection());
         super.onSaveInstanceState(outState);
@@ -92,7 +89,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.d("myLogs", "onRestoreInstanceState");
         restoreSelectedItemPositions(savedInstanceState);
         restoreMultiSelectionMode(savedInstanceState);
         super.onRestoreInstanceState(savedInstanceState);
@@ -111,7 +107,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("myLogs", "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.menu, menu);
         remove = menu.findItem(R.id.action_remove);
         setUI();
@@ -135,7 +130,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 setSingleSelectionUI();
                 return true;
             case R.id.action_remove:
-                Log.d("myLogs", "remove");
                 for(Data dataItem: data) {
                     alarm.cancel(dataItem, data.indexOf(dataItem));
                 }
@@ -178,7 +172,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void restoreMultiSelectionMode(Bundle savedInstanceState) {
         boolean isMultiSelection = savedInstanceState.getBoolean("isMultiSelection");
         adapter.setMultiSelection(isMultiSelection);
-        Log.d("myLogs", "isMultiSelectionRestore " + isMultiSelection);
     }
 
     private void saveSelectedItemPositions(Bundle outState) {
@@ -199,7 +192,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         for(int i = 0; i < selectedPositions.size(); i++) {
             int position = selectedPositions.get(i);
             data.get(position).isSelected = true;
-            Log.d("myLogs", "selectedItem " + position);
         }
         setToolbarTitle(String.valueOf(selectedPositions.size()));
         adapter.notifyDataSetChanged();
@@ -261,7 +253,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if(resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_UPDATE_DATA_ITEM) {
-                Log.d("updateItem", "updateItemResult");
                 Data dataItem = result.getParcelableExtra(Data.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
                 Data updatedItem = data.get(position);
@@ -280,7 +271,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.notifyItemChanged(position);
 
             } else if(requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
-                Log.d("addItem", "addItemResult");
                 addNewItem(result);
             }
         }
@@ -305,6 +295,5 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         Intent intent = new Intent(this, DataItem.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
-        Log.d("myLogs", "onClickFloatingActionButton");
     }
 }

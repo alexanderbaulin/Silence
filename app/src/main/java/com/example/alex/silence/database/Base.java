@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import com.example.alex.silence.Data;
-import com.example.alex.silence.Logger;
 
 import java.util.LinkedList;
 
@@ -101,8 +100,6 @@ public class Base extends SQLiteOpenHelper {
         do {
             Data dataItem = getDataItem(cursor);
             data.add(dataItem);
-
-            Logger.log(Logger.LOG_DATABASE, dataItem.toString());
         } while (cursor.moveToNext());
         cursor.close();
         return data;
