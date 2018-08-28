@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.example.alex.silence.database;
+package com.alexanderbaulin.silence.database;
 
 
 import android.content.ContentValues;
@@ -27,7 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.example.alex.silence.Data;
+import com.alexanderbaulin.silence.Data;
 
 import java.util.LinkedList;
 

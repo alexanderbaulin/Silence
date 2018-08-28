@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.example.alex.silence.activities;
+package com.alexanderbaulin.silence.activities;
 
 
 import android.app.AlertDialog;
@@ -33,9 +33,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.example.alex.silence.Data;
-import com.example.alex.silence.R;
-import com.example.alex.silence.fragments.TimePicker;
+import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.silence.R;
+import com.alexanderbaulin.silence.fragments.TimePicker;
 
 
 public class DataItem extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {

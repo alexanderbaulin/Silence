@@ -1,4 +1,4 @@
-package com.example.alex.silence;
+package com.alexanderbaulin.silence.silence;
 
 import org.junit.Test;
 

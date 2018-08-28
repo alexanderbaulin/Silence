@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.example.alex.silence.adapters;
+package com.alexanderbaulin.silence.adapters;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +28,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.alex.silence.Alarm;
-import com.example.alex.silence.Data;
-import com.example.alex.silence.R;
-import com.example.alex.silence.database.Base;
+import com.alexanderbaulin.silence.Alarm;
+import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.silence.R;
+import com.alexanderbaulin.silence.database.Base;
 
 import java.util.Collections;
 import java.util.LinkedList;

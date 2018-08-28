@@ -1,10 +1,11 @@
-package com.example.alex.silence;
+package com.alexanderbaulin.silence.silence;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.alex.silence.database.Base;
+import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.database.Base;
 
 import org.junit.Before;
 import org.junit.Test;

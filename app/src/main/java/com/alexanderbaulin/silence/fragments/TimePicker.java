@@ -17,25 +17,25 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.example.alex.silence;
+package com.alexanderbaulin.silence.fragments;
 
-import android.app.ActivityManager;
-import android.content.Context;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.text.format.DateFormat;
 
+import java.util.Calendar;
 
+public class TimePicker extends DialogFragment {
+    Calendar c = Calendar.getInstance();
+    int hour = c.get(Calendar.HOUR_OF_DAY);
+    int minute = c.get(Calendar.MINUTE);
 
-public class MyApp extends android.app.Application {
-    private static MyApp instance;
-    private static ActivityManager am;
-
+    @NonNull
     @Override
-    public void onCreate() {
-        instance = this;
-        am = (ActivityManager) instance.getSystemService(ACTIVITY_SERVICE);
-        super.onCreate();
-    }
-
-    public static Context getAppContext() {
-        return instance.getApplicationContext();
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new TimePickerDialog(getActivity(), (TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()));
     }
 }

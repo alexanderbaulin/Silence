@@ -17,16 +17,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.example.alex.silence.receivers;
+package com.alexanderbaulin.silence.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.alex.silence.Alarm;
-import com.example.alex.silence.Data;
-import com.example.alex.silence.MyApp;
-import com.example.alex.silence.database.Base;
+import com.alexanderbaulin.silence.Alarm;
+import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.MyApp;
+import com.alexanderbaulin.silence.database.Base;
 
 import java.util.List;
 
