@@ -24,11 +24,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.util.Log;
+//import android.util.Log;
 
 
 
-import java.util.Arrays;
+//import java.util.Arrays;
 import com.alexanderbaulin.silence.receivers.AlarmReceiver;
 
 import java.util.Calendar;
@@ -58,16 +58,16 @@ public class Alarm {
         int startHour = dataItem.timeBegin[0];
         int endHour2 = dataItem.timeEnd[0];
         if (startHour > endHour2) {
-            Log.d("myLogs1", "startHour > endHour");
+            //Log.d("myLogs1", "startHour > endHour");
             timeEnd = timeEnd + AlarmManager.INTERVAL_DAY;
         }
         long timeNow = getTime();
 
-        Logger.log(timeNow, "time now");
-        Logger.log(timeStart, "time start");
-        Logger.log(timeEnd, "time end");
+        //Logger.log(timeNow, "time now");
+        //Logger.log(timeStart, "time start");
+        //Logger.log(timeEnd, "time end");
 
-        Logger.log("todayIndex " + getTodayDayIndex());
+        //Logger.log("todayIndex " + getTodayDayIndex());
 
         boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
@@ -80,7 +80,7 @@ public class Alarm {
         int dayOfWeekEndIndex = 7;
 
         if ((isYesterdayChecked) && (beginHour > endHour) && (timeNow < getEndTime(dataItem))) {
-            Log.d("myLogs1", "(isYesterdayChecked) && (beginHour > endHour) && (timeNow < getEndTime(dataItem)");
+            //Log.d("myLogs1", "(isYesterdayChecked) && (beginHour > endHour) && (timeNow < getEndTime(dataItem)");
             long testTimeEnd = getTime(dataItem.timeEnd[0], dataItem.timeEnd[1]);
             long testTimeStart = getStartTime(dataItem) - AlarmManager.INTERVAL_DAY;
             setSoundMode(dataItem.isVibrationAllowed);
@@ -91,16 +91,16 @@ public class Alarm {
             dayOfWeekEndIndex = 6;
         } else if (isTodayChecked) {
             if ((timeStart < timeNow) && (timeNow < timeEnd)) {
-                Logger.log("timeStart < timeNow < timeEnd");
+                //Logger.log("timeStart < timeNow < timeEnd");
                 setSoundMode(dataItem.isVibrationAllowed);
                 setAlarm(timeStart + WEEK_INTERVAL, getStartModeIntent(dataItem));
                 setAlarm(timeEnd, getEndModeIntent(dataItem));
             } else if (timeEnd < timeNow) {
-                Logger.log("timeEnd < timeNow");
+                //Logger.log("timeEnd < timeNow");
                 setAlarm(timeStart + WEEK_INTERVAL, getStartModeIntent(dataItem));
                 setAlarm(timeEnd + WEEK_INTERVAL, getEndModeIntent(dataItem));
             } else if (timeNow < timeStart) {
-                Logger.log("timeNow < timeStart");
+                //Logger.log("timeNow < timeStart");
                 setAlarm(timeStart, getStartModeIntent(dataItem));
                 setAlarm(timeEnd, getEndModeIntent(dataItem));
             }
@@ -112,7 +112,7 @@ public class Alarm {
         }
         for (int i = dayOfWeekStartIndex; i < dayOfWeekEndIndex; i++) {
             boolean isDayOfWeekChecked = checkedDays[i];
-            Logger.log("checkedDay " + isDayOfWeekChecked);
+            //Logger.log("checkedDay " + isDayOfWeekChecked);
             if (isDayOfWeekChecked) {
                 setAlarm(timeStart, getStartModeIntent(dataItem));
                 setAlarm(timeEnd, getEndModeIntent(dataItem));
@@ -121,7 +121,7 @@ public class Alarm {
             timeEnd += AlarmManager.INTERVAL_DAY;
         }
         requestCode = 0;
-        Log.d("myLogs", "days = " + Arrays.toString(checkedDays));
+        //Log.d("myLogs", "days = " + Arrays.toString(checkedDays));
     }
 
     private void setSoundMode(boolean isVibrationAllowed) {
@@ -134,12 +134,12 @@ public class Alarm {
 
     public void setSilentMode() {
         am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        Log.d("myLogs1", "noSound");
+        //Log.d("myLogs1", "noSound");
     }
 
     public void setVibrationMode() {
         am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-        Log.d("myLogs1", "vibrateMode");
+        //Log.d("myLogs1", "vibrateMode");
     }
 
     public void setNormalMode() {
@@ -152,7 +152,7 @@ public class Alarm {
         int minute = i.getIntExtra("minute", 0);
         long currentTime = getTime(hour, minute);
 
-        Log.d("myLogs1", "repeatAlarm request code = " + requestCode);
+        //Log.d("myLogs1", "repeatAlarm request code = " + requestCode);
         setAlarm(currentTime + WEEK_INTERVAL, i);
     }
 
@@ -166,7 +166,7 @@ public class Alarm {
         int startHour = dataItem.timeBegin[0];
         int endHour = dataItem.timeEnd[0];
         if (startHour > endHour) {
-            Log.d("myLogs1", "startHour > endHour");
+            //Log.d("myLogs1", "startHour > endHour");
             timeEnd = timeEnd + AlarmManager.INTERVAL_DAY;
         }
         boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
@@ -179,9 +179,9 @@ public class Alarm {
 
         for (int i = 0; i < daysInWeek; i++) {
             manager.cancel(getPendingIntent(++requestCode, getStartModeIntent(dataItem)));
-            Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
+            //Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
             manager.cancel(getPendingIntent(++requestCode, getEndModeIntent(dataItem)));
-            Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
+            //Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
         }
     }
 
@@ -190,7 +190,7 @@ public class Alarm {
                 AlarmManager.RTC_WAKEUP,
                 time,
                 getPendingIntent(intent));
-        Logger.log(time, "start, requestCode = " + intent.getIntExtra("code", 0));
+        //Logger.log(time, "start, requestCode = " + intent.getIntExtra("code", 0));
     }
 
 
