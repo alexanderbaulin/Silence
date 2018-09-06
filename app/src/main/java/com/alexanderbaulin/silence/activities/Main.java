@@ -22,8 +22,10 @@ package com.alexanderbaulin.silence.activities;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -90,8 +92,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void checkNotificationPolicy() {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
+        if (!notificationManager.isNotificationPolicyAccessGranted()) {
             Intent settingAccessPolicy = new Intent(
                     android.provider.Settings
                             .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);

@@ -39,14 +39,14 @@ import com.alexanderbaulin.silence.fragments.TimePicker;
 
 
 public class DataItem extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
-    EditText editText;
+    EditText description;
     Data dataItem;
-    Button timeFrom, timeUntil, submit;
+    Button timeStartMode, timeCancelMode, submit;
     CheckBox monday, tuesday, wednesday, thursday, friday, saturday, sunday;
     RadioGroup radioGroup;
     RadioButton noSound, vibrationAllowed;
-    final String TAG_TIME_PICKER_START = "time from";
-    final String TAG_TIME_PICKER_END = "time to";
+    final String TAG_TIME_PICKER_START = "time start mode";
+    final String TAG_TIME_PICKER_END = "time cancel mode";
     int updatedPosition;
 
     @Override
@@ -59,8 +59,8 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
             createNewItemAction();
         else
             updateItemAction();
-        timeFrom.setOnClickListener(this);
-        timeUntil.setOnClickListener(this);
+        timeStartMode.setOnClickListener(this);
+        timeCancelMode.setOnClickListener(this);
         submit.setOnClickListener(this);
         monday.setOnClickListener(this);
     }
@@ -79,7 +79,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void updateTextEditField() {
-        editText.setText(dataItem.description);
+        description.setText(dataItem.description);
     }
 
     private void updateRadioGroupButtons() {
@@ -106,12 +106,12 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
         hour = dataItem.timeBegin[0];
         minute = dataItem.timeBegin[1];
         time = buildString(hour, minute);
-        timeFrom.setText(time);
+        timeStartMode.setText(time);
 
         hour = dataItem.timeEnd[0];
         minute = dataItem.timeEnd[1];
         time = buildString(hour, minute);
-        timeUntil.setText(time);
+        timeCancelMode.setText(time);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
                 break;
             case R.id.btnSubmit:
                 try {
-                    returnResultDataItem();
+                    setResultDataItem();
                 } catch (IllegalStateException e) {
                     showAlertDialog(e.getMessage());
                 }
@@ -141,9 +141,9 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
         alert.show();
     }
 
-    private void returnResultDataItem() throws IllegalStateException {
-        if (!isTimeStartSet()) throw new IllegalStateException("Set time from");
-        if (!isTimeEndSet()) throw new IllegalStateException("Set time until");
+    private void setResultDataItem() throws IllegalStateException {
+        if (!isTimeStartSet()) throw new IllegalStateException("Set time start mode");
+        if (!isTimeEndSet()) throw new IllegalStateException("Set time cancel mode");
         if (!isDaySet()) throw new IllegalStateException("No day selected");
 
         setCheckDays();
@@ -169,7 +169,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void setDescription() {
-        dataItem.description = editText.getText().toString().trim();
+        dataItem.description = description.getText().toString().trim();
     }
 
     private void setCheckDays() {
@@ -183,10 +183,10 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void initViews() {
-        editText = findViewById(R.id.editText);
+        description = findViewById(R.id.editText);
 
-        timeFrom = findViewById(R.id.btnTimeFrom);
-        timeUntil = findViewById(R.id.btnTimeTo);
+        timeStartMode = findViewById(R.id.btnTimeFrom);
+        timeCancelMode = findViewById(R.id.btnTimeTo);
         submit = findViewById(R.id.btnSubmit);
 
         monday = findViewById(R.id.chkMon);
@@ -213,22 +213,22 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     private boolean isDaySet() {
         return
                 monday.isChecked() ||
-                        tuesday.isChecked() ||
-                        wednesday.isChecked() ||
-                        thursday.isChecked() ||
-                        friday.isChecked() ||
-                        saturday.isChecked() ||
-                        sunday.isChecked();
+                tuesday.isChecked() ||
+                wednesday.isChecked() ||
+                thursday.isChecked() ||
+                friday.isChecked() ||
+                saturday.isChecked() ||
+                sunday.isChecked();
     }
 
     private boolean isTimeEndSet() {
-        String text = timeUntil.getText().toString();
+        String text = timeCancelMode.getText().toString();
         String defaultText = getStringResource(R.string.time_until);
         return !text.equals(defaultText);
     }
 
     private boolean isTimeStartSet() {
-        String text = timeFrom.getText().toString();
+        String text = timeStartMode.getText().toString();
         String defaultText = getStringResource(R.string.time_from);
         return !text.equals(defaultText);
     }
@@ -241,12 +241,12 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
         String text = buildString(hourOfDay, minute);
         if (findFragmentByTag(TAG_TIME_PICKER_START)) {
-            timeFrom.setText(text);
+            timeStartMode.setText(text);
             dataItem.timeBegin[0] = hourOfDay;
             dataItem.timeBegin[1] = minute;
         }
         if (findFragmentByTag(TAG_TIME_PICKER_END)) {
-            timeUntil.setText(text);
+            timeCancelMode.setText(text);
             dataItem.timeEnd[0] = hourOfDay;
             dataItem.timeEnd[1] = minute;
         }

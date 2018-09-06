@@ -53,13 +53,13 @@ public class Alarm {
         int daysInWeek = 7;
         int requestCodesInDataItem = daysInWeek * 2;
         requestCode = index * requestCodesInDataItem;
-        long timeStart = getStartTime(dataItem);
-        long timeEnd = getEndTime(dataItem);
-        int startHour = dataItem.timeBegin[0];
-        int endHour2 = dataItem.timeEnd[0];
-        if (startHour > endHour2) {
+        long timeStartMode = getStartTime(dataItem);
+        long timeEndMode = getEndTime(dataItem);
+        int startModeHourOfDay = dataItem.timeBegin[0];
+        int endModeHourOfDay = dataItem.timeEnd[0];
+        if (startModeHourOfDay > endModeHourOfDay) {
             //Log.d("myLogs1", "startHour > endHour");
-            timeEnd = timeEnd + AlarmManager.INTERVAL_DAY;
+            timeEndMode = timeEndMode + AlarmManager.INTERVAL_DAY;
         }
         long timeNow = getTime();
 
@@ -73,14 +73,14 @@ public class Alarm {
         boolean isTodayChecked = checkedDays[0];
         boolean isYesterdayChecked = checkedDays[6];
 
-        int beginHour = dataItem.timeBegin[0];
-        int endHour = dataItem.timeEnd[0];
+        //int startModeHourOfDay = dataItem.timeBegin[0];
+        //int endHour = dataItem.timeEnd[0];
 
         int dayOfWeekStartIndex = 0;
         int dayOfWeekEndIndex = 7;
 
-        if ((isYesterdayChecked) && (beginHour > endHour) && (timeNow < getEndTime(dataItem))) {
-            //Log.d("myLogs1", "(isYesterdayChecked) && (beginHour > endHour) && (timeNow < getEndTime(dataItem)");
+        if ((isYesterdayChecked) && (startModeHourOfDay > endModeHourOfDay) && (timeNow < getEndTime(dataItem))) {
+            //Log.d("myLogs1", "(isYesterdayChecked) && (startModeHourOfDay > endHour) && (timeNow < getEndTime(dataItem)");
             long testTimeEnd = getTime(dataItem.timeEnd[0], dataItem.timeEnd[1]);
             long testTimeStart = getStartTime(dataItem) - AlarmManager.INTERVAL_DAY;
             setSoundMode(dataItem.isVibrationAllowed);
@@ -90,22 +90,22 @@ public class Alarm {
             dayOfWeekStartIndex = 0;
             dayOfWeekEndIndex = 6;
         } else if (isTodayChecked) {
-            if ((timeStart < timeNow) && (timeNow < timeEnd)) {
+            if ((timeStartMode < timeNow) && (timeNow < timeEndMode)) {
                 //Logger.log("timeStart < timeNow < timeEnd");
                 setSoundMode(dataItem.isVibrationAllowed);
-                setAlarm(timeStart + WEEK_INTERVAL, getStartModeIntent(dataItem));
-                setAlarm(timeEnd, getEndModeIntent(dataItem));
-            } else if (timeEnd < timeNow) {
+                setAlarm(timeStartMode + WEEK_INTERVAL, getStartModeIntent(dataItem));
+                setAlarm(timeEndMode, getEndModeIntent(dataItem));
+            } else if (timeEndMode < timeNow) {
                 //Logger.log("timeEnd < timeNow");
-                setAlarm(timeStart + WEEK_INTERVAL, getStartModeIntent(dataItem));
-                setAlarm(timeEnd + WEEK_INTERVAL, getEndModeIntent(dataItem));
-            } else if (timeNow < timeStart) {
+                setAlarm(timeStartMode + WEEK_INTERVAL, getStartModeIntent(dataItem));
+                setAlarm(timeEndMode + WEEK_INTERVAL, getEndModeIntent(dataItem));
+            } else if (timeNow < timeStartMode) {
                 //Logger.log("timeNow < timeStart");
-                setAlarm(timeStart, getStartModeIntent(dataItem));
-                setAlarm(timeEnd, getEndModeIntent(dataItem));
+                setAlarm(timeStartMode, getStartModeIntent(dataItem));
+                setAlarm(timeEndMode, getEndModeIntent(dataItem));
             }
-            timeStart += AlarmManager.INTERVAL_DAY;
-            timeEnd += AlarmManager.INTERVAL_DAY;
+            timeStartMode += AlarmManager.INTERVAL_DAY;
+            timeEndMode += AlarmManager.INTERVAL_DAY;
 
             dayOfWeekStartIndex = 1;
             dayOfWeekEndIndex = 7;
@@ -114,11 +114,11 @@ public class Alarm {
             boolean isDayOfWeekChecked = checkedDays[i];
             //Logger.log("checkedDay " + isDayOfWeekChecked);
             if (isDayOfWeekChecked) {
-                setAlarm(timeStart, getStartModeIntent(dataItem));
-                setAlarm(timeEnd, getEndModeIntent(dataItem));
+                setAlarm(timeStartMode, getStartModeIntent(dataItem));
+                setAlarm(timeEndMode, getEndModeIntent(dataItem));
             }
-            timeStart += AlarmManager.INTERVAL_DAY;
-            timeEnd += AlarmManager.INTERVAL_DAY;
+            timeStartMode += AlarmManager.INTERVAL_DAY;
+            timeEndMode += AlarmManager.INTERVAL_DAY;
         }
         requestCode = 0;
         //Log.d("myLogs", "days = " + Arrays.toString(checkedDays));
