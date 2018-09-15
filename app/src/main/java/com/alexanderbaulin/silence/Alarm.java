@@ -24,6 +24,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.util.Log;
 //import android.util.Log;
 
 
@@ -31,6 +32,7 @@ import android.media.AudioManager;
 //import java.util.Arrays;
 import com.alexanderbaulin.silence.receivers.AlarmReceiver;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -41,7 +43,6 @@ public class Alarm {
     private AlarmManager manager;
     private AudioManager am;
     private final long WEEK_INTERVAL = AlarmManager.INTERVAL_DAY * 7;
-    private int requestCode;
 
     public Alarm() {
         manager = (AlarmManager) MyApp.getAppContext().getSystemService(ALARM_SERVICE);
@@ -52,22 +53,22 @@ public class Alarm {
         //Toast.makeText(MyApp.getAppContext(), "startAlarm", Toast.LENGTH_SHORT).show();
         int daysInWeek = 7;
         int requestCodesInDataItem = daysInWeek * 2;
-        requestCode = index * requestCodesInDataItem;
+        int requestCode = index * requestCodesInDataItem;
         long timeStartMode = getStartTime(dataItem);
         long timeEndMode = getEndTime(dataItem);
         int startModeHourOfDay = dataItem.timeBegin[0];
         int endModeHourOfDay = dataItem.timeEnd[0];
         if (startModeHourOfDay > endModeHourOfDay) {
-            //Log.d("myLogs1", "startHour > endHour");
+            Log.d("myLogs1", "startHour > endHour");
             timeEndMode = timeEndMode + AlarmManager.INTERVAL_DAY;
         }
         long timeNow = getTime();
 
-        //Logger.log(timeNow, "time now");
-        //Logger.log(timeStart, "time start");
-        //Logger.log(timeEnd, "time end");
+        Logger.log(timeNow, "time now");
+        Logger.log(timeStartMode, "time start");
+        Logger.log(timeEndMode, "time end");
 
-        //Logger.log("todayIndex " + getTodayDayIndex());
+        Logger.log("todayIndex " + getTodayDayIndex());
 
         boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
@@ -80,29 +81,64 @@ public class Alarm {
         int dayOfWeekEndIndex = 7;
 
         if ((isYesterdayChecked) && (startModeHourOfDay > endModeHourOfDay) && (timeNow < getEndTime(dataItem))) {
-            //Log.d("myLogs1", "(isYesterdayChecked) && (startModeHourOfDay > endHour) && (timeNow < getEndTime(dataItem)");
+            Log.d("myLogs1", "(isYesterdayChecked) && (startModeHourOfDay > endHour) && (timeNow < getEndTime(dataItem)");
             long testTimeEnd = getTime(dataItem.timeEnd[0], dataItem.timeEnd[1]);
             long testTimeStart = getStartTime(dataItem) - AlarmManager.INTERVAL_DAY;
             setSoundMode(dataItem.isVibrationAllowed);
-            setAlarm(testTimeStart + WEEK_INTERVAL, getStartModeIntent(dataItem));
-            setAlarm(testTimeEnd, getEndModeIntent(dataItem));
+
+            ++requestCode;
+            setAlarm(
+                    testTimeStart + WEEK_INTERVAL,
+                     getStartModeIntent(dataItem, requestCode),
+                     requestCode
+            );
+            ++requestCode;
+            setAlarm(
+                    testTimeEnd,
+                    getEndModeIntent(dataItem, requestCode),
+                    requestCode
+            );
 
             dayOfWeekStartIndex = 0;
             dayOfWeekEndIndex = 6;
         } else if (isTodayChecked) {
             if ((timeStartMode < timeNow) && (timeNow < timeEndMode)) {
-                //Logger.log("timeStart < timeNow < timeEnd");
+                Logger.log("timeStart < timeNow < timeEnd");
                 setSoundMode(dataItem.isVibrationAllowed);
-                setAlarm(timeStartMode + WEEK_INTERVAL, getStartModeIntent(dataItem));
-                setAlarm(timeEndMode, getEndModeIntent(dataItem));
+                ++requestCode;
+                setAlarm(timeStartMode + WEEK_INTERVAL,
+                        getStartModeIntent(dataItem, requestCode),
+                        requestCode
+                );
+                ++requestCode;
+                setAlarm(timeEndMode,
+                        getEndModeIntent(dataItem, requestCode),
+                        requestCode
+                );
             } else if (timeEndMode < timeNow) {
-                //Logger.log("timeEnd < timeNow");
-                setAlarm(timeStartMode + WEEK_INTERVAL, getStartModeIntent(dataItem));
-                setAlarm(timeEndMode + WEEK_INTERVAL, getEndModeIntent(dataItem));
+                Logger.log("timeEnd < timeNow");
+                ++requestCode;
+                setAlarm(timeStartMode + WEEK_INTERVAL,
+                        getStartModeIntent(dataItem, requestCode),
+                        requestCode
+                        );
+                ++requestCode;
+                setAlarm(timeEndMode + WEEK_INTERVAL,
+                        getEndModeIntent(dataItem, requestCode),
+                        requestCode
+                );
             } else if (timeNow < timeStartMode) {
-                //Logger.log("timeNow < timeStart");
-                setAlarm(timeStartMode, getStartModeIntent(dataItem));
-                setAlarm(timeEndMode, getEndModeIntent(dataItem));
+                Logger.log("timeNow < timeStart");
+                ++requestCode;
+                setAlarm(timeStartMode,
+                        getStartModeIntent(dataItem, requestCode),
+                        requestCode
+                );
+                ++requestCode;
+                setAlarm(timeEndMode,
+                        getEndModeIntent(dataItem, requestCode),
+                        requestCode
+                );
             }
             timeStartMode += AlarmManager.INTERVAL_DAY;
             timeEndMode += AlarmManager.INTERVAL_DAY;
@@ -112,16 +148,23 @@ public class Alarm {
         }
         for (int i = dayOfWeekStartIndex; i < dayOfWeekEndIndex; i++) {
             boolean isDayOfWeekChecked = checkedDays[i];
-            //Logger.log("checkedDay " + isDayOfWeekChecked);
+            Logger.log("checkedDay " + isDayOfWeekChecked);
             if (isDayOfWeekChecked) {
-                setAlarm(timeStartMode, getStartModeIntent(dataItem));
-                setAlarm(timeEndMode, getEndModeIntent(dataItem));
+                ++requestCode;
+                setAlarm(timeStartMode,
+                        getStartModeIntent(dataItem, requestCode),
+                        requestCode
+                );
+                ++requestCode;
+                setAlarm(timeEndMode,
+                        getEndModeIntent(dataItem, requestCode),
+                        requestCode
+                );
             }
             timeStartMode += AlarmManager.INTERVAL_DAY;
             timeEndMode += AlarmManager.INTERVAL_DAY;
         }
-        requestCode = 0;
-        //Log.d("myLogs", "days = " + Arrays.toString(checkedDays));
+        Log.d("myLogs", "days = " + Arrays.toString(checkedDays));
     }
 
     private void setSoundMode(boolean isVibrationAllowed) {
@@ -151,9 +194,8 @@ public class Alarm {
         int hour = i.getIntExtra("hour", 0);
         int minute = i.getIntExtra("minute", 0);
         long currentTime = getTime(hour, minute);
-
-        //Log.d("myLogs1", "repeatAlarm request code = " + requestCode);
-        setAlarm(currentTime + WEEK_INTERVAL, i);
+        Log.d("myLogs1", "repeatAlarm request code = " + requestCode);
+        setAlarm(System.currentTimeMillis() + WEEK_INTERVAL, i, requestCode);
     }
 
     public void cancel(Data dataItem, int index) {
@@ -178,19 +220,19 @@ public class Alarm {
             setNormalMode();
 
         for (int i = 0; i < daysInWeek; i++) {
-            manager.cancel(getPendingIntent(++requestCode, getStartModeIntent(dataItem)));
-            //Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
-            manager.cancel(getPendingIntent(++requestCode, getEndModeIntent(dataItem)));
-            //Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
+            manager.cancel(getPendingIntent(getStartModeIntent(dataItem, requestCode), ++requestCode));
+            Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
+            manager.cancel(getPendingIntent(getEndModeIntent(dataItem, requestCode), ++requestCode));
+            Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
         }
     }
 
-    private void setAlarm(long time, Intent intent) {
+    private void setAlarm(long time, Intent intent, int requestCode) {
         manager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 time,
-                getPendingIntent(intent));
-        //Logger.log(time, "start, requestCode = " + intent.getIntExtra("code", 0));
+                getPendingIntent(intent, requestCode));
+        Logger.log(time, "start, requestCode = " + requestCode);
     }
 
 
@@ -202,23 +244,23 @@ public class Alarm {
         return getTime(dataItem.timeBegin[0], dataItem.timeBegin[1]);
     }
 
-    private Intent getStartModeIntent(Data dataItem) {
+    private Intent getStartModeIntent(Data dataItem, int requestCode) {
         Intent i = new Intent(MyApp.getAppContext(), AlarmReceiver.class);
         if (dataItem.isVibrationAllowed) {
             i.setAction("vibration");
         } else {
             i.setAction("noSound");
         }
-        i.putExtra("code", ++requestCode);
+        i.putExtra("code", requestCode);
         i.putExtra("hour", dataItem.timeBegin[0]);
         i.putExtra("minute", dataItem.timeBegin[1]);
         return i;
     }
 
-    private Intent getEndModeIntent(Data dataItem) {
+    private Intent getEndModeIntent(Data dataItem, int requestCode) {
         Intent i = new Intent(MyApp.getAppContext(), AlarmReceiver.class);
         i.setAction("normalMode");
-        i.putExtra("code", ++requestCode);
+        i.putExtra("code", requestCode);
         i.putExtra("hour", dataItem.timeEnd[0]);
         i.putExtra("minute", dataItem.timeEnd[1]);
         return i;
@@ -228,8 +270,6 @@ public class Alarm {
         Calendar now = Calendar.getInstance();
         now.set(Calendar.HOUR_OF_DAY, hour);
         now.set(Calendar.MINUTE, minute);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
         return now.getTimeInMillis();
     }
 
@@ -249,11 +289,7 @@ public class Alarm {
         else return day - 2;
     }
 
-    private PendingIntent getPendingIntent(Intent i) {
-        return PendingIntent.getBroadcast(MyApp.getAppContext(), requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-    }
-
-    private PendingIntent getPendingIntent(int requestCode, Intent i) {
+    private PendingIntent getPendingIntent(Intent i, int requestCode) {
         return PendingIntent.getBroadcast(MyApp.getAppContext(), requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
