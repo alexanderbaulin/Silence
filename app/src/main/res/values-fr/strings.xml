@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Silence</string>
+    <string name="day_monday">Lun</string>
+    <string name="day_tuesday">Mar</string>
+    <string name="day_wednesday">Mer</string>
+    <string name="day_thursday">Jeu</string>
+    <string name="day_friday">Ven</string>
+    <string name="day_saturday">Sam</string>
+    <string name="day_sunday">Dim</string>
+    <string name="time_from">le temps de</string>
+    <string name="time_until">temps jusqu\'à</string>
+    <string name="description">la description</string>
+    <string name="save">enregistrer</string>
+    <string name="no_sound">pas de son</string>
+    <string name="vibration_allowed">vibrations autorisées</string>
+    <string name="ask_permission">Demande de recherche de silence et autorisation demandée</string>
+    <string name="every_day">tous les jours</string>
+</resources>

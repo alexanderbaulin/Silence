@@ -18,6 +18,7 @@
     <string name="no_sound">no sound</string>
     <string name="vibration_allowed">vibration allowed"</string>
     <string name="ask_permission">Find Silence application and grant requested permission</string>
+    <string name="every_day">every day</string>
 
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>

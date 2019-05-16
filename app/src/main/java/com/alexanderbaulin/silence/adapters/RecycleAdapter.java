@@ -141,7 +141,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private String parseDaysText(boolean[] daysOfWeek) {
         StringBuilder builder = new StringBuilder();
-        if (isAllDaysChecked(daysOfWeek)) return builder.append("every day").toString();
+        if (isAllDaysChecked(daysOfWeek)) return builder.append(context.getString(R.string.every_day)).toString();
         if (daysOfWeek[0]) {
             builder.append(context.getString(R.string.day_monday));
             builder.append(" ");
