@@ -36,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alexanderbaulin.silence.Alarm;
 import com.alexanderbaulin.silence.Data;
@@ -86,17 +87,9 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         alarm = new Alarm();
-        checkNotificationPolicy();
-    }
 
-    private void checkNotificationPolicy() {
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        assert notificationManager != null;
-        if (!notificationManager.isNotificationPolicyAccessGranted()) {
-            Intent settingAccessPolicy = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-            getApplicationContext().startActivity(settingAccessPolicy);
+        if(!MyApp.isNotificationPolicyAccessGranted()) {
+            MyApp.requestNotificationAccess();
         }
     }
 
@@ -311,6 +304,10 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     public void onClickFloatingActionButton(View view) {
+        if(!MyApp.isNotificationPolicyAccessGranted()) {
+            MyApp.requestNotificationAccess();
+            return;
+        }
         Intent intent = new Intent(this, DataItem.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);

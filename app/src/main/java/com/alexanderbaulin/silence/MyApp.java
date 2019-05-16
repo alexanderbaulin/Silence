@@ -20,22 +20,39 @@
 package com.alexanderbaulin.silence;
 
 import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
+import com.alexanderbaulin.silence.silence.R;
 
 
 public class MyApp extends android.app.Application {
     private static MyApp instance;
     private static ActivityManager am;
+    private static NotificationManager notificationManager;
 
     @Override
     public void onCreate() {
         instance = this;
         am = (ActivityManager) instance.getSystemService(ACTIVITY_SERVICE);
+        notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         super.onCreate();
     }
 
     public static Context getAppContext() {
         return instance.getApplicationContext();
     }
+
+    public static boolean isNotificationPolicyAccessGranted() {
+        return notificationManager.isNotificationPolicyAccessGranted();
+    }
+
+    public static void requestNotificationAccess() {
+        Toast.makeText(instance, instance.getResources().getString(R.string.ask_permission), Toast.LENGTH_SHORT).show();
+        Intent settingAccessPolicy = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+        instance.startActivity(settingAccessPolicy);
+    }
+
 }
