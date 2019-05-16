@@ -19,6 +19,7 @@
 
 package com.alexanderbaulin.silence.adapters;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import com.alexanderbaulin.silence.Alarm;
 import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.database.Base;
 
@@ -252,7 +254,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private void setItemBackground(Data currentItem, View itemView) {
         if (currentItem.isSelected)
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.colorItemBackground));
+            itemView.setBackgroundColor(ContextCompat.getColor(MyApp.getAppContext(), R.color.colorItemBackground));
         else
             itemView.setBackgroundResource(R.drawable.custom_background);
     }
