@@ -22,28 +22,41 @@ package com.alexanderbaulin.silence;
 
 import android.util.Log;
 
+import com.alexanderbaulin.silence.silence.BuildConfig;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class Logger {
-    public static String LOG_DATABASE = "test2";
-    private static String LOG = "myLogs1";
+    static private boolean LOG = BuildConfig.DEBUG;
 
-    public static void log(String tag, String message) {
-        Log.d(tag, message);
+    public static void i(String tag, String string) {
+        if (LOG) Log.i(tag, string);
     }
 
-    static void log(String s) {
-        Log.d(LOG, s);
+    public static void e(String tag, String string) {
+        if (LOG) Log.e(tag, string);
     }
 
-    static void log(long time, String message) {
+    public static void d(String tag, String string) {
+        if (LOG) Log.d(tag, string);
+    }
+
+    public static void v(String tag, String string) {
+        if (LOG) Log.v(tag, string);
+    }
+
+    public static void w(String tag, String string) {
+        if (LOG) Log.w(tag, string);
+    }
+
+    static String createMessage(long time, String message) {
         Date date = new Date(time);
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.UK);
         DateFormat tf = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.UK);
         String formattedDate = df.format(date);
         String formattedTime = tf.format(date);
-        Logger.log(message + " " + formattedDate + " " + formattedTime);
+        return message + " " + formattedDate + " " + formattedTime;
     }
 }

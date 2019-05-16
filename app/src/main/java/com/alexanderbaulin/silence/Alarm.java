@@ -62,11 +62,11 @@ public class Alarm {
         }
         long timeNow = getTime();
 
-        //Logger.log(timeNow, "time now");
-        //Logger.log(timeStartMode, "time start");
-        //Logger.log(timeEndMode, "time end");
+        //Logger.createMessage(timeNow, "time now");
+        //Logger.createMessage(timeStartMode, "time start");
+        //Logger.createMessage(timeEndMode, "time end");
 
-        //Logger.log("todayIndex " + getTodayDayIndex());
+        //Logger.createMessage("todayIndex " + getTodayDayIndex());
 
         boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
@@ -101,7 +101,7 @@ public class Alarm {
             dayOfWeekEndIndex = 6;
         } else if (isTodayChecked) {
             if ((timeStartMode < timeNow) && (timeNow < timeEndMode)) {
-                //Logger.log("timeStart < timeNow < timeEnd");
+                //Logger.createMessage("timeStart < timeNow < timeEnd");
                 setSoundMode(dataItem.isVibrationAllowed);
                 ++requestCode;
                 setAlarm(timeStartMode + WEEK_INTERVAL,
@@ -114,7 +114,7 @@ public class Alarm {
                         requestCode
                 );
             } else if (timeEndMode < timeNow) {
-                //Logger.log("timeEnd < timeNow");
+                //Logger.createMessage("timeEnd < timeNow");
                 ++requestCode;
                 setAlarm(timeStartMode + WEEK_INTERVAL,
                         getStartModeIntent(dataItem, requestCode),
@@ -126,7 +126,7 @@ public class Alarm {
                         requestCode
                 );
             } else if (timeNow < timeStartMode) {
-                //Logger.log("timeNow < timeStart");
+                //Logger.createMessage("timeNow < timeStart");
                 ++requestCode;
                 setAlarm(timeStartMode,
                         getStartModeIntent(dataItem, requestCode),
@@ -146,7 +146,7 @@ public class Alarm {
         }
         for (int i = dayOfWeekStartIndex; i < dayOfWeekEndIndex; i++) {
             boolean isDayOfWeekChecked = checkedDays[i];
-            //Logger.log("checkedDay " + isDayOfWeekChecked);
+            //Logger.createMessage("checkedDay " + isDayOfWeekChecked);
             if (isDayOfWeekChecked) {
                 ++requestCode;
                 setAlarm(timeStartMode,
@@ -230,7 +230,7 @@ public class Alarm {
                 AlarmManager.RTC_WAKEUP,
                 time,
                 getPendingIntent(intent, requestCode));
-        //Logger.log(time, "start, requestCode = " + requestCode);
+        //Logger.createMessage(time, "start, requestCode = " + requestCode);
     }
 
 
