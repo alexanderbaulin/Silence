@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.database;
+package com.alexanderbaulin.silence.mvp.model.database;
 
 
 import android.content.ContentValues;
@@ -27,7 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.mvp.model.DataItem;
 
 import java.util.LinkedList;
 
@@ -67,24 +67,24 @@ public class Base extends SQLiteOpenHelper {
         );
     }
 
-    public long insert(Data data) {
+    public long insert(DataItem dataItem) {
         SQLiteDatabase dp = getWritableDatabase();
-        ContentValues cv = getValues(data);
+        ContentValues cv = getValues(dataItem);
         long key = dp.insert(Table.TABLE_NAME, null, cv);
         dp.close();
         return key;
     }
 
-    private ContentValues getValues(Data data) {
+    private ContentValues getValues(DataItem dataItem) {
         ContentValues cv = new ContentValues();
-        cv.put(Table.COLUMN_DESCRIPTION, data.description);
-        cv.put(Table.COLUMN_TIME_BEGIN_HOUR, data.timeBegin[0]);
-        cv.put(Table.COLUMN_TIME_BEGIN_MINUTE, data.timeBegin[1]);
-        cv.put(Table.COLUMN_TIME_END_HOUR, data.timeEnd[0]);
-        cv.put(Table.COLUMN_TIME_END_MINUTE, data.timeEnd[1]);
-        cv.put(Table.COLUMN_CHECKED_DAYS, boolArrayToString(data.checkedDays));
-        cv.put(Table.COLUMN_IS_ALARM_ON, boolToInt(data.isAlarmOn));
-        cv.put(Table.COLUMN_IS_VIBRATION_ALLOWED, boolToInt(data.isVibrationAllowed));
+        cv.put(Table.COLUMN_DESCRIPTION, dataItem.description);
+        cv.put(Table.COLUMN_TIME_BEGIN_HOUR, dataItem.timeBegin[0]);
+        cv.put(Table.COLUMN_TIME_BEGIN_MINUTE, dataItem.timeBegin[1]);
+        cv.put(Table.COLUMN_TIME_END_HOUR, dataItem.timeEnd[0]);
+        cv.put(Table.COLUMN_TIME_END_MINUTE, dataItem.timeEnd[1]);
+        cv.put(Table.COLUMN_CHECKED_DAYS, boolArrayToString(dataItem.checkedDays));
+        cv.put(Table.COLUMN_IS_ALARM_ON, boolToInt(dataItem.isAlarmOn));
+        cv.put(Table.COLUMN_IS_VIBRATION_ALLOWED, boolToInt(dataItem.isVibrationAllowed));
         return cv;
     }
 
@@ -104,38 +104,38 @@ public class Base extends SQLiteOpenHelper {
         return value ? 1 : 0;
     }
 
-    public LinkedList<Data> select() {
+    public LinkedList<DataItem> select() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor c = db.rawQuery(Table.TABLE_SELECT, null);
-        LinkedList<Data> data = getDataFrom(c);
+        LinkedList<DataItem> data = getDataFrom(c);
         db.close();
         return data;
     }
 
-    private LinkedList<Data> getDataFrom(Cursor cursor) {
-        LinkedList<Data> data = new LinkedList<>();
+    private LinkedList<DataItem> getDataFrom(Cursor cursor) {
+        LinkedList<DataItem> data = new LinkedList<>();
         if (!cursor.moveToFirst()) return data;
         do {
-            Data dataItem = getDataItem(cursor);
+            DataItem dataItem = getDataItem(cursor);
             data.add(dataItem);
         } while (cursor.moveToNext());
         cursor.close();
         return data;
     }
 
-    private Data getDataItem(Cursor cursor) {
-        Data data = new Data();
-        data.id = cursor.getLong(cursor.getColumnIndex(Table.COLUMN_ID));
-        data.description = cursor.getString(cursor.getColumnIndex(Table.COLUMN_DESCRIPTION));
-        data.timeBegin[0] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_BEGIN_HOUR));
-        data.timeBegin[1] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_BEGIN_MINUTE));
-        data.timeEnd[0] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_END_HOUR));
-        data.timeEnd[1] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_END_MINUTE));
+    private DataItem getDataItem(Cursor cursor) {
+        DataItem dataItem = new DataItem();
+        dataItem.id = cursor.getLong(cursor.getColumnIndex(Table.COLUMN_ID));
+        dataItem.description = cursor.getString(cursor.getColumnIndex(Table.COLUMN_DESCRIPTION));
+        dataItem.timeBegin[0] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_BEGIN_HOUR));
+        dataItem.timeBegin[1] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_BEGIN_MINUTE));
+        dataItem.timeEnd[0] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_END_HOUR));
+        dataItem.timeEnd[1] = cursor.getInt(cursor.getColumnIndex(Table.COLUMN_TIME_END_MINUTE));
         String string = cursor.getString(cursor.getColumnIndex(Table.COLUMN_CHECKED_DAYS));
-        data.checkedDays = stringToBoolArray(string);
-        data.isAlarmOn = intToBool(cursor.getInt(cursor.getColumnIndex(Table.COLUMN_IS_ALARM_ON)));
-        data.isVibrationAllowed = intToBool(cursor.getInt(cursor.getColumnIndex(Table.COLUMN_IS_VIBRATION_ALLOWED)));
-        return data;
+        dataItem.checkedDays = stringToBoolArray(string);
+        dataItem.isAlarmOn = intToBool(cursor.getInt(cursor.getColumnIndex(Table.COLUMN_IS_ALARM_ON)));
+        dataItem.isVibrationAllowed = intToBool(cursor.getInt(cursor.getColumnIndex(Table.COLUMN_IS_VIBRATION_ALLOWED)));
+        return dataItem;
     }
 
     private boolean intToBool(int value) {
@@ -161,7 +161,7 @@ public class Base extends SQLiteOpenHelper {
         return deletedRowsCount;
     }
 
-    public int update(long id, Data item) {
+    public int update(long id, DataItem item) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = getValues(item);
         int updatedRowsCount = db.update(Table.TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});

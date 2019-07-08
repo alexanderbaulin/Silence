@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.adapters;
+package com.alexanderbaulin.silence.mvp.view.adapters;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +29,12 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.alexanderbaulin.silence.Alarm;
-import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.Logger;
+import com.alexanderbaulin.silence.mvp.model.Alarm;
+import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
-import com.alexanderbaulin.silence.database.Base;
+import com.alexanderbaulin.silence.mvp.model.database.Base;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -42,18 +43,19 @@ import java.util.List;
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHolder> {
     private LayoutInflater inflater;
-    private List<Data> data;
+    private List<DataItem> data;
     private AppCompatActivity context;
     private boolean isMultiSelection;
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
     private Base db;
 
-    public RecycleAdapter(AppCompatActivity ctx, List<Data> dataList) {
+    public RecycleAdapter(AppCompatActivity ctx, List<DataItem> dataItemList) {
         inflater = LayoutInflater.from(ctx);
-        data = dataList;
+        data = dataItemList;
         context = ctx;
         db = new Base(context);
+        Logger.d("dataBase", db.toString());
     }
 
     public void setOnLongItemListener(OnLongClickListener listener) {
@@ -67,7 +69,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     public void removeSelectedItems() {
         LinkedList<Integer> selectedPositions = new LinkedList<>();
         for (int position = 0; position < data.size(); position++) {
-            Data dataItem = data.get(position);
+            DataItem dataItem = data.get(position);
             if (dataItem.isSelected) {
                 selectedPositions.add(position);
             }
@@ -76,7 +78,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         for (int position = 0; position < selectedPositions.size(); position++) {
             int selectedPosition = selectedPositions.get(position);
             Base db = new Base(context);
-            Data deletedItem = data.remove(selectedPosition);
+            DataItem deletedItem = data.remove(selectedPosition);
             db.delete(deletedItem.id);
             notifyItemRemoved(selectedPosition);
         }
@@ -98,7 +100,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
-        final Data currentItem = data.get(position);
+        final DataItem currentItem = data.get(position);
         final Switch switcher = holder.switcher;
         final View itemView = holder.itemView;
         final ImageView image = holder.image;
@@ -115,7 +117,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         setOnLongClickListener(itemView, holder.getAdapterPosition());
     }
 
-    private void setImageView(ImageView image, Data currentItem) {
+    private void setImageView(ImageView image, DataItem currentItem) {
         if (currentItem.isVibrationAllowed)
             image.setImageResource(R.drawable.ic_baseline_vibration_48px);
         else
@@ -186,7 +188,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         else switcher.setVisibility(View.VISIBLE);
     }
 
-    private void setSwitcherListener(Switch switcher, final Data currentItem) {
+    private void setSwitcherListener(Switch switcher, final DataItem currentItem) {
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +205,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         });
     }
 
-    private void setOnItemClickListener(final View itemView, final int position, final Data currentItem) {
+    private void setOnItemClickListener(final View itemView, final int position, final DataItem currentItem) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +242,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     public int getSelectedItemsCount() {
         int result = 0;
         for (int position = 0; position < getItemCount(); position++) {
-            Data dataItem = data.get(position);
+            DataItem dataItem = data.get(position);
             if (dataItem.isSelected) {
                 result++;
             }
@@ -252,7 +254,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         return isMultiSelection;
     }
 
-    private void setItemBackground(Data currentItem, View itemView) {
+    private void setItemBackground(DataItem currentItem, View itemView) {
         if (currentItem.isSelected)
             itemView.setBackgroundColor(ContextCompat.getColor(MyApp.getAppContext(), R.color.colorItemBackground));
         else
@@ -268,7 +270,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private void clearSelection() {
         for (int i = 0; i < getItemCount(); i++) {
-            Data dataItem = data.get(i);
+            DataItem dataItem = data.get(i);
             if (dataItem.isSelected) {
                 dataItem.isSelected = false;
                 notifyItemChanged(i);

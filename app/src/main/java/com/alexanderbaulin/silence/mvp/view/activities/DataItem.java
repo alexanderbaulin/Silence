@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.activities;
+package com.alexanderbaulin.silence.mvp.view.activities;
 
 
 import android.app.AlertDialog;
@@ -33,14 +33,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.alexanderbaulin.silence.Data;
 import com.alexanderbaulin.silence.silence.R;
-import com.alexanderbaulin.silence.fragments.TimePicker;
+import com.alexanderbaulin.silence.mvp.view.fragments.TimePicker;
 
 
 public class DataItem extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
     EditText description;
-    Data dataItem;
+    com.alexanderbaulin.silence.mvp.model.DataItem dataItem;
     Button timeStartMode, timeCancelMode, submit;
     CheckBox monday, tuesday, wednesday, thursday, friday, saturday, sunday;
     RadioGroup radioGroup;
@@ -66,7 +65,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void updateItemAction() {
-        dataItem = getIntent().getParcelableExtra(Data.class.getCanonicalName());
+        dataItem = getIntent().getParcelableExtra(com.alexanderbaulin.silence.mvp.model.DataItem.class.getCanonicalName());
         updatedPosition = getIntent().getIntExtra("updatedPosition", -1);
         updateUI();
     }
@@ -157,7 +156,7 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
 
     private Intent createIntent() {
         Intent intent = new Intent();
-        String className = Data.class.getCanonicalName();
+        String className = com.alexanderbaulin.silence.mvp.model.DataItem.class.getCanonicalName();
         intent.putExtra(className, dataItem);
         if (updatedPosition != -1) intent.putExtra("updatedPosition", updatedPosition);
         return intent;
@@ -202,12 +201,12 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
         vibrationAllowed = findViewById(R.id.radVibration);
     }
 
-    private Data getDataFromIntent() {
-        return getIntent().getParcelableExtra(Data.class.getCanonicalName());
+    private com.alexanderbaulin.silence.mvp.model.DataItem getDataFromIntent() {
+        return getIntent().getParcelableExtra(com.alexanderbaulin.silence.mvp.model.DataItem.class.getCanonicalName());
     }
 
     private void createNewItemAction() {
-        dataItem = new Data();
+        dataItem = new com.alexanderbaulin.silence.mvp.model.DataItem();
     }
 
     private boolean isDaySet() {

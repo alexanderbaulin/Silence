@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.alexanderbaulin.silence.activities.Main"
+        <activity android:name="com.alexanderbaulin.silence.mvp.view.activities.Main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alexanderbaulin.silence.activities.DataItem"
+            android:name="com.alexanderbaulin.silence.mvp.view.activities.DataItem"
             android:label=""
-            android:parentActivityName="com.alexanderbaulin.silence.activities.Main"
+            android:parentActivityName="com.alexanderbaulin.silence.mvp.view.activities.Main"
             android:screenOrientation="portrait" />
-        <receiver android:name="com.alexanderbaulin.silence.receivers.AlarmReceiver">
+        <receiver android:name="com.alexanderbaulin.silence.mvp.presenter.receivers.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="vibration" />

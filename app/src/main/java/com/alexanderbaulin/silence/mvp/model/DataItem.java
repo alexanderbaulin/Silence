@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence;
+package com.alexanderbaulin.silence.mvp.model;
 
 
 import android.os.Parcel;
@@ -25,7 +25,7 @@ import android.os.Parcelable;
 
 import java.util.Arrays;
 
-public class Data implements Parcelable {
+public class DataItem implements Parcelable {
     public long id;
     public String description;
     public int[] timeBegin;
@@ -35,29 +35,29 @@ public class Data implements Parcelable {
     public boolean isAlarmOn;
     public boolean isSelected;
 
-    public Data() {
+    public DataItem() {
         checkedDays = new boolean[7];
         timeBegin = new int[2];
         timeEnd = new int[2];
         isAlarmOn = true;
     }
 
-    Data(int[] from, int[] until, boolean[] daysOfWeek, boolean isActivated) {
+    DataItem(int[] from, int[] until, boolean[] daysOfWeek, boolean isActivated) {
         this.isAlarmOn = isActivated;
         checkedDays = daysOfWeek;
         timeBegin = from;
         timeEnd = until;
     }
 
-    public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {
+    public static final Parcelable.Creator<DataItem> CREATOR = new Parcelable.Creator<DataItem>() {
         @Override
-        public Data createFromParcel(Parcel in) {
-            return new Data(in);
+        public DataItem createFromParcel(Parcel in) {
+            return new DataItem(in);
         }
 
         @Override
-        public Data[] newArray(int size) {
-            return new Data[size];
+        public DataItem[] newArray(int size) {
+            return new DataItem[size];
         }
     };
 
@@ -88,7 +88,7 @@ public class Data implements Parcelable {
         dest.writeIntArray(timeEnd);
     }
 
-    static boolean[] getCheckedDaysFromToday(boolean[] checkedDays, int todayIndex) {
+    public static boolean[] getCheckedDaysFromToday(boolean[] checkedDays, int todayIndex) {
         boolean[] result = new boolean[7];
         int index = 0;
         for(int i = todayIndex; i < checkedDays.length; ++i) {
@@ -100,7 +100,7 @@ public class Data implements Parcelable {
         return result;
     }
 
-    private Data(Parcel in) {
+    private DataItem(Parcel in) {
         description = in.readString();
         isSelected = in.readByte() != 0;
         isAlarmOn = in.readByte() != 0;

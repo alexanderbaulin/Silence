@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.database;
+package com.alexanderbaulin.silence.mvp.model.database;
 
 
 class Table {

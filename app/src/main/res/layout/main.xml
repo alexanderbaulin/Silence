@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.alexanderbaulin.silence.activities.Main">
+    tools:context="com.alexanderbaulin.silence.mvp.view.activities.Main">
 
     <include layout="@layout/app_bar"/>
     <FrameLayout

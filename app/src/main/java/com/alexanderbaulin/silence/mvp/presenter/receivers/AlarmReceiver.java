@@ -17,16 +17,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.receivers;
+package com.alexanderbaulin.silence.mvp.presenter.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexanderbaulin.silence.Alarm;
-import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.mvp.model.Alarm;
+import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
-import com.alexanderbaulin.silence.database.Base;
+import com.alexanderbaulin.silence.mvp.model.database.Base;
 
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         switch (action) {
             case Intent.ACTION_BOOT_COMPLETED:
                 Base base = new Base(MyApp.getAppContext());
-                List<Data> data = base.select();
-                for (Data dataItem : data) {
+                List<DataItem> data = base.select();
+                for (DataItem dataItem : data) {
                     if (dataItem.isAlarmOn) {
                         alarm.setAlarm(dataItem, data.indexOf(dataItem));
                     }

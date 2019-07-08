@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.fragments;
+package com.alexanderbaulin.silence.mvp.view.fragments;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;

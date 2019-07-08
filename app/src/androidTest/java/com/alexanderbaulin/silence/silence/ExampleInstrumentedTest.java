@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.alexanderbaulin.silence.Data;
-import com.alexanderbaulin.silence.database.Base;
+import com.alexanderbaulin.silence.mvp.model.DataItem;
+import com.alexanderbaulin.silence.mvp.model.database.Base;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,26 +69,26 @@ public class ExampleInstrumentedTest {
             assertNotEquals(Long.valueOf(db.insert(testData())), Long.valueOf(-1));
     }
 
-    private Data testData() {
-        Data data = new Data();
-        data.description = "description";
-        data.checkedDays = new boolean[]{true, true, true, true, true, true, true};
-        data.timeBegin = new int[] { 12, 20 };
-        data.timeEnd = new int[] { 13, 30 };
-        data.isAlarmOn = true;
-        data.isVibrationAllowed = true;
-        return data;
+    private DataItem testData() {
+        DataItem dataItem = new DataItem();
+        dataItem.description = "description";
+        dataItem.checkedDays = new boolean[]{true, true, true, true, true, true, true};
+        dataItem.timeBegin = new int[] { 12, 20 };
+        dataItem.timeEnd = new int[] { 13, 30 };
+        dataItem.isAlarmOn = true;
+        dataItem.isVibrationAllowed = true;
+        return dataItem;
     }
 
-    private Data testData2() {
-        Data data = new Data();
-        data.description = "description2";
-        data.checkedDays = new boolean[]{false, false, false, false, false, false, true};
-        data.timeBegin = new int[] { 14, 40 };
-        data.timeEnd = new int[] { 15, 50 };
-        data.isAlarmOn = false;
-        data.isVibrationAllowed = false;
-        return data;
+    private DataItem testData2() {
+        DataItem dataItem = new DataItem();
+        dataItem.description = "description2";
+        dataItem.checkedDays = new boolean[]{false, false, false, false, false, false, true};
+        dataItem.timeBegin = new int[] { 14, 40 };
+        dataItem.timeEnd = new int[] { 15, 50 };
+        dataItem.isAlarmOn = false;
+        dataItem.isVibrationAllowed = false;
+        return dataItem;
     }
 
 

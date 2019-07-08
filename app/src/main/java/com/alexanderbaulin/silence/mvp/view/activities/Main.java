@@ -17,15 +17,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.activities;
+package com.alexanderbaulin.silence.mvp.view.activities;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -36,21 +31,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.alexanderbaulin.silence.Alarm;
-import com.alexanderbaulin.silence.Data;
+import com.alexanderbaulin.silence.Logger;
+import com.alexanderbaulin.silence.mvp.model.Alarm;
+import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
-import com.alexanderbaulin.silence.adapters.RecycleAdapter;
-import com.alexanderbaulin.silence.database.Base;
+import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
+import com.alexanderbaulin.silence.mvp.model.database.Base;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 
 public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener {
-    private LinkedList<Data> data;
     private RecycleAdapter adapter;
     private MenuItem remove;
     private FloatingActionButton btnFloatingAction;
@@ -59,6 +53,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     final int REQUEST_CODE_ADD_DATA_ITEM = 2;
     final static String ACTION_ADD_ITEM = "add item";
     final static String ACTION_UPDATE_ITEM = "update item";
+
+    private LinkedList<DataItem> data;
     private Base db;
     private Alarm alarm;
 
@@ -80,6 +76,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             }
         });
         db = new Base(getApplicationContext());
+        Logger.d("dataBase", db.toString());
         data = getData();
         adapter = new RecycleAdapter(this, data);
         adapter.setOnClickItemListener(this);
@@ -142,12 +139,12 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 setSingleSelectionUI();
                 return true;
             case R.id.action_remove:
-                for (Data dataItem : data) {
+                for (DataItem dataItem : data) {
                     alarm.cancel(dataItem, data.indexOf(dataItem));
                 }
                 adapter.removeSelectedItems();
                 adapter.setMultiSelection(false);
-                for (Data dataItem : data) {
+                for (DataItem dataItem : data) {
                     if (dataItem.isAlarmOn) alarm.setAlarm(dataItem, data.indexOf(dataItem));
                 }
                 setUI();
@@ -189,7 +186,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void saveSelectedItemPositions(Bundle outState) {
         ArrayList<Integer> selectedItems = new ArrayList<>();
         for (int i = 0; i < data.size(); i++) {
-            Data dataItem = data.get(i);
+            DataItem dataItem = data.get(i);
             if (dataItem.isSelected) selectedItems.add(i);
         }
         outState.putIntegerArrayList("selectedItems", selectedItems);
@@ -232,7 +229,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             btnFloatingAction.setVisibility(View.INVISIBLE);
     }
 
-    private LinkedList<Data> getData() {
+    private LinkedList<DataItem> getData() {
         return db.select();
     }
 
@@ -245,9 +242,9 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if (!adapter.isMultiSelection()) {
-            Intent intent = new Intent(this, DataItem.class);
-            Data item = data.get(position);
-            intent.putExtra(Data.class.getCanonicalName(), item);
+            Intent intent = new Intent(this, com.alexanderbaulin.silence.mvp.view.activities.DataItem.class);
+            DataItem item = data.get(position);
+            intent.putExtra(DataItem.class.getCanonicalName(), item);
             intent.putExtra("updatedPosition", position);
             startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA_ITEM);
         } else {
@@ -265,9 +262,9 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_UPDATE_DATA_ITEM) {
-                Data dataItem = result.getParcelableExtra(Data.class.getCanonicalName());
+                DataItem dataItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
-                Data updatedItem = data.get(position);
+                com.alexanderbaulin.silence.mvp.model.DataItem updatedItem = data.get(position);
                 alarm.cancel(updatedItem, data.indexOf(updatedItem));
                 updatedItem.description = dataItem.description;
                 updatedItem.timeBegin = dataItem.timeBegin;
@@ -289,10 +286,10 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private void addNewItem(Intent result) {
-        Data newDataItem = result.getParcelableExtra(Data.class.getCanonicalName());
-        db.insert(newDataItem);
+        DataItem newDataItemItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
+        db.insert(newDataItemItem);
         refreshData();
-        alarm.setAlarm(newDataItem, data.indexOf(data.getLast()));
+        alarm.setAlarm(newDataItemItem, data.indexOf(data.getLast()));
         adapter.notifyDataSetChanged();
         int newItemPosition = adapter.getItemCount();
         recyclerView.scrollToPosition(newItemPosition - 1);
@@ -308,7 +305,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             MyApp.requestNotificationAccess();
             return;
         }
-        Intent intent = new Intent(this, DataItem.class);
+        Intent intent = new Intent(this, com.alexanderbaulin.silence.mvp.view.activities.DataItem.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
     }

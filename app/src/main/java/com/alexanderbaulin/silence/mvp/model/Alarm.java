@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence;
+package com.alexanderbaulin.silence.mvp.model;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -28,9 +28,9 @@ import android.media.AudioManager;
 
 
 //import java.util.Arrays;
-import com.alexanderbaulin.silence.receivers.AlarmReceiver;
+import com.alexanderbaulin.silence.MyApp;
+import com.alexanderbaulin.silence.mvp.presenter.receivers.AlarmReceiver;
 
-import java.util.Arrays;
 import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -47,7 +47,7 @@ public class Alarm {
         am = (AudioManager) MyApp.getAppContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
-    public void setAlarm(Data dataItem, int index) {
+    public void setAlarm(DataItem dataItem, int index) {
         //Toast.makeText(MyApp.getAppContext(), "startAlarm", Toast.LENGTH_SHORT).show();
         int daysInWeek = 7;
         int requestCodesInDataItem = daysInWeek * 2;
@@ -68,7 +68,7 @@ public class Alarm {
 
         //Logger.createMessage("todayIndex " + getTodayDayIndex());
 
-        boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
+        boolean[] checkedDays = DataItem.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
         boolean isYesterdayChecked = checkedDays[6];
 
@@ -196,7 +196,7 @@ public class Alarm {
         setAlarm(System.currentTimeMillis() + WEEK_INTERVAL, i, requestCode);
     }
 
-    public void cancel(Data dataItem, int index) {
+    public void cancel(DataItem dataItem, int index) {
         int requestCodesInDataItem = 7 * 2;
         int requestCode = index * requestCodesInDataItem;
         int daysInWeek = 7;
@@ -209,7 +209,7 @@ public class Alarm {
             //Log.d("myLogs1", "startHour > endHour");
             timeEnd = timeEnd + AlarmManager.INTERVAL_DAY;
         }
-        boolean[] checkedDays = Data.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
+        boolean[] checkedDays = DataItem.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
         boolean isYesterdayChecked = checkedDays[6];
         if ((isYesterdayChecked) && (startHour > endHour) && (timeNow < getEndTime(dataItem))) {
@@ -234,15 +234,15 @@ public class Alarm {
     }
 
 
-    private long getEndTime(Data dataItem) {
+    private long getEndTime(DataItem dataItem) {
         return getTime(dataItem.timeEnd[0], dataItem.timeEnd[1]);
     }
 
-    private long getStartTime(Data dataItem) {
+    private long getStartTime(DataItem dataItem) {
         return getTime(dataItem.timeBegin[0], dataItem.timeBegin[1]);
     }
 
-    private Intent getStartModeIntent(Data dataItem, int requestCode) {
+    private Intent getStartModeIntent(DataItem dataItem, int requestCode) {
         Intent i = new Intent(MyApp.getAppContext(), AlarmReceiver.class);
         if (dataItem.isVibrationAllowed) {
             i.setAction("vibration");
@@ -255,7 +255,7 @@ public class Alarm {
         return i;
     }
 
-    private Intent getEndModeIntent(Data dataItem, int requestCode) {
+    private Intent getEndModeIntent(DataItem dataItem, int requestCode) {
         Intent i = new Intent(MyApp.getAppContext(), AlarmReceiver.class);
         i.setAction("normalMode");
         i.putExtra("code", requestCode);
