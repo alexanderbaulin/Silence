@@ -142,9 +142,9 @@ public class DataItem extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void setResultDataItem() throws IllegalStateException {
-        if (!isTimeStartSet()) throw new IllegalStateException("Set time start mode");
-        if (!isTimeEndSet()) throw new IllegalStateException("Set time cancel mode");
-        if (!isDaySet()) throw new IllegalStateException("No day selected");
+        if (!isTimeStartSet()) throw new IllegalStateException(getStringResource(R.string.set_time_start_mode));
+        if (!isTimeEndSet()) throw new IllegalStateException(getStringResource(R.string.set_time_cancel_mode));
+        if (!isDaySet()) throw new IllegalStateException(getStringResource(R.string.no_day_selected));
 
         setCheckDays();
         setDescription();

@@ -19,9 +19,9 @@
     <string name="vibration_allowed">vibration allowed"</string>
     <string name="ask_permission">Find Silence application and grant requested permission</string>
     <string name="every_day">every day</string>
-
-    <item name="visible" type="id"/>
-    <item name="masked" type="id"/>
+    <string name="set_time_start_mode">Set time start mode</string>
+    <string name="set_time_cancel_mode">Set time cancel mode</string>
+    <string name="no_day_selected">No day selected</string>
 
     <string-array name="days_of_week">
         <item>@string/day_monday</item>

@@ -16,4 +16,7 @@
     <string name="vibration_allowed">vibrations autorisées</string>
     <string name="ask_permission">Demande de recherche de silence et autorisation demandée</string>
     <string name="every_day">tous les jours</string>
+    <string name="no_day_selected">Aucun jour sélectionné</string>
+    <string name="set_time_cancel_mode">Définir le mode d\'annulation du temps</string>
+    <string name="set_time_start_mode">Définir le mode de démarrage de l\'heure</string>
 </resources>
