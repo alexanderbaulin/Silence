@@ -34,7 +34,7 @@ import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
-import com.alexanderbaulin.silence.mvp.model.database.Base;
+import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -48,13 +48,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     private boolean isMultiSelection;
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
-    private Base db;
+    private DataBase db;
 
     public RecycleAdapter(AppCompatActivity ctx, List<DataItem> dataItemList) {
         inflater = LayoutInflater.from(ctx);
         data = dataItemList;
         context = ctx;
-        db = new Base(context);
+        db = new DataBase(context);
         Logger.d("dataBase", db.toString());
     }
 
@@ -77,11 +77,20 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         Collections.reverse(selectedPositions);
         for (int position = 0; position < selectedPositions.size(); position++) {
             int selectedPosition = selectedPositions.get(position);
-            Base db = new Base(context);
+            DataBase db = new DataBase(context);
             DataItem deletedItem = data.remove(selectedPosition);
             db.delete(deletedItem.id);
             notifyItemRemoved(selectedPosition);
         }
+    }
+
+    public void add(DataItem item) {
+        data.add(item);
+        notifyItemInserted(data.indexOf(item));
+    }
+
+    public void update(DataItem item) {
+
     }
 
     public interface OnItemClickListener {

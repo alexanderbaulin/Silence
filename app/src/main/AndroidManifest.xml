@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alexanderbaulin.silence.mvp.view.activities.DataItem"
+            android:name="com.alexanderbaulin.silence.mvp.view.activities.DataActivity"
             android:label=""
             android:parentActivityName="com.alexanderbaulin.silence.mvp.view.activities.Main"
             android:screenOrientation="portrait" />

@@ -32,11 +32,11 @@ import com.alexanderbaulin.silence.mvp.model.DataItem;
 import java.util.LinkedList;
 
 
-public class Base extends SQLiteOpenHelper {
+public class DataBase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "data.db";
     private static final int DATABASE_VERSION = 1;
 
-    public Base(Context context) {
+    public DataBase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

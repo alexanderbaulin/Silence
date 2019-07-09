@@ -26,7 +26,7 @@ import android.content.Intent;
 import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
-import com.alexanderbaulin.silence.mvp.model.database.Base;
+import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Alarm alarm = new Alarm();
         switch (action) {
             case Intent.ACTION_BOOT_COMPLETED:
-                Base base = new Base(MyApp.getAppContext());
+                DataBase base = new DataBase(MyApp.getAppContext());
                 List<DataItem> data = base.select();
                 for (DataItem dataItem : data) {
                     if (dataItem.isAlarmOn) {

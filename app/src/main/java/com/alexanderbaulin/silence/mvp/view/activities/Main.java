@@ -32,13 +32,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.alexanderbaulin.silence.Logger;
+import com.alexanderbaulin.silence.mvp.interfaces.Presenter;
 import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
+import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
-import com.alexanderbaulin.silence.mvp.model.database.Base;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -55,14 +55,18 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     final static String ACTION_UPDATE_ITEM = "update item";
 
     private LinkedList<DataItem> data;
-    private Base db;
+    private DataBase db;
     private Alarm alarm;
+    private Presenter presenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        presenter = new com.alexanderbaulin.silence.mvp.presenter.Presenter();
+
         recyclerView = findViewById(R.id.drawerList);
         Toolbar toolbar = findViewById(R.id.toolbar);
         btnFloatingAction = findViewById(R.id.floatingActionButton);
@@ -75,8 +79,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.notifyDataSetChanged();
             }
         });
-        db = new Base(getApplicationContext());
-        Logger.d("dataBase", db.toString());
+        db = new DataBase(getApplicationContext());
         data = getData();
         adapter = new RecycleAdapter(this, data);
         adapter.setOnClickItemListener(this);
@@ -242,7 +245,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if (!adapter.isMultiSelection()) {
-            Intent intent = new Intent(this, com.alexanderbaulin.silence.mvp.view.activities.DataItem.class);
+            Intent intent = new Intent(this, DataActivity.class);
             DataItem item = data.get(position);
             intent.putExtra(DataItem.class.getCanonicalName(), item);
             intent.putExtra("updatedPosition", position);
@@ -264,7 +267,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             if (requestCode == REQUEST_CODE_UPDATE_DATA_ITEM) {
                 DataItem dataItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
-                com.alexanderbaulin.silence.mvp.model.DataItem updatedItem = data.get(position);
+                DataItem updatedItem = data.get(position);
                 alarm.cancel(updatedItem, data.indexOf(updatedItem));
                 updatedItem.description = dataItem.description;
                 updatedItem.timeBegin = dataItem.timeBegin;
@@ -276,28 +279,26 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 } else {
                     alarm.cancel(updatedItem, data.indexOf(updatedItem));
                 }
-                db.update(updatedItem.id, updatedItem);
+               // db.update(updatedItem.id, updatedItem);
+                update(updatedItem);
                 adapter.notifyItemChanged(position);
 
             } else if (requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
-                addNewItem(result);
+                DataItem newItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
+                add(newItem);
             }
         }
     }
 
-    private void addNewItem(Intent result) {
-        DataItem newDataItemItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
-        db.insert(newDataItemItem);
-        refreshData();
-        alarm.setAlarm(newDataItemItem, data.indexOf(data.getLast()));
-        adapter.notifyDataSetChanged();
-        int newItemPosition = adapter.getItemCount();
-        recyclerView.scrollToPosition(newItemPosition - 1);
+    private void update(DataItem item) {
+        //adapter.update(item);
+        presenter.update(item);
     }
 
-    private void refreshData() {
-        data.clear();
-        data.addAll(getData());
+    private void add(DataItem item) {
+        adapter.add(item);
+        presenter.add(item, data.indexOf(item));
+        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
     }
 
     public void onClickFloatingActionButton(View view) {
@@ -305,7 +306,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             MyApp.requestNotificationAccess();
             return;
         }
-        Intent intent = new Intent(this, com.alexanderbaulin.silence.mvp.view.activities.DataItem.class);
+        Intent intent = new Intent(this, DataActivity.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
     }

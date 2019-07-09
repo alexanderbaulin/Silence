@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.alexanderbaulin.silence.mvp.model.DataItem;
-import com.alexanderbaulin.silence.mvp.model.database.Base;
+import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +20,12 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    private Base db;
+    private DataBase db;
 
     @Before
     public void useAppContext() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        db = new Base(appContext);
+        db = new DataBase(appContext);
         assertEquals("com.example.alex.recycleviewmultitouchtutorial", appContext.getPackageName());
     }
 

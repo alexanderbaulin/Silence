@@ -51,12 +51,16 @@ public class Logger {
         if (LOG) Log.w(tag, string);
     }
 
-    static String createMessage(long time, String message) {
+    public static String createMessage(long time, String message) {
         Date date = new Date(time);
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.UK);
         DateFormat tf = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.UK);
         String formattedDate = df.format(date);
         String formattedTime = tf.format(date);
         return message + " " + formattedDate + " " + formattedTime;
+    }
+
+    public static void createMessage(String s) {
+
     }
 }

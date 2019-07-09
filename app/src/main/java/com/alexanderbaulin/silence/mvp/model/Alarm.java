@@ -24,10 +24,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-
+import android.util.Log;
 
 
 //import java.util.Arrays;
+import com.alexanderbaulin.silence.Logger;
 import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.mvp.presenter.receivers.AlarmReceiver;
 
@@ -62,11 +63,11 @@ public class Alarm {
         }
         long timeNow = getTime();
 
-        //Logger.createMessage(timeNow, "time now");
-        //Logger.createMessage(timeStartMode, "time start");
-        //Logger.createMessage(timeEndMode, "time end");
+        Logger.d("alarm", Logger.createMessage(timeNow, "time now"));
+        Logger.d("alarm", Logger.createMessage(timeStartMode, "time start"));
+        Logger.d("alarm", Logger.createMessage(timeEndMode, "time end"));
 
-        //Logger.createMessage("todayIndex " + getTodayDayIndex());
+        Logger.d("alarm", "todayIndex " + getTodayDayIndex());
 
         boolean[] checkedDays = DataItem.getCheckedDaysFromToday(dataItem.checkedDays, getTodayDayIndex());
         boolean isTodayChecked = checkedDays[0];
@@ -219,9 +220,9 @@ public class Alarm {
 
         for (int i = 0; i < daysInWeek; i++) {
             manager.cancel(getPendingIntent(getStartModeIntent(dataItem, requestCode), ++requestCode));
-            //Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
+            Logger.d("alarm", "cancel pi, requestCode = " + requestCode);
             manager.cancel(getPendingIntent(getEndModeIntent(dataItem, requestCode), ++requestCode));
-            //Log.d("myLogs1", "cancel pi, requestCode = " + requestCode);
+            Logger.d("alarm ", "cancel pi, requestCode = " + requestCode);
         }
     }
 
@@ -230,7 +231,7 @@ public class Alarm {
                 AlarmManager.RTC_WAKEUP,
                 time,
                 getPendingIntent(intent, requestCode));
-        //Logger.createMessage(time, "start, requestCode = " + requestCode);
+        Logger.d("alarm", Logger.createMessage(time, "start, requestCode = " + requestCode));
     }
 
 
