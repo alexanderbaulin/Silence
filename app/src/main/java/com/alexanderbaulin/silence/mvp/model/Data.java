@@ -4,6 +4,7 @@ import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.mvp.interfaces.Model;
 import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Data implements Model {
@@ -28,6 +29,11 @@ public class Data implements Model {
     @Override
     public void startAlarm(DataItem updatedItem, int position) {
         alarm.setAlarm(updatedItem, position);
+    }
+
+    @Override
+    public LinkedList<DataItem> getData() {
+        return db.select();
     }
 
     public void delete(DataItem item) {

@@ -36,7 +36,6 @@ import com.alexanderbaulin.silence.mvp.interfaces.Presenter;
 import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
-import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
 
@@ -55,7 +54,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     final static String ACTION_UPDATE_ITEM = "update item";
 
     private LinkedList<DataItem> data;
-    private DataBase db;
     private Alarm alarm;
     private Presenter presenter;
 
@@ -79,8 +77,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.notifyDataSetChanged();
             }
         });
-        db = new DataBase(getApplicationContext());
-        data = getData();
+        data = presenter.getData();
         adapter = new RecycleAdapter(this, data);
         adapter.setOnClickItemListener(this);
         adapter.setOnLongItemListener(this);
@@ -165,7 +162,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         setToolbarTitle(MyApp.getAppContext().getString(R.string.app_name));
         remove.setVisible(false);
         setNavigationButton(false);
-        setAddFloatingActionButton(true);
+        setFloatingActionButton(true);
     }
 
     private void setMultiSelectionUI() {
@@ -174,7 +171,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
         remove.setVisible(true);
         setNavigationButton(true);
-        setAddFloatingActionButton(false);
+        setFloatingActionButton(false);
     }
 
     void setToolbarTitle(String title) {
@@ -225,15 +222,11 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(b);
     }
 
-    private void setAddFloatingActionButton(boolean b) {
-        if (b)
+    private void setFloatingActionButton(boolean isVisible) {
+        if (isVisible)
             btnFloatingAction.setVisibility(View.VISIBLE);
         else
             btnFloatingAction.setVisibility(View.INVISIBLE);
-    }
-
-    private LinkedList<DataItem> getData() {
-        return db.select();
     }
 
     @Override

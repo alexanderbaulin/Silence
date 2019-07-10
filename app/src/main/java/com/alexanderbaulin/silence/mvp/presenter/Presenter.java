@@ -5,6 +5,8 @@ import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.Data;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 
+import java.util.LinkedList;
+
 public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Presenter {
 
     private Model model = new Data();
@@ -32,5 +34,10 @@ public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Pre
     public void startAlarm(DataItem updatedItem, int position) {
         model.startAlarm(updatedItem, position);
 
+    }
+
+    @Override
+    public LinkedList<DataItem> getData() {
+        return model.getData();
     }
 }
