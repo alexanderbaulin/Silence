@@ -54,7 +54,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     final static String ACTION_UPDATE_ITEM = "update item";
 
     private LinkedList<DataItem> data;
-    private Alarm alarm;
     private Presenter presenter;
 
 
@@ -83,7 +82,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         adapter.setOnLongItemListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        alarm = new Alarm();
 
         if(!MyApp.isNotificationPolicyAccessGranted()) {
             MyApp.requestNotificationAccess();
@@ -140,12 +138,13 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 return true;
             case R.id.action_remove:
                 for (DataItem dataItem : data) {
-                    alarm.cancel(dataItem, data.indexOf(dataItem));
+                    presenter.cancelAlarm(dataItem, data.indexOf(dataItem));
                 }
                 adapter.removeSelectedItems();
                 adapter.setMultiSelection(false);
                 for (DataItem dataItem : data) {
-                    if (dataItem.isAlarmOn) alarm.setAlarm(dataItem, data.indexOf(dataItem));
+                    if (dataItem.isAlarmOn)
+                        presenter.startAlarm(dataItem, data.indexOf(dataItem));
                 }
                 setUI();
                 int size = adapter.getItemCount();
