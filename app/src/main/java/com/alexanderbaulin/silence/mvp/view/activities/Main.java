@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.alexanderbaulin.silence.mvp.interfaces.Presenter;
-import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
@@ -42,20 +41,17 @@ import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static com.alexanderbaulin.silence.Constants.*;
+
 
 public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener {
-    private RecycleAdapter adapter;
+
     private MenuItem remove;
     private FloatingActionButton btnFloatingAction;
+    private RecycleAdapter adapter;
     private RecyclerView recyclerView;
-    final int REQUEST_CODE_UPDATE_DATA_ITEM = 1;
-    final int REQUEST_CODE_ADD_DATA_ITEM = 2;
-    final static String ACTION_ADD_ITEM = "add item";
-    final static String ACTION_UPDATE_ITEM = "update item";
-
     private LinkedList<DataItem> data;
     private Presenter presenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +174,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private void restoreMultiSelectionMode(Bundle savedInstanceState) {
-        boolean isMultiSelection = savedInstanceState.getBoolean("isMultiSelection");
+        boolean isMultiSelection = savedInstanceState.getBoolean(MULTI_SELECTION);
         adapter.setMultiSelection(isMultiSelection);
     }
 
@@ -188,15 +184,15 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             DataItem dataItem = data.get(i);
             if (dataItem.isSelected) selectedItems.add(i);
         }
-        outState.putIntegerArrayList("selectedItems", selectedItems);
+        outState.putIntegerArrayList(SELECTED_ITEMS, selectedItems);
     }
 
     private void saveMultiSelectionMode(Bundle outState, boolean b) {
-        outState.putBoolean("isMultiSelection", b);
+        outState.putBoolean(MULTI_SELECTION, b);
     }
 
     private void restoreSelectedItemPositions(Bundle savedInstanceState) {
-        ArrayList<Integer> selectedPositions = savedInstanceState.getIntegerArrayList("selectedItems");
+        ArrayList<Integer> selectedPositions = savedInstanceState.getIntegerArrayList(SELECTED_ITEMS);
         for (int i = 0; i < selectedPositions.size(); i++) {
             int position = selectedPositions.get(i);
             data.get(position).isSelected = true;
@@ -240,7 +236,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             Intent intent = new Intent(this, DataActivity.class);
             DataItem item = data.get(position);
             intent.putExtra(DataItem.class.getCanonicalName(), item);
-            intent.putExtra("updatedPosition", position);
+            intent.putExtra(UPDATED_POSITION, position);
             startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA_ITEM);
         } else {
             setToolbarTitle(String.valueOf(adapter.getSelectedItemsCount()));
@@ -258,7 +254,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_UPDATE_DATA_ITEM) {
                 DataItem dataItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
-                int position = result.getIntExtra("updatedPosition", -1);
+                int position = result.getIntExtra(UPDATED_POSITION, -1);
                 update(dataItem, position);
             } else if (requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
                 DataItem newItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
