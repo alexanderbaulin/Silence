@@ -267,22 +267,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             if (requestCode == REQUEST_CODE_UPDATE_DATA_ITEM) {
                 DataItem dataItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
                 int position = result.getIntExtra("updatedPosition", -1);
-                DataItem updatedItem = data.get(position);
-                alarm.cancel(updatedItem, data.indexOf(updatedItem));
-                updatedItem.description = dataItem.description;
-                updatedItem.timeBegin = dataItem.timeBegin;
-                updatedItem.timeEnd = dataItem.timeEnd;
-                updatedItem.checkedDays = dataItem.checkedDays;
-                updatedItem.isVibrationAllowed = dataItem.isVibrationAllowed;
-                if (dataItem.isAlarmOn) {
-                    alarm.setAlarm(updatedItem, data.indexOf(updatedItem));
-                } else {
-                    alarm.cancel(updatedItem, data.indexOf(updatedItem));
-                }
-               // db.update(updatedItem.id, updatedItem);
-                update(updatedItem);
-                adapter.notifyItemChanged(position);
-
+                update(dataItem, position);
             } else if (requestCode == REQUEST_CODE_ADD_DATA_ITEM) {
                 DataItem newItem = result.getParcelableExtra(DataItem.class.getCanonicalName());
                 add(newItem);
@@ -290,9 +275,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         }
     }
 
-    private void update(DataItem item) {
-        //adapter.update(item);
-        presenter.update(item);
+    private void update(DataItem newItem, int position) {
+        DataItem updatedItem = data.get(position);
+        newItem.id = updatedItem.id;
+        newItem.isAlarmOn = updatedItem.isAlarmOn;
+
+        adapter.update(newItem, position);
+        presenter.cancelAlarm(updatedItem, position);
+        presenter.update(newItem, position);
     }
 
     private void add(DataItem item) {

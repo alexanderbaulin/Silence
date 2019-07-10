@@ -6,4 +6,8 @@ public interface Model {
     void insert(DataItem newDataItem, int index);
 
     void update(DataItem item);
+
+    void cancel(DataItem updatedItem, int position);
+
+    void startAlarm(DataItem updatedItem, int position);
 }

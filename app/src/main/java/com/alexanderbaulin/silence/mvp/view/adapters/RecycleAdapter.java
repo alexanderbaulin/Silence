@@ -89,8 +89,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         notifyItemInserted(data.indexOf(item));
     }
 
-    public void update(DataItem item) {
-
+    public void update(DataItem item, int position) {
+        data.remove(position);
+        data.add(position, item);
+        notifyItemChanged(position);
     }
 
     public interface OnItemClickListener {
@@ -193,8 +195,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     private void setSwitcherVisibility(Switch switcher) {
-        if (isMultiSelection) switcher.setVisibility(View.INVISIBLE);
-        else switcher.setVisibility(View.VISIBLE);
+        if (isMultiSelection)
+            switcher.setVisibility(View.INVISIBLE);
+        else
+            switcher.setVisibility(View.VISIBLE);
     }
 
     private void setSwitcherListener(Switch switcher, final DataItem currentItem) {
@@ -206,7 +210,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                     Alarm alarm = new Alarm();
                     if (currentItem.isAlarmOn)
                         alarm.setAlarm(currentItem, data.lastIndexOf(currentItem));
-                    else alarm.cancel(currentItem, data.lastIndexOf(currentItem));
+                    else
+                        alarm.cancel(currentItem, data.lastIndexOf(currentItem));
                     db.update(currentItem.id, currentItem);
 
                 }

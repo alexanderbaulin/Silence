@@ -20,6 +20,16 @@ public class Data implements Model {
         db.update(item.id, item);
     }
 
+    @Override
+    public void cancel(DataItem updatedItem, int position) {
+        alarm.cancel(updatedItem, position);
+    }
+
+    @Override
+    public void startAlarm(DataItem updatedItem, int position) {
+        alarm.setAlarm(updatedItem, position);
+    }
+
     public void delete(DataItem item) {
         db.delete(item.id);
     }

@@ -8,6 +8,7 @@ import com.alexanderbaulin.silence.mvp.model.DataItem;
 public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Presenter {
 
     private Model model = new Data();
+    private Alarm alarm = new Alarm();
 
     @Override
     public void add(DataItem newDataItem, int index) {
@@ -16,7 +17,20 @@ public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Pre
     }
 
     @Override
-    public void update(DataItem item) {
+    public void update(DataItem item, int position) {
         model.update(item);
+        if (item.isAlarmOn)
+            model.startAlarm(item, position);
+    }
+
+    @Override
+    public void cancelAlarm(DataItem updatedItem, int position) {
+        model.cancel(updatedItem, position);
+    }
+
+    @Override
+    public void startAlarm(DataItem updatedItem, int position) {
+        model.startAlarm(updatedItem, position);
+
     }
 }
