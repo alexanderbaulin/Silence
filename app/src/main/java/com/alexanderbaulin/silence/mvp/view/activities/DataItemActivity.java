@@ -37,7 +37,7 @@ import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.fragments.TimePicker;
 
 
-public class DataActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
+public class DataItemActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
     EditText description;
     com.alexanderbaulin.silence.mvp.model.DataItem dataItem;
     Button timeStartMode, timeCancelMode, submit;

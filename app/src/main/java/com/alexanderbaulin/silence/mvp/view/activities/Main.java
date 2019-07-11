@@ -50,7 +50,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private FloatingActionButton btnFloatingAction;
     private RecycleAdapter adapter;
     private RecyclerView recyclerView;
-    private LinkedList<DataItem> data;
     private Presenter presenter;
 
     @Override
@@ -72,8 +71,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 adapter.notifyDataSetChanged();
             }
         });
-        data = presenter.getData();
-        adapter = new RecycleAdapter(this, data);
+        adapter = new RecycleAdapter(this, presenter.getData());
         adapter.setOnClickItemListener(this);
         adapter.setOnLongItemListener(this);
         recyclerView.setAdapter(adapter);
@@ -133,14 +131,14 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
                 setSingleSelectionUI();
                 return true;
             case R.id.action_remove:
-                for (DataItem dataItem : data) {
-                    presenter.cancelAlarm(dataItem, data.indexOf(dataItem));
+                for (DataItem dataItem : adapter.getData()) {
+                    presenter.cancelAlarm(dataItem, adapter.getIndexOf(dataItem));
                 }
                 adapter.removeSelectedItems();
                 adapter.setMultiSelection(false);
-                for (DataItem dataItem : data) {
+                for (DataItem dataItem : adapter.getData()) {
                     if (dataItem.isAlarmOn)
-                        presenter.startAlarm(dataItem, data.indexOf(dataItem));
+                        presenter.startAlarm(dataItem, adapter.getIndexOf(dataItem));
                 }
                 setUI();
                 int size = adapter.getItemCount();
@@ -179,12 +177,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private void saveSelectedItemPositions(Bundle outState) {
-        ArrayList<Integer> selectedItems = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            DataItem dataItem = data.get(i);
-            if (dataItem.isSelected) selectedItems.add(i);
-        }
-        outState.putIntegerArrayList(SELECTED_ITEMS, selectedItems);
+        outState.putIntegerArrayList(SELECTED_ITEMS, adapter.getIndexesOfSelectedItems());
     }
 
     private void saveMultiSelectionMode(Bundle outState, boolean b) {
@@ -193,11 +186,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private void restoreSelectedItemPositions(Bundle savedInstanceState) {
         ArrayList<Integer> selectedPositions = savedInstanceState.getIntegerArrayList(SELECTED_ITEMS);
-        for (int i = 0; i < selectedPositions.size(); i++) {
-            int position = selectedPositions.get(i);
-            data.get(position).isSelected = true;
-        }
         setToolbarTitle(String.valueOf(selectedPositions.size()));
+        adapter.setIndexesOfSelectedItems(selectedPositions);
         adapter.notifyDataSetChanged();
     }
 
@@ -233,8 +223,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     @Override
     public void onItemClick(View itemView, int position) {
         if (!adapter.isMultiSelection()) {
-            Intent intent = new Intent(this, DataActivity.class);
-            DataItem item = data.get(position);
+            Intent intent = new Intent(this, DataItemActivity.class);
+            DataItem item = adapter.getItem(position);
             intent.putExtra(DataItem.class.getCanonicalName(), item);
             intent.putExtra(UPDATED_POSITION, position);
             startActivityForResult(intent, REQUEST_CODE_UPDATE_DATA_ITEM);
@@ -245,7 +235,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             adapter.setMultiSelection(false);
             setSingleSelectionUI();
             adapter.notifyDataSetChanged();
-            // setUI();
         }
     }
 
@@ -264,7 +253,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private void update(DataItem newItem, int position) {
-        DataItem updatedItem = data.get(position);
+        DataItem updatedItem = adapter.getItem(position);
         newItem.id = updatedItem.id;
         newItem.isAlarmOn = updatedItem.isAlarmOn;
 
@@ -275,7 +264,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private void add(DataItem item) {
         adapter.add(item);
-        presenter.add(item, data.indexOf(item));
+        presenter.add(item, adapter.getIndexOf(item));
         recyclerView.scrollToPosition(adapter.getItemCount() - 1);
     }
 
@@ -284,7 +273,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             MyApp.requestNotificationAccess();
             return;
         }
-        Intent intent = new Intent(this, DataActivity.class);
+        Intent intent = new Intent(this, DataItemActivity.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
     }

@@ -36,6 +36,7 @@ import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -93,6 +94,34 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         data.remove(position);
         data.add(position, item);
         notifyItemChanged(position);
+    }
+
+    public ArrayList<Integer> getIndexesOfSelectedItems() {
+        ArrayList<Integer> selectedItems = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            DataItem dataItem = data.get(i);
+            if (dataItem.isSelected) selectedItems.add(i);
+        }
+        return selectedItems;
+    }
+
+    public void setIndexesOfSelectedItems(ArrayList<Integer> positions) {
+        for (int i = 0; i < positions.size(); i++) {
+            int position = positions.get(i);
+            data.get(position).isSelected = true;
+        }
+    }
+
+    public DataItem getItem(int position) {
+        return data.get(position);
+    }
+
+    public int getIndexOf(DataItem item) {
+        return data.indexOf(item);
+    }
+
+    public List<DataItem> getData() {
+        return data;
     }
 
     public interface OnItemClickListener {
