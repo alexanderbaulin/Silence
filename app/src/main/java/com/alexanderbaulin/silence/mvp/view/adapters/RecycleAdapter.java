@@ -49,14 +49,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     private boolean isMultiSelection;
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
-    private DataBase db;
+    private OnSwitchLister itemSwitchLister;
 
     public RecycleAdapter(AppCompatActivity ctx, List<DataItem> dataItemList) {
         inflater = LayoutInflater.from(ctx);
         data = dataItemList;
         context = ctx;
-        db = new DataBase(context);
-        Logger.d("dataBase", db.toString());
     }
 
     public void setOnLongItemListener(OnLongClickListener listener) {
@@ -65,6 +63,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     public void setOnClickItemListener(OnItemClickListener listener) {
         itemClickListener = listener;
+    }
+
+    public void setOnSwitchItemListener(OnSwitchLister listener) {
+        itemSwitchLister = listener;
     }
 
     public void removeSelectedItems() {
@@ -130,6 +132,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     public interface OnLongClickListener {
         void onItemLongClick(View itemView, int position);
+    }
+
+    public interface OnSwitchLister {
+        void onSwitchClick(DataItem itemView, int position);
     }
 
     @Override
@@ -234,16 +240,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         switcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isMultiSelection) {
-                    currentItem.isAlarmOn = !currentItem.isAlarmOn;
-                    Alarm alarm = new Alarm();
-                    if (currentItem.isAlarmOn)
-                        alarm.setAlarm(currentItem, data.lastIndexOf(currentItem));
-                    else
-                        alarm.cancel(currentItem, data.lastIndexOf(currentItem));
-                    db.update(currentItem.id, currentItem);
-
-                }
+                itemSwitchLister.onSwitchClick(currentItem, data.lastIndexOf(currentItem));
             }
         });
     }

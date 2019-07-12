@@ -33,18 +33,18 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.alexanderbaulin.silence.mvp.interfaces.Presenter;
+import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static com.alexanderbaulin.silence.Constants.*;
 
 
-public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener {
+public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener, RecycleAdapter.OnSwitchLister {
 
     private MenuItem remove;
     private FloatingActionButton btnFloatingAction;
@@ -74,6 +74,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         adapter = new RecycleAdapter(this, presenter.getData());
         adapter.setOnClickItemListener(this);
         adapter.setOnLongItemListener(this);
+        adapter.setOnSwitchItemListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -276,5 +277,18 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         Intent intent = new Intent(this, DataItemActivity.class);
         intent.setAction(ACTION_ADD_ITEM);
         startActivityForResult(intent, REQUEST_CODE_ADD_DATA_ITEM);
+    }
+
+    @Override
+    public void onSwitchClick(DataItem item, int position) {
+        if (!adapter.isMultiSelection()) {
+            item.isAlarmOn = !item.isAlarmOn;
+            Alarm alarm = new Alarm();
+            if (item.isAlarmOn)
+                alarm.setAlarm(item, position);
+            else
+                alarm.cancel(item, position);
+            presenter.update(item, position);
+        }
     }
 }
