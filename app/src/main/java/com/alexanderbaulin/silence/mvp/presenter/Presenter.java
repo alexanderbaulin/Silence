@@ -11,8 +11,8 @@ public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Pre
     private Model model = new Data();
 
     @Override
-    public void add(DataItem newDataItem, int index) {
-        model.insert(newDataItem, index);
+    public long add(DataItem newDataItem, int index) {
+        return model.insert(newDataItem, index);
 
     }
 
@@ -37,5 +37,10 @@ public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Pre
     @Override
     public LinkedList<DataItem> getData() {
         return model.getData();
+    }
+
+    @Override
+    public void delete(long id) {
+        model.delete(id);
     }
 }

@@ -29,16 +29,12 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.alexanderbaulin.silence.Logger;
-import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
+
 import com.alexanderbaulin.silence.silence.R;
-import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,6 +49,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     private OnLongClickListener itemLongClickListener;
     private OnItemClickListener itemClickListener;
     private OnSwitchLister itemSwitchLister;
+    private OnItemsRemoveListener itemsRemoveListener;
 
     public RecycleAdapter(AppCompatActivity ctx, List<DataItem> dataItemList) {
         inflater = LayoutInflater.from(ctx);
@@ -68,26 +65,16 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
         itemClickListener = listener;
     }
 
+    public void setOnItemsRemoveListener(OnItemsRemoveListener listener) {
+        itemsRemoveListener = listener;
+    }
+
     public void setOnSwitchItemListener(OnSwitchLister listener) {
         itemSwitchLister = listener;
     }
 
     public void removeSelectedItems() {
-        LinkedList<Integer> selectedPositions = new LinkedList<>();
-        for (int position = 0; position < data.size(); position++) {
-            DataItem dataItem = data.get(position);
-            if (dataItem.isSelected) {
-                selectedPositions.add(position);
-            }
-        }
-        Collections.reverse(selectedPositions);
-        for (int position = 0; position < selectedPositions.size(); position++) {
-            int selectedPosition = selectedPositions.get(position);
-            DataBase db = new DataBase(context);
-            DataItem deletedItem = data.remove(selectedPosition);
-            db.delete(deletedItem.id);
-            notifyItemRemoved(selectedPosition);
-        }
+        itemsRemoveListener.onItemsRemove();
     }
 
     public void add(DataItem item) {
@@ -319,6 +306,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
                 notifyItemChanged(i);
             }
         }
+    }
+
+    public interface OnItemsRemoveListener {
+        void onItemsRemove();
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {

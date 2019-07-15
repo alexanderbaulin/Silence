@@ -32,14 +32,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.alexanderbaulin.silence.Logger;
 import com.alexanderbaulin.silence.mvp.interfaces.Presenter;
 import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
+import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +51,7 @@ import butterknife.ButterKnife;
 import static com.alexanderbaulin.silence.Constants.*;
 
 
-public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener, RecycleAdapter.OnSwitchLister {
+public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener, RecycleAdapter.OnSwitchLister, RecycleAdapter.OnItemsRemoveListener {
 
     private MenuItem remove;
 
@@ -81,6 +85,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         adapter.setOnClickItemListener(this);
         adapter.setOnLongItemListener(this);
         adapter.setOnSwitchItemListener(this);
+        adapter.setOnItemsRemoveListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -270,8 +275,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     }
 
     private void add(DataItem item) {
+        item.id = presenter.add(item, adapter.getIndexOf(item));
         adapter.add(item);
-        presenter.add(item, adapter.getIndexOf(item));
         recyclerView.scrollToPosition(adapter.getItemCount() - 1);
     }
 
@@ -295,6 +300,25 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             else
                 alarm.cancel(item, position);
             presenter.update(item, position);
+        }
+    }
+
+    @Override
+    public void onItemsRemove() {
+        LinkedList<Integer> selectedPositions = new LinkedList<>();
+        for (int position = 0; position < adapter.getData().size(); position++) {
+            DataItem dataItem = adapter.getItem(position);
+            if (dataItem.isSelected) {
+                selectedPositions.add(position);
+            }
+        }
+        Collections.reverse(selectedPositions);
+        for (int position = 0; position < selectedPositions.size(); position++) {
+            int selectedPosition = selectedPositions.get(position);
+            DataItem deletedItem = adapter.getData().remove(selectedPosition);
+            presenter.delete(deletedItem.id);
+            Logger.d("deleteItem", "id = " + deletedItem.id);
+            adapter.notifyItemRemoved(selectedPosition);
         }
     }
 }

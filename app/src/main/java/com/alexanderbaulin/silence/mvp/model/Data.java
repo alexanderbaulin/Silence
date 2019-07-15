@@ -12,9 +12,11 @@ public class Data implements Model {
     private DataBase db = new DataBase(MyApp.getAppContext());
     private Alarm alarm = new Alarm();
 
-    public void insert(DataItem item, int index) {
-        db.insert(item);
+    public long insert(DataItem item, int index) {
+        long key = db.insert(item);
         alarm.setAlarm(item, index);
+
+        return key;
     }
 
     public void update(DataItem item) {
@@ -34,6 +36,11 @@ public class Data implements Model {
     @Override
     public LinkedList<DataItem> getData() {
         return db.select();
+    }
+
+    @Override
+    public void delete(long id) {
+        db.delete(id);
     }
 
     public void delete(DataItem item) {

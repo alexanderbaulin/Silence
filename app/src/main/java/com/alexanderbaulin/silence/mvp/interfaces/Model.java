@@ -5,7 +5,7 @@ import com.alexanderbaulin.silence.mvp.model.DataItem;
 import java.util.LinkedList;
 
 public interface Model {
-    void insert(DataItem newDataItem, int index);
+    long insert(DataItem newDataItem, int index);
 
     void update(DataItem item);
 
@@ -14,4 +14,6 @@ public interface Model {
     void startAlarm(DataItem updatedItem, int position);
 
     LinkedList<DataItem> getData();
+
+    void delete(long id);
 }
