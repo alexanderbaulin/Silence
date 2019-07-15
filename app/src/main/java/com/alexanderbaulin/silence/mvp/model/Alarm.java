@@ -24,13 +24,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.util.Log;
 
 
 //import java.util.Arrays;
 import com.alexanderbaulin.silence.Logger;
 import com.alexanderbaulin.silence.MyApp;
-import com.alexanderbaulin.silence.mvp.presenter.receivers.AlarmReceiver;
+import com.alexanderbaulin.silence.receivers.AlarmReceiver;
 
 import java.util.Calendar;
 

@@ -36,14 +36,30 @@ import android.widget.RadioGroup;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.fragments.TimePicker;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class DataItemActivity extends AppCompatActivity implements View.OnClickListener, TimePickerDialog.OnTimeSetListener {
-    EditText description;
+
+    @BindView(R.id.editText) EditText description;
+
+    @BindView(R.id.btnTimeFrom) Button timeStartMode;
+    @BindView(R.id.btnTimeTo) Button timeCancelMode;
+    @BindView(R.id.btnSubmit) Button submit;
+
+    @BindView(R.id.chkMon) CheckBox monday;
+    @BindView(R.id.chkTue) CheckBox tuesday;
+    @BindView(R.id.chkWed) CheckBox wednesday;
+    @BindView(R.id.chkThu) CheckBox thursday;
+    @BindView(R.id.chkFri) CheckBox friday;
+    @BindView(R.id.chkSat) CheckBox saturday;
+    @BindView(R.id.chkSun) CheckBox sunday;
+
+    @BindView(R.id.radioGroup) RadioGroup radioGroup;
+
     com.alexanderbaulin.silence.mvp.model.DataItem dataItem;
-    Button timeStartMode, timeCancelMode, submit;
-    CheckBox monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-    RadioGroup radioGroup;
-    RadioButton noSound, vibrationAllowed;
+
     final String TAG_TIME_PICKER_START = "time start mode";
     final String TAG_TIME_PICKER_END = "time cancel mode";
     int updatedPosition;
@@ -52,7 +68,9 @@ public class DataItemActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_activity);
-        initViews();
+
+        ButterKnife.bind(this);
+
         dataItem = getDataFromIntent();
         if (dataItem == null)
             createNewItemAction();
@@ -181,25 +199,6 @@ public class DataItemActivity extends AppCompatActivity implements View.OnClickL
         dataItem.checkedDays[6] = sunday.isChecked();
     }
 
-    private void initViews() {
-        description = findViewById(R.id.editText);
-
-        timeStartMode = findViewById(R.id.btnTimeFrom);
-        timeCancelMode = findViewById(R.id.btnTimeTo);
-        submit = findViewById(R.id.btnSubmit);
-
-        monday = findViewById(R.id.chkMon);
-        tuesday = findViewById(R.id.chkTue);
-        wednesday = findViewById(R.id.chkWed);
-        thursday = findViewById(R.id.chkThu);
-        friday = findViewById(R.id.chkFri);
-        saturday = findViewById(R.id.chkSat);
-        sunday = findViewById(R.id.chkSun);
-
-        radioGroup = findViewById(R.id.radioGroup);
-        noSound = findViewById(R.id.radMute);
-        vibrationAllowed = findViewById(R.id.radVibration);
-    }
 
     private com.alexanderbaulin.silence.mvp.model.DataItem getDataFromIntent() {
         return getIntent().getParcelableExtra(com.alexanderbaulin.silence.mvp.model.DataItem.class.getCanonicalName());

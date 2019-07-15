@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package com.alexanderbaulin.silence.mvp.presenter.receivers;
+package com.alexanderbaulin.silence.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

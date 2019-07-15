@@ -41,6 +41,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHolder> {
     private LayoutInflater inflater;
@@ -319,17 +322,15 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView time;
-        TextView days;
-        Switch switcher;
+        @BindView(R.id.imgView) ImageView image;
+        @BindView(R.id.txtTimePeriod) TextView time;
+        @BindView(R.id.txtDaysOfWeek) TextView days;
+        @BindView(R.id.btnSwitch) Switch switcher;
 
         myViewHolder(final View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.imgView);
-            time = itemView.findViewById(R.id.txtTimePeriod);
-            days = itemView.findViewById(R.id.txtDaysOfWeek);
-            switcher = itemView.findViewById(R.id.btnSwitch);
+
+            ButterKnife.bind(this, itemView);
         }
     }
 }

@@ -24,7 +24,7 @@
             android:label=""
             android:parentActivityName="com.alexanderbaulin.silence.mvp.view.activities.Main"
             android:screenOrientation="portrait" />
-        <receiver android:name="com.alexanderbaulin.silence.mvp.presenter.receivers.AlarmReceiver">
+        <receiver android:name="com.alexanderbaulin.silence.receivers.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="vibration" />

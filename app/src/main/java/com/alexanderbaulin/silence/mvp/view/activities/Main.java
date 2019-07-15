@@ -41,15 +41,22 @@ import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.alexanderbaulin.silence.Constants.*;
 
 
 public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClickListener, RecycleAdapter.OnItemClickListener, RecycleAdapter.OnSwitchLister {
 
     private MenuItem remove;
-    private FloatingActionButton btnFloatingAction;
+
+    @BindView(R.id.floatingActionButton) FloatingActionButton btnFloatingAction;
+    @BindView(R.id.drawerList) RecyclerView recyclerView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
     private RecycleAdapter adapter;
-    private RecyclerView recyclerView;
+
     private Presenter presenter;
 
     @Override
@@ -57,11 +64,10 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        ButterKnife.bind(this);
+
         presenter = new com.alexanderbaulin.silence.mvp.presenter.Presenter();
 
-        recyclerView = findViewById(R.id.drawerList);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        btnFloatingAction = findViewById(R.id.floatingActionButton);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
