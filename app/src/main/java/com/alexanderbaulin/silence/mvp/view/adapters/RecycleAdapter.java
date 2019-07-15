@@ -286,7 +286,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.myViewHo
 
     private void setItemBackground(DataItem currentItem, View itemView) {
         if (currentItem.isSelected)
-            itemView.setBackgroundColor(ContextCompat.getColor(MyApp.getAppContext(), R.color.colorItemBackground));
+            itemView.setBackgroundColor(ContextCompat.getColor(MyApp.getContext(), R.color.colorItemBackground));
         else
             itemView.setBackgroundResource(R.drawable.custom_background);
     }

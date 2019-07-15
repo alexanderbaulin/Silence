@@ -43,12 +43,12 @@ public class Alarm {
     private final long WEEK_INTERVAL = AlarmManager.INTERVAL_DAY * 7;
 
     public Alarm() {
-        manager = (AlarmManager) MyApp.getAppContext().getSystemService(ALARM_SERVICE);
-        am = (AudioManager) MyApp.getAppContext().getSystemService(Context.AUDIO_SERVICE);
+        manager = (AlarmManager) MyApp.getContext().getSystemService(ALARM_SERVICE);
+        am = (AudioManager) MyApp.getContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
     public void setAlarm(DataItem dataItem, int index) {
-        //Toast.makeText(MyApp.getAppContext(), "startAlarm", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MyApp.getContext(), "startAlarm", Toast.LENGTH_SHORT).show();
         int daysInWeek = 7;
         int requestCodesInDataItem = daysInWeek * 2;
         int requestCode = index * requestCodesInDataItem;
@@ -243,7 +243,7 @@ public class Alarm {
     }
 
     private Intent getStartModeIntent(DataItem dataItem, int requestCode) {
-        Intent i = new Intent(MyApp.getAppContext(), AlarmReceiver.class);
+        Intent i = new Intent(MyApp.getContext(), AlarmReceiver.class);
         if (dataItem.isVibrationAllowed) {
             i.setAction("vibration");
         } else {
@@ -256,7 +256,7 @@ public class Alarm {
     }
 
     private Intent getEndModeIntent(DataItem dataItem, int requestCode) {
-        Intent i = new Intent(MyApp.getAppContext(), AlarmReceiver.class);
+        Intent i = new Intent(MyApp.getContext(), AlarmReceiver.class);
         i.setAction("normalMode");
         i.putExtra("code", requestCode);
         i.putExtra("hour", dataItem.timeEnd[0]);
@@ -290,7 +290,7 @@ public class Alarm {
     }
 
     private PendingIntent getPendingIntent(Intent i, int requestCode) {
-        return PendingIntent.getBroadcast(MyApp.getAppContext(), requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getBroadcast(MyApp.getContext(), requestCode, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
 }

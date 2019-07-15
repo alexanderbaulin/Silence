@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Data implements Model {
 
-    private DataBase db = new DataBase(MyApp.getAppContext());
+    private DataBase db = new DataBase(MyApp.getContext());
     private Alarm alarm = new Alarm();
 
     public long insert(DataItem item, int index) {

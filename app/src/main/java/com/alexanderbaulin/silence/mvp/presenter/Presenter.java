@@ -1,14 +1,24 @@
 package com.alexanderbaulin.silence.mvp.presenter;
 
+import com.alexanderbaulin.silence.MyApp;
+import com.alexanderbaulin.silence.dagger2.components.AppComponent;
 import com.alexanderbaulin.silence.mvp.interfaces.Model;
 import com.alexanderbaulin.silence.mvp.model.Data;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 
 import java.util.LinkedList;
 
+import javax.inject.Inject;
+
 public class Presenter implements com.alexanderbaulin.silence.mvp.interfaces.Presenter {
 
-    private Model model = new Data();
+    @Inject
+    Model model;
+
+    public Presenter() {
+        AppComponent component = MyApp.getComponent();
+        if(component != null) component.injectPresenter(this);
+    }
 
     @Override
     public long add(DataItem newDataItem, int index) {

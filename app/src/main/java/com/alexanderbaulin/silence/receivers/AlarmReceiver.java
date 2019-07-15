@@ -39,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Alarm alarm = new Alarm();
         switch (action) {
             case Intent.ACTION_BOOT_COMPLETED:
-                DataBase base = new DataBase(MyApp.getAppContext());
+                DataBase base = new DataBase(MyApp.getContext());
                 List<DataItem> data = base.select();
                 for (DataItem dataItem : data) {
                     if (dataItem.isAlarmOn) {

@@ -32,18 +32,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.alexanderbaulin.silence.Logger;
+import com.alexanderbaulin.silence.dagger2.components.DaggerMainActivityComponent;
+import com.alexanderbaulin.silence.dagger2.components.MainActivityComponent;
 import com.alexanderbaulin.silence.mvp.interfaces.Presenter;
 import com.alexanderbaulin.silence.mvp.model.Alarm;
 import com.alexanderbaulin.silence.mvp.model.DataItem;
 import com.alexanderbaulin.silence.MyApp;
-import com.alexanderbaulin.silence.mvp.model.database.DataBase;
 import com.alexanderbaulin.silence.silence.R;
 import com.alexanderbaulin.silence.mvp.view.adapters.RecycleAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +63,8 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
 
     private RecycleAdapter adapter;
 
-    private Presenter presenter;
+    @Inject
+    Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,11 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
         setContentView(R.layout.main);
 
         ButterKnife.bind(this);
+
+        MainActivityComponent component = DaggerMainActivityComponent.builder()
+                .appComponent(MyApp.getComponent())
+                .build();
+        component.injectMainActivity(this);
 
         presenter = new com.alexanderbaulin.silence.mvp.presenter.Presenter();
 
@@ -164,7 +172,7 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
     private void setSingleSelectionUI() {
         setStatusBarColor(R.color.colorPrimaryDark);
         setToolbarColor(R.color.colorPrimary);
-        setToolbarTitle(MyApp.getAppContext().getString(R.string.app_name));
+        setToolbarTitle(MyApp.getContext().getString(R.string.app_name));
         remove.setVisible(false);
         setNavigationButton(false);
         setFloatingActionButton(true);
@@ -317,7 +325,6 @@ public class Main extends AppCompatActivity implements RecycleAdapter.OnLongClic
             int selectedPosition = selectedPositions.get(position);
             DataItem deletedItem = adapter.getData().remove(selectedPosition);
             presenter.delete(deletedItem.id);
-            Logger.d("deleteItem", "id = " + deletedItem.id);
             adapter.notifyItemRemoved(selectedPosition);
         }
     }

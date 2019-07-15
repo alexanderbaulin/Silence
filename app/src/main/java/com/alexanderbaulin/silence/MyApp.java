@@ -25,6 +25,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.alexanderbaulin.silence.dagger2.components.AppComponent;
+import com.alexanderbaulin.silence.dagger2.components.DaggerAppComponent;
+import com.alexanderbaulin.silence.dagger2.modules.AppModule;
 import com.alexanderbaulin.silence.silence.R;
 
 
@@ -32,17 +35,26 @@ public class MyApp extends android.app.Application {
     private static MyApp instance;
     private static ActivityManager am;
     private static NotificationManager notificationManager;
+    private static AppComponent component;
 
     @Override
     public void onCreate() {
+        super.onCreate();
         instance = this;
         am = (ActivityManager) instance.getSystemService(ACTIVITY_SERVICE);
         notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        super.onCreate();
+
+        component = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
     }
 
-    public static Context getAppContext() {
-        return instance.getApplicationContext();
+    public static AppComponent getComponent() {
+        return component;
+    }
+
+    public static Context getContext() {
+        return component.getContext();
     }
 
     public static boolean isNotificationPolicyAccessGranted() {
