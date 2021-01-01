@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Silence</string>
+
+    <string name="day_monday">月</string>
+    <string name="day_tuesday">火</string>
+    <string name="day_wednesday">水</string>
+    <string name="day_thursday">木</string>
+    <string name="day_friday">金</string>
+    <string name="day_saturday">土</string>
+    <string name="day_sunday">日</string>
+
+
+    <string name="time_from">開始時刻</string>
+    <string name="time_until">終了時刻</string>
+
+    <string name="description">説明</string>
+    <string name="save">保存</string>
+    <string name="no_sound">サイレンスモード</string>
+    <string name="vibration_allowed">バイブレーションモード</string>
+    <string name="ask_permission">Silenceにマナーモードへのアクセス権限を許可してください</string>
+    <string name="every_day">毎日</string>
+    <string name="set_time_start_mode">開始時刻を設定してください</string>
+    <string name="set_time_cancel_mode">終了時刻を設定してください</string>
+    <string name="no_day_selected">曜日を選択してください</string>
+
+</resources>
